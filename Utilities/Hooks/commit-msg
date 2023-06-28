@@ -1,0 +1,31 @@
+# #!/bin/bash
+
+IFS="="
+COMMIT_MSG_FILE=$1
+declare -a EMOJI_COMMANDS=(
+  "initial=🎉" 
+  "tag=🔖" 
+  "feature=✨" 
+  "bug=🐛" 
+  "refactor=♻️" 
+  "docs=📚" 
+  "a11y=♿" 
+  "performance=🏎" 
+  "styling=🎨" 
+  "tooling=🧰" 
+  "tests=🚨" 
+  "removal=🗑️" 
+  "wip=🚧"
+  "fixup=🛠"
+  "dependency=📦"
+  "crash=💥"
+)
+
+for COMMAND in "${EMOJI_COMMANDS[@]}"; do 
+  read -ra ARRAY <<< "${COMMAND}"
+  if egrep --quiet ":${ARRAY[0]}:" "$1"; then
+    sed -i -n -e "s/:${ARRAY[0]}://g" "$1"
+    sed -i -n -e "1s/^/${ARRAY[1]} /" "$1"
+  fi
+done 
+exit 0
