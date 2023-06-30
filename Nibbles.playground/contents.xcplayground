@@ -3,5 +3,6 @@
     <pages>
         <page name='Extensions'/>
         <page name='Networking'/>
+        <page name='UIKit'/>
     </pages>
 </playground>
