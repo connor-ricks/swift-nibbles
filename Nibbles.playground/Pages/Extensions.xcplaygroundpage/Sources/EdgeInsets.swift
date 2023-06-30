@@ -5,6 +5,7 @@ extension EdgeInsets {
     public static let zero: EdgeInsets = .init(padding: 0)
 
     /// Creates `EdgeInsets` using the provided `padding` for all edges.
+    ///
     /// - Parameter padding: The value to be used for each edge.
     public init(padding: CGFloat) {
         self.init(
@@ -16,6 +17,7 @@ extension EdgeInsets {
     }
 
     /// Creates `EdgeInsets` using the provided `vertical` and `horizontal` values.
+    /// 
     /// - Parameters:
     ///   - vertical: The value to be used for both the `top` and `bottom` edges.
     ///   - horizontal: The value to be used for both the `leading` and `trailing` edges.

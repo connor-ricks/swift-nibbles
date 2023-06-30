@@ -98,7 +98,7 @@ public class HTTPNetworkerTests: XCTestCase {
     func test_performingRequest_sendsOutURLRequest_withExpectedData() async throws {
         let expectation = XCTestExpectation(description: "Expected mock requestor closure to be called.")
         
-        let method = HTTPMethod.get
+        let method = HTTPMethod.patch
         let headers = ["HEADER-1": "Networker-1", "HEADER-2": "Networker-2"]
         let additionalHeaders = ["HEADER-1": "Additional-1", "HEADER-3": "Additional-3"]
         var expectedRequest = URLRequest(url: url)
