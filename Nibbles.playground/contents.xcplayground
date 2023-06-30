@@ -4,6 +4,7 @@
         <page name='Extensions'/>
         <page name='Networking'/>
         <page name='UIKit'/>
-        <page name='Identifiable'/>
+        <page name='Identified'/>
+        <page name='Cache'/>
     </pages>
 </playground>

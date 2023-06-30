@@ -1,5 +1,5 @@
 //: [Previous](@previous)
 
-HTTPNetworkerTests.runWithinSuite()
+CacheTests.runWithinSuite()
 
 //: [Next](@next)
