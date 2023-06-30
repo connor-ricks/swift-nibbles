@@ -4,5 +4,6 @@
         <page name='Extensions'/>
         <page name='Networking'/>
         <page name='UIKit'/>
+        <page name='Identifiable'/>
     </pages>
 </playground>
