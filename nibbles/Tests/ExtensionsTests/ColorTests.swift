@@ -23,4 +23,10 @@ class ColorTests: XCTestCase {
         
         XCTAssertEqual(color, expectedColor)
     }
+    
+    func test_jsonWithInvalidColor_decodedToColor_throwsError() throws {
+        let data = #"{"dog":0.75,"cat":0.5,"cow":0.5,"horse":0.5}"#.data(using: .utf8)!
+        let decoder = JSONDecoder()
+        XCTAssertThrowsError(try decoder.decode(Color.self, from: data))
+    }
 }
