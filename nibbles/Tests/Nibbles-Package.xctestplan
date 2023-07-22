@@ -37,6 +37,7 @@
   },
   "testTargets" : [
     {
+      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
         "identifier" : "CacheTests",
@@ -44,6 +45,7 @@
       }
     },
     {
+      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
         "identifier" : "ExtensionsTests",
@@ -51,6 +53,7 @@
       }
     },
     {
+      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
         "identifier" : "IdentifiedTests",
@@ -58,6 +61,7 @@
       }
     },
     {
+      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
         "identifier" : "HTTPNetworkingTests",
