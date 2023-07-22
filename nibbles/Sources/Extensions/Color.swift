@@ -2,27 +2,6 @@ import UIKit
 import SwiftUI
 
 extension Color: Codable {
-    private var colorComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)? {
-        var r: CGFloat = 0
-        var g: CGFloat = 0
-        var b: CGFloat = 0
-        var a: CGFloat = 0
-
-        guard UIColor(self).getRed(&r, green: &g, blue: &b, alpha: &a) else {
-            return nil
-        }
-
-        return (r, g, b, a)
-    }
-
-    // MARK: CodingKeys
-
-    enum CodingKeys: String, CodingKey, CaseIterable {
-        case red
-        case green
-        case blue
-        case alpha
-    }
 
     // MARK: Decodable
 
@@ -50,5 +29,27 @@ extension Color: Codable {
         try container.encode(colorComponents.green, forKey: .green)
         try container.encode(colorComponents.blue, forKey: .blue)
         try container.encode(colorComponents.alpha, forKey: .alpha)
+    }
+    
+    private var colorComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)? {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+
+        guard UIColor(self).getRed(&r, green: &g, blue: &b, alpha: &a) else {
+            return nil
+        }
+
+        return (r, g, b, a)
+    }
+
+    // MARK: CodingKeys
+
+    enum CodingKeys: String, CodingKey, CaseIterable {
+        case red
+        case green
+        case blue
+        case alpha
     }
 }
