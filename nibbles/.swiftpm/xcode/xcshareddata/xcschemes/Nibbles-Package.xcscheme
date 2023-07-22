@@ -42,9 +42,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Identified"
-               BuildableName = "Identified"
-               BlueprintName = "Identified"
+               BlueprintIdentifier = "HTTPNetworking"
+               BuildableName = "HTTPNetworking"
+               BlueprintName = "HTTPNetworking"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -56,9 +56,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Networking"
-               BuildableName = "Networking"
-               BlueprintName = "Networking"
+               BlueprintIdentifier = "Identified"
+               BuildableName = "Identified"
+               BlueprintName = "Identified"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -98,9 +98,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "IdentifiedTests"
-               BuildableName = "IdentifiedTests"
-               BlueprintName = "IdentifiedTests"
+               BlueprintIdentifier = "HTTPNetworkingTests"
+               BuildableName = "HTTPNetworkingTests"
+               BlueprintName = "HTTPNetworkingTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -112,23 +112,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NetworkingTests"
-               BuildableName = "NetworkingTests"
-               BlueprintName = "NetworkingTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "HTTPNetworking"
-               BuildableName = "HTTPNetworking"
-               BlueprintName = "HTTPNetworking"
+               BlueprintIdentifier = "IdentifiedTests"
+               BuildableName = "IdentifiedTests"
+               BlueprintName = "IdentifiedTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -141,7 +127,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:Nibbles-Package.xctestplan"
+            reference = "container:Tests/Nibbles-Package.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
@@ -170,29 +156,19 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "IdentifiedTests"
-               BuildableName = "IdentifiedTests"
-               BlueprintName = "IdentifiedTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NetworkingTests"
-               BuildableName = "NetworkingTests"
-               BlueprintName = "NetworkingTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "HTTPNetworkingTests"
                BuildableName = "HTTPNetworkingTests"
                BlueprintName = "HTTPNetworkingTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "IdentifiedTests"
+               BuildableName = "IdentifiedTests"
+               BlueprintName = "IdentifiedTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
