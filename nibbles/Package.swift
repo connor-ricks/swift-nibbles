@@ -6,9 +6,10 @@ let package = Package(
     name: "Nibbles",
     platforms: [
         .iOS(.v17),
+        .macOS(.v14),
         .tvOS(.v17),
-        .watchOS(.v10),
         .visionOS(.v1),
+        .watchOS(.v10),
     ],
     products: [
         .library(name: "Cache", targets: ["Cache"]),

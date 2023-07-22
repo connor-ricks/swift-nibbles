@@ -3,6 +3,35 @@ import Foundation
 // MARK: - Cache
 
 /// A simple cache that can be used to store objects.
+///
+/// Use a cache to store objects of a given type in memory using an associated key.
+/// You can then fetch attempt to retrieve from the cache at a later time using the key.
+///
+/// ```swift
+/// // Create a cache of dogs.
+/// let cache = Cache<String, Dog>
+///
+/// // Store a dog inside the cache.
+/// let fido = Dog(name: "Fido")
+/// cache.insert(fido, forKey: "1")
+///
+/// // Retrieve a dog from the cache.
+/// let cachedDog = cache.value(forKey: "1")
+///
+/// // Remove a dog from the cache.
+/// cache.removeValue(forKey: "1")
+///
+/// // Interact with the cache using subscripts.
+/// cache["2"] = Dog(name: "Spark")
+/// let otherCachedDog = cache["2"]
+/// ```
+///
+/// The cache implements a default limetime for which an item is considered valid. If you fetch an object
+/// from the cache and it has existed beyond the cache's specified lifetime, the cached object will be removed
+/// and the retrievel will fail, returning a null value.
+///
+/// If both your key and the object you are storing are `Codable`, you can persist
+/// your cache to disk and load it at a later point in time.
 public final class Cache<Key: Hashable, Value> {
 
     // MARK: Properties
@@ -50,7 +79,7 @@ public final class Cache<Key: Hashable, Value> {
     /// - Parameters:
     ///   - value: The value to be inserted.
     ///   - key: The key that identifies the item.
-    func insert(_ value: Value, forKey key: Key) {
+    public func insert(_ value: Value, forKey key: Key) {
         let date = dateProvider().addingTimeInterval(lifetime)
         let entry = Entry(key: key, value: value, lifetime: date)
         insert(entry)
@@ -60,18 +89,18 @@ public final class Cache<Key: Hashable, Value> {
     ///
     /// - Parameter key: The key used to lookup the value in the cache.
     /// - Returns: Returns the value if it exists, otherwise nil.
-    func value(forKey key: Key) -> Value? {
+    public func value(forKey key: Key) -> Value? {
         entry(forKey: key)?.value
     }
 
     /// Deletes the value in the cache for the provided key.
     ///
     /// - Parameter key: The key used to lookup the value in the cache.
-    func removeValue(forKey key: Key) {
+    public func removeValue(forKey key: Key) {
         store.removeObject(forKey: WrappedKey(key))
     }
     
-    subscript(key: Key) -> Value? {
+    public subscript(key: Key) -> Value? {
         get {
             value(forKey: key)
         }

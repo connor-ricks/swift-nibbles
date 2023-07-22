@@ -1,7 +1,7 @@
 import Foundation
 
 extension Cache {
-    /// A wrapper around the `Value` saved to teh cache. This is what gets saved to the `NSCache`.
+    /// A wrapper around the `Value` saved to the cache. This is what gets saved to the `NSCache`.
     final class Entry {
         /// The key that is used to lookup the value in the cache.
         let key: Key
