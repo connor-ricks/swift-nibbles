@@ -94,12 +94,14 @@ public class HTTPRequest<T: Decodable> {
     // MARK: Adapt
     
     /// Applies the provided adaptor to the request.
+    @discardableResult
     public func adapt<A>(with adaptor: A) -> Self where A: HTTPRequestAdaptor {
         adaptors.append(adaptor)
         return self
     }
     
     /// Applies the provided adaptation handler to the request.
+    @discardableResult
     public func adapt(_ handler: @escaping AdaptationHandler) -> Self {
         adaptors.append(Adaptor(handler))
         return self
@@ -108,12 +110,14 @@ public class HTTPRequest<T: Decodable> {
     // MARK: Retry
     
     /// Applies the provided retrier to the request's retry strategy.
+    @discardableResult
     public func retry<R>(with retrier: R) -> Self where R: HTTPRequestRetrier {
         retriers.append(retrier)
         return self
     }
     
     /// Applies the provided retry handler to the request's retry strategy.
+    @discardableResult
     public func retry(_ handler: @escaping RetryHandler) -> Self {
         retriers.append(Retrier(handler))
         return self
@@ -122,12 +126,14 @@ public class HTTPRequest<T: Decodable> {
     // MARK: Validate
     
     /// Applies the provided validator to the request's response validation.
+    @discardableResult
     public func validate<V>(with validator: V) -> Self where V: HTTPResponseValidator {
         validators.append(validator)
         return self
     }
     
     /// Applies the provided validation handler to the request's response validation.
+    @discardableResult
     public func validate(_ handler: @escaping ValidationHandler) -> Self {
         validators.append(Validator(handler))
         return self
