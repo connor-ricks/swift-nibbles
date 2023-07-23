@@ -21,7 +21,7 @@ jobs:
         run: xcodebuild test -scheme "Nibbles-Package" -testPlan "Nibbles-Package" -destination "OS=16.4,name=iPhone 14 Pro" -resultBundlePath "TestResults.xcresult"
       - name: 📊 Upload Coverage
         uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        files: "./nibbles/TestResults.xcresult"
-        swift: true
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: "./nibbles/TestResults.xcresult"
+          swift: true
