@@ -43,3 +43,7 @@ more scalable and testable way.
 ### 🏷️ Identified
 
 A protocol for marking objects as identified and allowing interaction with their identifiers in a type-safe way.
+
+## License
+
+[MIT License](https://github.com/connor-ricks/swift-nibbles/blob/main/LICENSE)
