@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-    
 
 jobs:
   test:
@@ -17,7 +16,6 @@ jobs:
       - name: 🧰 Select Xcode Version
         run: sudo xcode-select -s "/Applications/Xcode_14.3.1.app/Contents/Developer"
       - name: 🧪 Run tests
-        working-directory: nibbles
         run: xcodebuild test -scheme "Nibbles-Package" -testPlan "Nibbles-Package" -destination "OS=16.4,name=iPhone 14 Pro"
       - name: 📊 Upload Coverage
         uses: codecov/codecov-action@v3
