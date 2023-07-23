@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - HTTPDispatcher
 
-/// A dispatcher that can send requests over the network.
+/// A dispatcher that can send requests over the network using a `URLSession`.
 public struct HTTPDispatcher {
     
     // MARK: Properties
@@ -12,10 +12,12 @@ public struct HTTPDispatcher {
     
     // MARK: Initializers
     
+    /// Creates a dispatcher with the provided session.
     init(session: URLSession) {
         self.session = session
     }
     
+    /// Fetches data using the provided request.
     func data(for request: URLRequest) async throws -> (Data, HTTPURLResponse) {
         let (data, response) = try await session.data(for: request)
         guard let response = response as? HTTPURLResponse else {
@@ -60,16 +62,23 @@ extension HTTPDispatcher {
 // MARK: - HTTPDispatcher + MockResponse
 
 extension HTTPDispatcher {
+    /// A mock response can be used to mock interaction with an API.
     public struct MockResponse {
         
         // MARK: Properties
         
+        /// The amount of delay that should occur before returning the response.
         let delay: Duration
+        
+        /// The result of the mock request.
         let result: () -> Result<(Data, HTTPURLResponse), URLError>
+        
+        /// A closure that should be run in order to introspect the request that was received by the responder.
         let onRecieveRequest: ((URLRequest) -> Void)?
         
         // MARK: Initializers
         
+        /// Creates a ``MockResponse`` for the provided configuration.
         public init(
             delay: Duration = .zero,
             result: @escaping () -> Result<(Data, HTTPURLResponse), URLError>,
@@ -80,6 +89,7 @@ extension HTTPDispatcher {
             self.onRecieveRequest = onRecieveRequest
         }
         
+        /// Creates a ``MockResponse`` for the provided configuration.
         public init(
             delay: Duration = .zero,
             result: Result<(Data, HTTPURLResponse), URLError>,
@@ -92,6 +102,7 @@ extension HTTPDispatcher {
         
         // MARK: Helpers
         
+        /// Creates a successful ``MockResponse`` for the provided configuration.
         public static func success(
             data: Data,
             response: HTTPURLResponse,
@@ -101,6 +112,7 @@ extension HTTPDispatcher {
             .init(delay: delay, result: .success((data, response)), onRecieveRequest: onRecieveRequest)
         }
         
+        /// Creates a failed ``MockResponse`` for the provided configuration.
         public static func failure(
             _ error: URLError,
             delay: Duration = .zero,
@@ -114,6 +126,7 @@ extension HTTPDispatcher {
 // MARK: HTTPDispatcher + MockURLProtocol
 
 extension HTTPDispatcher {
+    /// An object that allows mocking an ``HTTPDispatcher``.
     private class MockURLProtocol: URLProtocol {
         
         // MARK: Properties
