@@ -1,7 +1,7 @@
 @testable import HTTPNetworking
 import XCTest
 
-public class HTTPRequestTests: XCTestCase {
+class HTTPRequestTests: XCTestCase {
     
     // MARK: MockError
     
@@ -68,30 +68,6 @@ public class HTTPRequestTests: XCTestCase {
     
     // MARK: Adaptor Tests
     
-    func test_zippedAdaptor_withAdaptors_containsAdaptorsInOrder() {
-        struct TestAdaptor: HTTPRequestAdaptor, Equatable {
-            let id: Int
-            func adapt(_ request: URLRequest, for session: URLSession) async throws -> URLRequest {
-                return request
-            }
-        }
-        
-        let one = TestAdaptor(id: 1)
-        let two = TestAdaptor(id: 1)
-        let three = TestAdaptor(id: 1)
-        let expectedAdaptor = [one, two, three]
-        
-        let arrayZipOne = ZipAdaptor(expectedAdaptor)
-        let arrayZipTwo: any HTTPRequestAdaptor = .zip(adaptors: expectedAdaptor)
-        let arrayZipThree: any HTTPRequestAdaptor = .zip(adaptors: one, two, three)
-        XCTAssertEqual(arrayZipOne.adaptors as? [TestAdaptor], expectedAdaptor)
-        XCTAssertEqual((arrayZipTwo as? ZipAdaptor)?.adaptors as? [TestAdaptor], expectedAdaptor)
-        XCTAssertEqual((arrayZipThree as? ZipAdaptor)?.adaptors as? [TestAdaptor], expectedAdaptor)
-        
-        let variadicZip = ZipAdaptor(one, two, three)
-        XCTAssertEqual(variadicZip.adaptors as? [TestAdaptor], expectedAdaptor)
-    }
-    
     func test_client_withAdaptor_runsAdaptorOnRequest() async throws {
         let url = createMockUrl()
         let adaptationExpectation = expectation(description: "Expected adaptor to be called.")
@@ -111,7 +87,7 @@ public class HTTPRequestTests: XCTestCase {
                 )
             ]),
             adaptors: [
-                .adapt { request, session in
+                Adaptor { request, session in
                     var request = request
                     request.setValue("TEST-HEADER", forHTTPHeaderField: "TEST-VALUE")
                     adaptedRequest = request
@@ -139,15 +115,15 @@ public class HTTPRequestTests: XCTestCase {
                 url: .success(data: data, response: createResponse(for: url, with: 200))
             ]),
             adaptors: [
-                .adapt { request, session in
+                Adaptor { request, session in
                     adaptorOneExpectation.fulfill()
                     return request
                 },
-                .adapt { request, session in
+                Adaptor { request, session in
                     adaptorTwoExpectation.fulfill()
                     return request
                 },
-                .adapt { request, session in
+                Adaptor { request, session in
                     adaptorThreeExpectation.fulfill()
                     return request
                 }
@@ -283,11 +259,11 @@ public class HTTPRequestTests: XCTestCase {
                 url: .success(data: data, response: createResponse(for: url, with: 200))
             ]),
             adaptors: [
-                .adapt { request, session in
+                Adaptor { request, session in
                     adaptorOneExpectation.fulfill()
                     return request
                 },
-                .adapt { request, session in
+                Adaptor { request, session in
                     adaptorTwoExpectation.fulfill()
                     return request
                 }
@@ -316,30 +292,6 @@ public class HTTPRequestTests: XCTestCase {
     
     // MARK: Validator Tests
     
-    func test_zippedValidator_withValidators_containsValidatorsInOrder() {
-        struct TestValidator: HTTPResponseValidator, Equatable {
-            let id: Int
-            func validate(_ response: HTTPURLResponse, for request: URLRequest, with data: Data) async -> ValidationResult {
-                .success
-            }
-        }
-        
-        let one = TestValidator(id: 1)
-        let two = TestValidator(id: 1)
-        let three = TestValidator(id: 1)
-        let expectedValidators = [one, two, three]
-        
-        let arrayZipOne = ZipValidator(expectedValidators)
-        let arrayZipTwo: any HTTPResponseValidator = .zip(validators: expectedValidators)
-        let arrayZipThree: any HTTPResponseValidator = .zip(validators: one, two, three)
-        XCTAssertEqual(arrayZipOne.validators as? [TestValidator], expectedValidators)
-        XCTAssertEqual((arrayZipTwo as? ZipValidator)?.validators as? [TestValidator], expectedValidators)
-        XCTAssertEqual((arrayZipThree as? ZipValidator)?.validators as? [TestValidator], expectedValidators)
-        
-        let variadicZip = ZipValidator(one, two, three)
-        XCTAssertEqual(variadicZip.validators as? [TestValidator], expectedValidators)
-    }
-    
     func test_client_withSuccessfulValidator_runsValidatorOnRequestAndReturnsSuccessfully() async throws {
         let url = createMockUrl()
         let expectedResponse = createResponse(
@@ -355,7 +307,7 @@ public class HTTPRequestTests: XCTestCase {
                 url: .success(data: data, response: expectedResponse)
             ]),
             validators: [
-                .validate { response, request, data in
+                Validator { response, request, data in
                     let header = response.value(forHTTPHeaderField: "TEST-HEADER")
                     XCTAssertEqual(header, "TEST-VALUE")
                     validatorExpectation.fulfill()
@@ -382,7 +334,7 @@ public class HTTPRequestTests: XCTestCase {
                 url: .success(data: data, response: createResponse(for: url,with: 200))
             ]),
             validators: [
-                .validate { response, request, data in
+                Validator { response, request, data in
                     validatorExpectation.fulfill()
                     return .failure(expectedError)
                 }
@@ -413,11 +365,11 @@ public class HTTPRequestTests: XCTestCase {
                 url: .success(data: data, response: createResponse(for: url,with: 200))
             ]),
             validators: [
-                .validate { response, request, data in
+                Validator { response, request, data in
                     validatorOneExpectation.fulfill()
                     return .success
                 },
-                .validate { response, request, data in
+                Validator { response, request, data in
                     validatorTwoExpectation.fulfill()
                     return .failure(expectedError)
                 }
@@ -447,11 +399,11 @@ public class HTTPRequestTests: XCTestCase {
                 url: .success(data: data, response: createResponse(for: url,with: 200))
             ]),
             validators: [
-                .validate { response, request, data in
+                Validator { response, request, data in
                     validatorOneExpectation.fulfill()
                     return .failure(expectedError)
                 },
-                .validate { response, request, data in
+                Validator { response, request, data in
                     XCTFail("Expected previous validator to fail, ignoring this one.")
                     return .success
                 }
@@ -481,11 +433,11 @@ public class HTTPRequestTests: XCTestCase {
                 url: .success(data: data, response: createResponse(for: url,with: 200))
             ]),
             validators: [
-                .validate { response, request, data in
+                Validator { response, request, data in
                     validatorOneExpectation.fulfill()
                     return .success
                 },
-                .validate { response, request, data in
+                Validator { response, request, data in
                     validatorTwoExpectation.fulfill()
                     return .success
                 }
@@ -566,11 +518,11 @@ public class HTTPRequestTests: XCTestCase {
                 url: .success(data: data, response: createResponse(for: url, with: 200))
             ]),
             validators: [
-                .validate { response, request, data in
+                Validator { response, request, data in
                     validatorOne.fulfill()
                     return .success
                 },
-                .validate { response, request, data in
+                Validator { response, request, data in
                     validatorTwo.fulfill()
                     return .success
                 },
@@ -599,30 +551,6 @@ public class HTTPRequestTests: XCTestCase {
     
     // MARK: Retrier Tests
     
-    func test_zippedRetrier_withRetriers_containsRetriersInOrder() {
-        struct TestRetrier: HTTPRequestRetrier, Equatable {
-            let id: Int
-            func retry(_ request: URLRequest, for session: URLSession, dueTo error: Error) async -> HTTPNetworking.RetryStrategy {
-                .concede
-            }
-        }
-        
-        let one = TestRetrier(id: 1)
-        let two = TestRetrier(id: 1)
-        let three = TestRetrier(id: 1)
-        let expectedRetriers = [one, two, three]
-        
-        let arrayZipOne = ZipRetrier(expectedRetriers)
-        let arrayZipTwo: any HTTPRequestRetrier = .zip(retriers: expectedRetriers)
-        let arrayZipThree: any HTTPRequestRetrier = .zip(retriers: one, two, three)
-        XCTAssertEqual(arrayZipOne.retriers as? [TestRetrier], expectedRetriers)
-        XCTAssertEqual((arrayZipTwo as? ZipRetrier)?.retriers as? [TestRetrier], expectedRetriers)
-        XCTAssertEqual((arrayZipThree as? ZipRetrier)?.retriers as? [TestRetrier], expectedRetriers)
-        
-        let variadicZip = ZipRetrier(one, two, three)
-        XCTAssertEqual(variadicZip.retriers as? [TestRetrier], expectedRetriers)
-    }
-    
     func test_client_withRetrier_runsRetrierOnRequestAndSuccessfullyRetries() async throws {
         let url = createMockUrl()
         let expectedError = URLError(.cannotConnectToHost)
@@ -641,7 +569,7 @@ public class HTTPRequestTests: XCTestCase {
                 })
             ]),
             retriers: [
-                .retry { request, session, error in
+                Retrier { request, session, error in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retryExpectation.fulfill()
                     shouldRequestFail = false
@@ -667,7 +595,7 @@ public class HTTPRequestTests: XCTestCase {
                 url: .failure(expectedError)
             ]),
             retriers: [
-                .retry { request, session, error in
+                Retrier { request, session, error in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retryExpectation.fulfill()
                     return .concede
@@ -704,13 +632,13 @@ public class HTTPRequestTests: XCTestCase {
                 })
             ]),
             retriers: [
-                .retry { request, session, error in
+                Retrier { request, session, error in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retryExpectation.fulfill()
                     shouldRequestFail = false
                     return .retry
                 },
-                .retry { request, session, error in
+                Retrier { request, session, error in
                     XCTFail("Second retrier should not have been called.")
                     return .concede
                 }
@@ -742,12 +670,12 @@ public class HTTPRequestTests: XCTestCase {
                 })
             ]),
             retriers: [
-                .retry { request, session, error in
+                Retrier { request, session, error in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retrierOneExpectation.fulfill()
                     return .concede
                 },
-                .retry { request, session, error in
+                Retrier { request, session, error in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retrierTwoExpectation.fulfill()
                     shouldRequestFail = false
@@ -908,11 +836,11 @@ public class HTTPRequestTests: XCTestCase {
                 url: .failure(expectedError)
             ]),
             retriers: [
-                .retry { request, session, error in
+                Retrier { request, session, error in
                     retrierOneExpectation.fulfill()
                     return .concede
                 },
-                .retry { request, session, error in
+                Retrier { request, session, error in
                     retrierTwoExpectation.fulfill()
                     return .concede
                 }
