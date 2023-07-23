@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 @testable import Extensions
 import XCTest
 import SwiftUI
@@ -30,3 +31,4 @@ class ColorTests: XCTestCase {
         XCTAssertThrowsError(try decoder.decode(Color.self, from: data))
     }
 }
+#endif
