@@ -1,8 +1,5 @@
 import Foundation
 
-#warning("TODO: URLQueryParameter Stratagies? Adaptor? Consumer responsibility with URL?")
-#warning("TODO: Error Response Decoding Stratagies? Errors usually have a different format.")
-
 /// `HTTPClient` creates and manages requests over the network.
 ///
 /// The client also provides common functionality for all  ``HTTPRequest`` objects, including encoding and decoding strategies,
