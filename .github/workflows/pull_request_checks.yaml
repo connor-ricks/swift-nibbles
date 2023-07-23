@@ -12,13 +12,14 @@ jobs:
     runs-on: macos-13
 
     steps:
+      - name: 🗄️ Checkout Code
       - uses: actions/checkout@v3
-      - name: 🧰 Select Xcode version
+      - name: 🧰 Select Xcode Version
         run: sudo xcode-select -s "/Applications/Xcode_14.3.1.app/Contents/Developer"
       - name: 🧪 Run tests
         working-directory: nibbles
         run: xcodebuild test -scheme "Nibbles-Package" -destination "OS=16.4,name=iPhone 14 Pro" -resultBundlePath "TestResults"
-      - name: Upload coverage reports to Codecov
+      - name: 📊 Upload Coverage
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
