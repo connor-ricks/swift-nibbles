@@ -18,7 +18,7 @@ jobs:
       - name: 🧪 Run tests
         working-directory: nibbles
         run: xcodebuild test -scheme "Nibbles-Package" -destination "OS=16.4,name=iPhone 14 Pro" -resultBundlePath "TestResults"
-      - uses: kishikawakatsumi/xcresulttool@v1
-        with:
-          path: "nibbles/TestResults.xcresult"
-        if: success() || failure()
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
