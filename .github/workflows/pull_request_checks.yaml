@@ -16,6 +16,6 @@ jobs:
       - name: 🧰 Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_14.3.1.app/Contents/Developer'
       - name: 🛠️ Build
-        run: swift build --package-path nibbles
+         run: cd nibbles && xcodebuild test -scheme "Nibbles-Package" -destination "OS=16.4,name=iPhone 14 Pro"
       - name: 🧪 Run tests
         run: swift test --package-path nibbles
