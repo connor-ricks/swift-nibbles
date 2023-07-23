@@ -18,10 +18,9 @@ jobs:
         run: sudo xcode-select -s "/Applications/Xcode_14.3.1.app/Contents/Developer"
       - name: 🧪 Run tests
         working-directory: nibbles
-        run: xcodebuild test -scheme "Nibbles-Package" -testPlan "Nibbles-Package" -destination "OS=16.4,name=iPhone 14 Pro" -resultBundlePath "TestResults.xcresult"
+        run: xcodebuild test -scheme "Nibbles-Package" -testPlan "Nibbles-Package" -destination "OS=16.4,name=iPhone 14 Pro"
       - name: 📊 Upload Coverage
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: "./nibbles/TestResults.xcresult"
           swift: true
