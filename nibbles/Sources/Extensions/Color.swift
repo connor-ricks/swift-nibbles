@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import UIKit
 import SwiftUI
 
@@ -53,3 +54,4 @@ extension Color: Codable {
         case alpha
     }
 }
+#endif

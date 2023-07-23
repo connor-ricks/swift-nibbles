@@ -1,15 +1,14 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 5.8.1
 
 import PackageDescription
 
 let package = Package(
     name: "Nibbles",
     platforms: [
-        .iOS(.v17),
-        .macOS(.v14),
-        .tvOS(.v17),
-        .visionOS(.v1),
-        .watchOS(.v10),
+        .iOS(.v16),
+        .macOS(.v13),
+        .tvOS(.v16),
+        .watchOS(.v9),
     ],
     products: [
         .library(name: "Cache", targets: ["Cache"]),

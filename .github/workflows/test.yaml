@@ -1,0 +1,20 @@
+name: 🧪 Test
+
+on:
+  pull_request:
+    branches:
+      - main
+    
+
+jobs:
+  build:
+    runs-on: macos-13
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: 🧰 Select Xcode version
+        run: sudo xcode-select -s '/Applications/Xcode_14.3.1.app/Contents/Developer'
+      - name: 🛠️ Build
+        run: swift build --package-path nibbles
+      - name: 🧪 Run tests
+        run: swift test --package-path nibbles
