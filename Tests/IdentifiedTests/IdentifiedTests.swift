@@ -1,7 +1,7 @@
 @testable import Identified
 import XCTest
 
-public class IdentifiedTests: XCTestCase {
+class IdentifiedTests: XCTestCase {
     
     // MARK: Dog
     
