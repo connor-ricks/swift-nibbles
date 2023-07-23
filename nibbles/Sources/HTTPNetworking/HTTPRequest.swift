@@ -1,5 +1,24 @@
 import Foundation
 
+/// An ``HTTPRequest`` contains all the information necessary to send a request over the network.
+///
+/// Create an ``HTTPRequest`` by creating an ``HTTPClient`` and
+/// calling ``HTTPClient/request(for:to:expecting:)`` or ``HTTPClient/request(for:to:with:expecting:)``
+/// with the desired configuration.
+///
+/// To send an ``HTTPRequest`` call ``run()``. This will perform the network request ant return the expected response type.
+///
+/// You can adapt the `URLRequest`, before it gets sent out, by calling ``adapt(_:)`` or ``adapt(with:)``.
+/// By providing an ``AdaptationHandler`` or ``HTTPRequestAdaptor``, you can perform various asyncronous logic before a request gets sent
+/// Typical use cases include things like adding headers to requests, or managing the lifecycle of a client's authorization status.
+///
+/// You can validate the `HTTPURLResponse`, before it gets deocded, by calling ``validate(_:)`` or ``validate(with:)``.
+/// By providing a ``ValidationHandler`` or ``HTTPResponseValidator``, you can perform various validations before a response is decoded.
+/// Typical use cases include things like validating the status code or headers of a request.
+///
+/// You can retry the ``HTTPRequest`` if it fails by calling ``retry(_:)`` or ``retry(with:)``.
+/// By providing a ``RetryHandler`` or ``HTTPRequestRetrier``, you can determine if a request should be retried if it fails.
+/// Typical use cases include retrying requests a given number of times in the event of poor network connectivity.
 public class HTTPRequest<T: Decodable> {
     
     // MARK: Properties
