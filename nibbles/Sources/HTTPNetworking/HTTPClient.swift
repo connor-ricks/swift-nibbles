@@ -156,7 +156,7 @@ public struct HTTPClient {
     /// Creates a request with a body.
     ///
     /// - Parameters:
-    ///   - method: The ``HTTPMethod`` of the request.
+    ///   - method: The ``HTTPMethod`` of the request...
     ///   - url: The url the request is being sent to.
     ///   - body: The data to attach to the request's body.
     ///   - responseType: The expected type to be decoded from the response body.
