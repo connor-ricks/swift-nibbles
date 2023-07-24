@@ -24,3 +24,13 @@ public struct Adaptor: HTTPRequestAdaptor {
         try await handler(request, session)
     }
 }
+
+// MARK: - HTTPRequest + Adaptor
+
+extension HTTPRequest {
+    /// Applies an ``Adaptor`` that handles request adaptation using the provided ``AdaptationHandler``.
+    @discardableResult
+    public func adapt(_ handler: @escaping AdaptationHandler) -> Self {
+        adapt(with: Adaptor(handler))
+    }
+}
