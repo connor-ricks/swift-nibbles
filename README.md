@@ -34,7 +34,13 @@ A collection of useful extensions that I freqeuntly implement across multiple pr
 ### 🕸️ HTTPNetworking
 A client that creates and manages requests over the network.
 
-The client provides common functionality for all requests, including encoding and decoding strategies, as well as request adaptation, response validation and retry stratagies.
+The client provides support for sharing common functionality across all requests, but each request can also layer on additional functionality if needed.
+
+Using the concept of plugins, you can customize your client's functionalities to your needs.
+
+- **Adaptors:** Mutate a `URLRequest` before it is dispatched over the network. Useful for adding headers or query parameters to outbound requests.
+- **Validators** Validate the `HTTPURLResponse` and `Data` of a `URLRequest` before decoding. Useful for checking status codes and other common validation stratagies. 
+- **Retriers** Retry failed requests on your terms.
 
 Generally an ``HTTPClient`` is used to manage the interaction with a single API service. Most APIs
 have their own nuance and complexities, and encapsulating all of that in one place can help structure your code in a
