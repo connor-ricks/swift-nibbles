@@ -3,6 +3,5 @@ coverage:
     project:
       default:
         informational: true
-        only_pulls: true
         paths:
           - "Sources/*"
