@@ -58,4 +58,21 @@ class CacheTests: XCTestCase {
         XCTAssertEqual(newCache["key_2"], 2)
         XCTAssert(newCache.keys.count == 2)
     }
+    
+    func test_wrappedKey_comparingSameTypesForEquality_returnsTrue() {
+        let firstKey = Cache<Int, Data>.WrappedKey(1)
+        let secondKey = Cache<Int, Data>.WrappedKey(1)
+        
+        XCTAssertTrue(firstKey.isEqual(secondKey))
+    }
+    
+    func test_wrappedKey_comparingDifferentTypesForEquality_returnsFalse() {
+        let intKey = Cache<Int, Data>.WrappedKey(1)
+        let stringKey = Cache<String, Data>.WrappedKey("1")
+        
+        XCTAssertFalse(intKey.isEqual(stringKey))
+        XCTAssertFalse(intKey.isEqual(nil))
+        XCTAssertFalse(intKey.isEqual(1))
+        XCTAssertFalse(intKey.isEqual("1"))
+    }
 }
