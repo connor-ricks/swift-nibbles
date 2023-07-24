@@ -1,10 +1,6 @@
 import Foundation
 
-// MARK: - ValidationResult
-
 public typealias ValidationResult = Result<Void, Error>
-
-// MARK: - HTTPResponseValidator
 
 /// An ``HTTPResponseValidator`` is used to validate the response from an ``HTTPRequest``.
 ///

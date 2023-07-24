@@ -66,19 +66,18 @@ public class HTTPRequest<T: Decodable> {
         var request = self.request
         
         do {
-            // Apply the adaptors to the request.
-            request = try await ZipAdaptor(adaptors)
-                .adapt(self.request, for: dispatcher.session)
+            // Create the adapted request.
+            request = try await ZipAdaptor(adaptors).adapt(request, for: dispatcher.session)
             
             // Dispatch the request and wait for a response.
             let (data, response) = try await dispatcher.data(for: request)
             
-            // Apply the validators to the response.
+            // Validate the response.
             try await ZipValidator(validators)
                 .validate(response, for: request, with: data)
                 .get()
             
-            // Convert the data into the expected type.
+            // Convert data to the expected type
             return try decoder.decode(T.self, from: data)
         } catch {
             let strategy = await ZipRetrier(retriers).retry(request, for: dispatcher.session, dueTo: error)
@@ -100,13 +99,6 @@ public class HTTPRequest<T: Decodable> {
         return self
     }
     
-    /// Applies the provided adaptation handler to the request.
-    @discardableResult
-    public func adapt(_ handler: @escaping AdaptationHandler) -> Self {
-        adaptors.append(Adaptor(handler))
-        return self
-    }
-    
     // MARK: Retry
     
     /// Applies the provided retrier to the request's retry strategy.
@@ -116,26 +108,12 @@ public class HTTPRequest<T: Decodable> {
         return self
     }
     
-    /// Applies the provided retry handler to the request's retry strategy.
-    @discardableResult
-    public func retry(_ handler: @escaping RetryHandler) -> Self {
-        retriers.append(Retrier(handler))
-        return self
-    }
-    
     // MARK: Validate
     
     /// Applies the provided validator to the request's response validation.
     @discardableResult
     public func validate<V>(with validator: V) -> Self where V: HTTPResponseValidator {
         validators.append(validator)
-        return self
-    }
-    
-    /// Applies the provided validation handler to the request's response validation.
-    @discardableResult
-    public func validate(_ handler: @escaping ValidationHandler) -> Self {
-        validators.append(Validator(handler))
         return self
     }
 }

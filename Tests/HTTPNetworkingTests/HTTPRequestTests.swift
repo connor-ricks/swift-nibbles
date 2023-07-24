@@ -66,6 +66,26 @@ class HTTPRequestTests: XCTestCase {
         }
     }
     
+    func test_request_whereRequestContainsBodyAndIsUnsuccessful_throwsExpectedError() async throws {
+        let url = createMockUrl()
+        let expectedError = URLError(.cannotConnectToHost)
+        
+        let client = HTTPClient(dispatcher: .mock(responses: [
+            url: .failure(expectedError)
+        ]))
+        
+        do {
+            _ = try await client
+                .request(for: .post, to: url, with: strings.reversed(), expecting: [String].self)
+                .run()
+            XCTFail("Expected request to fail.")
+        } catch let error as URLError {
+            XCTAssertEqual(error.code, expectedError.code)
+        } catch {
+            XCTFail("Unexpected error thrown.")
+        }
+    }
+    
     // MARK: Adaptor Tests
     
     func test_client_withAdaptor_runsAdaptorOnRequest() async throws {
@@ -177,41 +197,6 @@ class HTTPRequestTests: XCTestCase {
         await fulfillment(of: [adaptationExpectation, receivedRequestExpectation])
     }
     
-    func test_request_withAdaptorHandler_runsAdaptorOnRequest() async throws {
-        let url = createMockUrl()
-        let adaptationExpectation = expectation(description: "Expected adaptor to be called.")
-        let receivedRequestExpectation = expectation(description: "Expected onRecieveRequest to be called.")
-        
-        var adaptedRequest: URLRequest?
-        
-        let client = HTTPClient(
-            dispatcher: .mock(responses: [
-                url: .success(
-                    data: data,
-                    response: createResponse(for: url, with: 200),
-                    onRecieveRequest: {
-                        XCTAssertEqual($0, adaptedRequest)
-                        receivedRequestExpectation.fulfill()
-                    }
-                )
-            ])
-        )
-        
-        _ = try await client
-            .request(for: .get, to: url, expecting: [String].self)
-            .adapt { request, session in
-                var request = request
-                request.setValue("TEST-HEADER", forHTTPHeaderField: "TEST-VALUE")
-                adaptedRequest = request
-                adaptationExpectation.fulfill()
-                return request
-            }
-            .run()
-        
-        
-        await fulfillment(of: [adaptationExpectation, receivedRequestExpectation])
-    }
-    
     func test_request_withMultipleAdaptors_runsAdaptorsInOrderOnRequest() async throws {
         let url = createMockUrl()
         let adaptorOneExpectation = expectation(description: "Expected adaptor one to be called.")
@@ -226,18 +211,18 @@ class HTTPRequestTests: XCTestCase {
         
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
-            .adapt { request, session in
+            .adapt(with: Adaptor { request, session in
                 adaptorOneExpectation.fulfill()
                 return request
-            }
-            .adapt { request, session in
+            })
+                .adapt(with: Adaptor { request, session in
                 adaptorTwoExpectation.fulfill()
                 return request
-            }
-            .adapt { request, session in
+            })
+            .adapt(with: Adaptor { request, session in
                 adaptorThreeExpectation.fulfill()
                 return request
-            }
+            })
             .run()
         
         await fulfillment(of: [
@@ -272,10 +257,10 @@ class HTTPRequestTests: XCTestCase {
         
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
-            .adapt { request, session in
+            .adapt(with: Adaptor { request, session in
                 adaptorThreeExpectation.fulfill()
                 return request
-            }
+            })
             .adapt(with: Adaptor { request, session in
                adaptorFourExpectation.fulfill()
                return request
@@ -422,6 +407,40 @@ class HTTPRequestTests: XCTestCase {
         await fulfillment(of: [validatorOneExpectation])
     }
     
+    func test_client_withUnsuccessfulAndUnsuccessfulValidators_runsOnlyFirstValidatorOnRequest() async throws {
+        let url = createMockUrl()
+        
+        let expectedError = MockError(id: 1)
+        let validatorOneExpectation = expectation(description: "Expected validator one to be called.")
+        
+        let client = HTTPClient(
+            dispatcher: .mock(responses: [
+                url: .success(data: data, response: createResponse(for: url,with: 200))
+            ]),
+            validators: [
+                Validator { response, request, data in
+                    validatorOneExpectation.fulfill()
+                    return .failure(expectedError)
+                },
+                Validator { response, request, data in
+                    XCTFail("Expected previous validator to fail, ignoring this one.")
+                    return .failure(expectedError)
+                }
+            ]
+        )
+        
+        do {
+            _ = try await client
+                .request(for: .get, to: url, expecting: [String].self)
+                .run()
+            XCTFail("Expected request to throw an error.")
+        } catch {
+            XCTAssertEqual(error as? MockError, expectedError)
+        }
+        
+        await fulfillment(of: [validatorOneExpectation])
+    }
+    
     func test_client_withSuccessfulValidators_runValidatorsInOrderOnRequest() async throws {
         let url = createMockUrl()
         
@@ -468,10 +487,10 @@ class HTTPRequestTests: XCTestCase {
         
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
-            .validate { response, request, data in
+            .validate(with: Validator { response, request, data in
                 validatorExpectation.fulfill()
                 return .success
-            }
+            })
             .run()
         
         await fulfillment(of: [validatorExpectation])
@@ -492,10 +511,10 @@ class HTTPRequestTests: XCTestCase {
         do {
             _ = try await client
                 .request(for: .get, to: url, expecting: [String].self)
-                .validate { response, request, data in
+                .validate(with: Validator { response, request, data in
                     validatorExpectation.fulfill()
                     return .failure(expectedError)
-                }
+                })
                 .run()
             XCTFail("Expected request to throw an error.")
         } catch {
@@ -531,10 +550,10 @@ class HTTPRequestTests: XCTestCase {
         
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
-            .validate { response, request, data in
+            .validate(with: Validator { response, request, data in
                 validatorThree.fulfill()
                 return .success
-            }
+            })
             .validate(with: Validator { response, request, data in
                 validatorFour.fulfill()
                 return .success
@@ -712,12 +731,12 @@ class HTTPRequestTests: XCTestCase {
         
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
-            .retry { request, session, error in
+            .retry(with: Retrier { request, session, error in
                 XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                 retryExpectation.fulfill()
                 shouldRequestFail = false
                 return .retry
-            }
+            })
             .run()
         
         await fulfillment(of: [retryExpectation])
@@ -737,11 +756,11 @@ class HTTPRequestTests: XCTestCase {
         do {
             _ = try await client
                 .request(for: .get, to: url, expecting: [String].self)
-                .retry { request, session, error in
+                .retry(with: Retrier { request, session, error in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retryExpectation.fulfill()
                     return .concede
-                }
+                })
                 .run()
             XCTFail("Expected request to fail after retry conceded.")
         } catch {
@@ -771,16 +790,16 @@ class HTTPRequestTests: XCTestCase {
         
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
-            .retry { request, session, error in
+            .retry(with: Retrier { request, session, error in
                 XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                 retryExpectation.fulfill()
                 shouldRequestFail = false
                 return .retry
-            }
-            .retry { request, session, error in
+            })
+            .retry(with: Retrier { request, session, error in
                 XCTFail("Second retrier should not have been called.")
                 return .concede
-            }
+            })
             .run()
     
         await fulfillment(of: [retryExpectation])
@@ -807,17 +826,17 @@ class HTTPRequestTests: XCTestCase {
         
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
-            .retry { request, session, error in
+            .retry(with: Retrier { request, session, error in
                 XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                 retrierOneExpectation.fulfill()
                 return .concede
-            }
-            .retry { request, session, error in
+            })
+            .retry(with: Retrier { request, session, error in
                 XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                 retrierTwoExpectation.fulfill()
                 shouldRequestFail = false
                 return .retry
-            }
+            })
             .run()
     
         await fulfillment(of: [retrierOneExpectation, retrierTwoExpectation])
@@ -850,10 +869,10 @@ class HTTPRequestTests: XCTestCase {
         do {
             _ = try await client
                 .request(for: .get, to: url, expecting: [String].self)
-                .retry { request, session, error in
+                .retry(with: Retrier { request, session, error in
                     retrierThreeExpectation.fulfill()
                     return .concede
-                }
+                })
                 .retry(with: Retrier { request, session, error in
                     retrierFourExpectation.fulfill()
                     return .concede

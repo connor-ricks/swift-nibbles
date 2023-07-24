@@ -119,8 +119,8 @@ public struct HTTPClient {
         to url: URL,
         with body: T,
         expecting responseType: U.Type
-    ) async throws -> HTTPRequest<U> {
-        try await request(
+    ) throws -> HTTPRequest<U> {
+        request(
             method: method,
             url: url,
             body: try encoder.encode(body),
@@ -139,8 +139,8 @@ public struct HTTPClient {
         for method: HTTPMethod,
         to url: URL,
         expecting responseType: T.Type
-    ) async throws -> HTTPRequest<T> {
-        return try await request(
+    ) -> HTTPRequest<T> {
+        return request(
             method: method,
             url: url,
             body: nil,
@@ -163,7 +163,7 @@ public struct HTTPClient {
         url: URL,
         body: Data?,
         responseType: T.Type
-    ) async throws -> HTTPRequest<T> {
+    ) -> HTTPRequest<T> {
         var request = URLRequest(url: url)
         
         if body != nil {

@@ -24,3 +24,13 @@ public struct Validator: HTTPResponseValidator {
         await handler(response, request, data)
     }
 }
+
+// MARK: - HTTPRequest + Validator
+
+extension HTTPRequest {
+    /// Applies a ``Validator`` that validates the request's response using the provided ``ValidationHandler``.
+    @discardableResult
+    public func validate(_ handler: @escaping ValidationHandler) -> Self {
+        validate(with: Validator(handler))
+    }
+}
