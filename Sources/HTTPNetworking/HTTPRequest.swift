@@ -66,19 +66,18 @@ public class HTTPRequest<T: Decodable> {
         var request = self.request
         
         do {
-            // Apply the adaptors to the request.
-            request = try await ZipAdaptor(adaptors)
-                .adapt(self.request, for: dispatcher.session)
+            // Create the adapted request.
+            request = try await ZipAdaptor(adaptors).adapt(request, for: dispatcher.session)
             
             // Dispatch the request and wait for a response.
             let (data, response) = try await dispatcher.data(for: request)
             
-            // Apply the validators to the response.
+            // Validate the response.
             try await ZipValidator(validators)
                 .validate(response, for: request, with: data)
                 .get()
             
-            // Convert the data into the expected type.
+            // Convert data to the expected type
             return try decoder.decode(T.self, from: data)
         } catch {
             let strategy = await ZipRetrier(retriers).retry(request, for: dispatcher.session, dueTo: error)
