@@ -1,7 +1,5 @@
 import Foundation
 
-// MARK: - HTTPRequestAdaptor
-
 /// An ``HTTPRequestAdaptor`` is used to change a `URLRequest` before it is sent out by an ``HTTPClient``.
 ///
 /// By conforming to ``HTTPRequestAdaptor`` you can implement both simple and complex logic for manipulating a `URLRequest`
