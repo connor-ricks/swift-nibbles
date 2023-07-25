@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "Nibbles",
+    name: "swift-nibbles",
     platforms: [
         .iOS(.v16),
         .macOS(.v13),
