@@ -11,9 +11,13 @@ let package = Package(
         .watchOS(.v9),
     ],
     products: [
+        .library(name: "Cache", targets: ["Cache"]),
         .library(name: "Extensions", targets: ["Extensions"]),
     ],
     targets: [
+        .target(name: "Cache"),
+        .testTarget(name: "CacheTests", dependencies: ["Cache"]),
+        
         .target(name: "Extensions"),
         .testTarget(name: "ExtensionsTests", dependencies: ["Extensions"]),
     ]
