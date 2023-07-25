@@ -2,6 +2,8 @@ coverage:
   status:
     project:
       default:
-        paths: 
-          - "Sources"
         informational: true
+        
+ignore:
+  - "Tests"
+  - "Utilities"
