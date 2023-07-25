@@ -13,6 +13,7 @@ let package = Package(
     products: [
         .library(name: "Cache", targets: ["Cache"]),
         .library(name: "Extensions", targets: ["Extensions"]),
+        .library(name: "HTTPNetworking", targets: ["HTTPNetworking"]),
         .library(name: "Identified", targets: ["Identified"]),
     ],
     targets: [
@@ -21,6 +22,9 @@ let package = Package(
         
         .target(name: "Extensions"),
         .testTarget(name: "ExtensionsTests", dependencies: ["Extensions"]),
+        
+        .target(name: "HTTPNetworking"),
+        .testTarget(name: "HTTPNetworkingTests", dependencies: ["HTTPNetworking"]),
         
         .target(name: "Identified"),
         .testTarget(name: "IdentifiedTests", dependencies: ["Identified"]),
