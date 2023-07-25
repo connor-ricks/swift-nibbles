@@ -31,7 +31,7 @@ public struct ParametersAdaptor: HTTPRequestAdaptor {
     }
 }
 
-// MARK: - HTTPRequest + Adaptor
+// MARK: - HTTPRequest + ParametersAdaptor
 
 extension HTTPRequest {
     /// Applies a ``ParametersAdaptor`` that appends the provided query parameters to the request.
