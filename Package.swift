@@ -13,6 +13,7 @@ let package = Package(
     products: [
         .library(name: "Cache", targets: ["Cache"]),
         .library(name: "Extensions", targets: ["Extensions"]),
+        .library(name: "Identified", targets: ["Identified"]),
     ],
     targets: [
         .target(name: "Cache"),
@@ -20,5 +21,8 @@ let package = Package(
         
         .target(name: "Extensions"),
         .testTarget(name: "ExtensionsTests", dependencies: ["Extensions"]),
+        
+        .target(name: "Identified"),
+        .testTarget(name: "IdentifiedTests", dependencies: ["Identified"]),
     ]
 )
