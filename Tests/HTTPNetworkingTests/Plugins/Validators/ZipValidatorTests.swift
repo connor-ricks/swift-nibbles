@@ -2,7 +2,7 @@
 import XCTest
 
 class ZipValidatorTests: XCTestCase {
-    func test_zippedValidator_withValidators_containsValidatorsInOrder() {
+    func test_zipValidator_withValidators_containsValidatorsInOrder() {
         struct TestValidator: HTTPResponseValidator, Equatable {
             let id: Int
             func validate(_ response: HTTPURLResponse, for request: URLRequest, with data: Data) async -> ValidationResult {

@@ -2,7 +2,7 @@
 import XCTest
 
 class ZipRetrierTests: XCTestCase {
-    func test_zippedRetrier_withRetriers_containsRetriersInOrder() {
+    func test_zipRetrier_withRetriers_containsRetriersInOrder() {
         struct TestRetrier: HTTPRequestRetrier, Equatable {
             let id: Int
             func retry(_ request: URLRequest, for session: URLSession, dueTo error: Error) async -> HTTPNetworking.RetryStrategy {
