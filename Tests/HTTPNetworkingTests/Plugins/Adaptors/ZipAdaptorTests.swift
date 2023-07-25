@@ -2,7 +2,7 @@
 import XCTest
 
 class ZipAdaptorTests: XCTestCase {
-    func test_zippedAdaptor_withAdaptors_containsAdaptorsInOrder() {
+    func test_zipAdaptor_withAdaptors_containsAdaptorsInOrder() {
         struct TestAdaptor: HTTPRequestAdaptor, Equatable {
             let id: Int
             func adapt(_ request: URLRequest, for session: URLSession) async throws -> URLRequest {
