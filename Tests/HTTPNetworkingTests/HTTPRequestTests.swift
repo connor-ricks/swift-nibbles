@@ -573,6 +573,9 @@ class HTTPRequestTests: XCTestCase {
     func test_client_withRetrier_runsRetrierOnRequestAndSuccessfullyRetries() async throws {
         let url = createMockUrl()
         let expectedError = URLError(.cannotConnectToHost)
+        let requestFiredExpectation = expectation(description: "Expected request to be fired twice.")
+        requestFiredExpectation.expectedFulfillmentCount = 2
+        requestFiredExpectation.assertForOverFulfill = true
         let retryExpectation = expectation(description: "Expected retry to be called.")
         var shouldRequestFail = true
         
@@ -585,6 +588,8 @@ class HTTPRequestTests: XCTestCase {
                     } else {
                         return .success((self.data, self.createResponse(for: url, with: 200)))
                     }
+                }, onRecieveRequest: { request in
+                    requestFiredExpectation.fulfill()
                 })
             ]),
             retriers: [
@@ -601,17 +606,21 @@ class HTTPRequestTests: XCTestCase {
             .request(for: .get, to: url, expecting: [String].self)
             .run()
         
-        await fulfillment(of: [retryExpectation])
+        await fulfillment(of: [retryExpectation, requestFiredExpectation])
     }
     
     func test_client_withRetrier_runsRetrierOnRequestAndConcedesToFailure() async throws {
         let url = createMockUrl()
         let expectedError = URLError(.cannotConnectToHost)
+        let requestFiredExpectation = expectation(description: "Expected request to be fired once.")
+        requestFiredExpectation.assertForOverFulfill = true
         let retryExpectation = expectation(description: "Expected retry to be called.")
         
         let client = HTTPClient(
             dispatcher: .mock(responses: [
-                url: .failure(expectedError)
+                url: .failure(expectedError, onRecieveRequest: { _ in
+                    requestFiredExpectation.fulfill()
+                }),
             ]),
             retriers: [
                 Retrier { request, session, error in
@@ -631,12 +640,15 @@ class HTTPRequestTests: XCTestCase {
             XCTAssertEqual((error as? URLError)?.code, expectedError.code)
         }
         
-        await fulfillment(of: [retryExpectation])
+        await fulfillment(of: [retryExpectation, requestFiredExpectation])
     }
     
     func test_client_withMultipleRetriersSuccessfulAndConceding_runsFirstRetrierOnRequestAndNotSecond() async throws {
         let url = createMockUrl()
         let expectedError = URLError(.cannotConnectToHost)
+        let requestFiredExpectation = expectation(description: "Expected request to be fired twice.")
+        requestFiredExpectation.expectedFulfillmentCount = 2
+        requestFiredExpectation.assertForOverFulfill = true
         let retryExpectation = expectation(description: "Expected retry to be called.")
         var shouldRequestFail = true
         
@@ -648,6 +660,8 @@ class HTTPRequestTests: XCTestCase {
                     } else {
                         return .success((self.data, self.createResponse(for: url, with: 200)))
                     }
+                }, onRecieveRequest: { _ in
+                    requestFiredExpectation.fulfill()
                 })
             ]),
             retriers: [
@@ -668,12 +682,15 @@ class HTTPRequestTests: XCTestCase {
             .request(for: .get, to: url, expecting: [String].self)
             .run()
         
-        await fulfillment(of: [retryExpectation])
+        await fulfillment(of: [retryExpectation, requestFiredExpectation])
     }
     
     func test_client_withMultipleRetriersConcedingAndSuccessful_runsBothRetriersOnRequest() async throws {
         let url = createMockUrl()
         let expectedError = URLError(.cannotConnectToHost)
+        let requestFiredExpectation = expectation(description: "Expected request to be fired twice.")
+        requestFiredExpectation.expectedFulfillmentCount = 2
+        requestFiredExpectation.assertForOverFulfill = true
         let retrierOneExpectation = expectation(description: "Expected retrier one to be called.")
         let retrierTwoExpectation = expectation(description: "Expected retrier two to be called.")
         var shouldRequestFail = true
@@ -686,6 +703,8 @@ class HTTPRequestTests: XCTestCase {
                     } else {
                         return .success((self.data, self.createResponse(for: url, with: 200)))
                     }
+                }, onRecieveRequest: { _ in
+                    requestFiredExpectation.fulfill()
                 })
             ]),
             retriers: [
@@ -707,12 +726,15 @@ class HTTPRequestTests: XCTestCase {
             .request(for: .get, to: url, expecting: [String].self)
             .run()
         
-        await fulfillment(of: [retrierOneExpectation, retrierTwoExpectation])
+        await fulfillment(of: [retrierOneExpectation, retrierTwoExpectation, requestFiredExpectation])
     }
     
     func test_request_withRetrier_runsRetrierOnRequestAndSuccessfullyRetries() async throws {
         let url = createMockUrl()
         let expectedError = URLError(.cannotConnectToHost)
+        let requestFiredExpectation = expectation(description: "Expected request to be fired twice.")
+        requestFiredExpectation.expectedFulfillmentCount = 2
+        requestFiredExpectation.assertForOverFulfill = true
         let retryExpectation = expectation(description: "Expected retry to be called.")
         var shouldRequestFail = true
         
@@ -725,6 +747,8 @@ class HTTPRequestTests: XCTestCase {
                     } else {
                         return .success((self.data, self.createResponse(for: url, with: 200)))
                     }
+                }, onRecieveRequest: { _ in
+                    requestFiredExpectation.fulfill()
                 })
             ])
         )
@@ -739,17 +763,21 @@ class HTTPRequestTests: XCTestCase {
             })
             .run()
         
-        await fulfillment(of: [retryExpectation])
+        await fulfillment(of: [retryExpectation, requestFiredExpectation])
     }
     
     func test_request_withRetrier_runsRetrierOnRequestAndConcedesToFailure() async throws {
         let url = createMockUrl()
         let expectedError = URLError(.cannotConnectToHost)
+        let requestFiredExpectation = expectation(description: "Expected request to be fired once.")
+        requestFiredExpectation.assertForOverFulfill = true
         let retryExpectation = expectation(description: "Expected retry to be called.")
         
         let client = HTTPClient(
             dispatcher: .mock(responses: [
-                url: .failure(expectedError)
+                url: .failure(expectedError, onRecieveRequest: { _ in
+                    requestFiredExpectation.fulfill()
+                }),
             ])
         )
         
@@ -767,12 +795,15 @@ class HTTPRequestTests: XCTestCase {
             XCTAssertEqual((error as? URLError)?.code, expectedError.code)
         }
         
-        await fulfillment(of: [retryExpectation])
+        await fulfillment(of: [retryExpectation, requestFiredExpectation])
     }
     
     func test_request_withMultipleRetriersSuccessfulAndConceding_runsFirstRetrierOnRequestAndNotSecond() async throws {
         let url = createMockUrl()
         let expectedError = URLError(.cannotConnectToHost)
+        let requestFiredExpectation = expectation(description: "Expected request to be fired twice.")
+        requestFiredExpectation.expectedFulfillmentCount = 2
+        requestFiredExpectation.assertForOverFulfill = true
         let retryExpectation = expectation(description: "Expected retry to be called.")
         var shouldRequestFail = true
         
@@ -784,6 +815,8 @@ class HTTPRequestTests: XCTestCase {
                     } else {
                         return .success((self.data, self.createResponse(for: url, with: 200)))
                     }
+                }, onRecieveRequest: { _ in
+                    requestFiredExpectation.fulfill()
                 })
             ])
         )
@@ -802,12 +835,15 @@ class HTTPRequestTests: XCTestCase {
             })
             .run()
         
-        await fulfillment(of: [retryExpectation])
+        await fulfillment(of: [retryExpectation, requestFiredExpectation])
     }
     
     func test_request_withMultipleRetriersConcedingAndSuccessful_runsBothRetriersOnRequest() async throws {
         let url = createMockUrl()
         let expectedError = URLError(.cannotConnectToHost)
+        let requestFiredExpectation = expectation(description: "Expected request to be fired twice.")
+        requestFiredExpectation.expectedFulfillmentCount = 2
+        requestFiredExpectation.assertForOverFulfill = true
         let retrierOneExpectation = expectation(description: "Expected retrier one to be called.")
         let retrierTwoExpectation = expectation(description: "Expected retrier two to be called.")
         var shouldRequestFail = true
@@ -820,6 +856,8 @@ class HTTPRequestTests: XCTestCase {
                     } else {
                         return .success((self.data, self.createResponse(for: url, with: 200)))
                     }
+                }, onRecieveRequest: { _ in
+                    requestFiredExpectation.fulfill()
                 })
             ])
         )
@@ -839,7 +877,7 @@ class HTTPRequestTests: XCTestCase {
             })
             .run()
         
-        await fulfillment(of: [retrierOneExpectation, retrierTwoExpectation])
+        await fulfillment(of: [retrierOneExpectation, retrierTwoExpectation, requestFiredExpectation])
     }
     
     func test_request_withMultipleClientAndRequestRetriers_runsAllRetriersOnRequest() async throws {
@@ -889,6 +927,82 @@ class HTTPRequestTests: XCTestCase {
             retrierThreeExpectation,
             retrierFourExpectation,
         ])
+    }
+    
+    func test_client_withDelayedRetry_doesRetryRequest() async throws {
+        let url = createMockUrl()
+        let expectedError = URLError(.cannotConnectToHost)
+        let requestFiredExpectation = expectation(description: "Expected request to be fired twice.")
+        requestFiredExpectation.expectedFulfillmentCount = 2
+        requestFiredExpectation.assertForOverFulfill = true
+        let retryExpectation = expectation(description: "Expected retry to be called.")
+        var shouldRequestFail = true
+        
+        
+        let client = HTTPClient(
+            dispatcher: .mock(responses: [
+                url: .init(result: {
+                    if shouldRequestFail {
+                        return .failure(expectedError)
+                    } else {
+                        return .success((self.data, self.createResponse(for: url, with: 200)))
+                    }
+                }, onRecieveRequest: { request in
+                    requestFiredExpectation.fulfill()
+                })
+            ]),
+            retriers: [
+                Retrier { request, session, error in
+                    XCTAssertEqual((error as? URLError)?.code, expectedError.code)
+                    retryExpectation.fulfill()
+                    shouldRequestFail = false
+                    return .retryAfterDelay(.nanoseconds(100))
+                }
+            ]
+        )
+        
+        _ = try await client
+            .request(for: .get, to: url, expecting: [String].self)
+            .run()
+        
+        await fulfillment(of: [retryExpectation, requestFiredExpectation])
+    }
+    
+    func test_request_withDelayedRetry_doesRetryRequest() async throws {
+        let url = createMockUrl()
+        let expectedError = URLError(.cannotConnectToHost)
+        let requestFiredExpectation = expectation(description: "Expected request to be fired twice.")
+        requestFiredExpectation.expectedFulfillmentCount = 2
+        requestFiredExpectation.assertForOverFulfill = true
+        let retryExpectation = expectation(description: "Expected retry to be called.")
+        var shouldRequestFail = true
+        
+        
+        let client = HTTPClient(
+            dispatcher: .mock(responses: [
+                url: .init(result: {
+                    if shouldRequestFail {
+                        return .failure(expectedError)
+                    } else {
+                        return .success((self.data, self.createResponse(for: url, with: 200)))
+                    }
+                }, onRecieveRequest: { request in
+                    requestFiredExpectation.fulfill()
+                })
+            ])
+        )
+        
+        _ = try await client
+            .request(for: .get, to: url, expecting: [String].self)
+            .retry { request, session, error in
+                XCTAssertEqual((error as? URLError)?.code, expectedError.code)
+                retryExpectation.fulfill()
+                shouldRequestFail = false
+                return .retryAfterDelay(.nanoseconds(100))
+            }
+            .run()
+        
+        await fulfillment(of: [retryExpectation, requestFiredExpectation])
     }
     
     // MARK: Task Cancellation Tests
