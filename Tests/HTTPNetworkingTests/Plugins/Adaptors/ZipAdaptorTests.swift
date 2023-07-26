@@ -45,7 +45,7 @@ class ZipAdaptorTests: XCTestCase {
         
         task = Task {
             do {
-                _ = try await zipAdaptor.adapt(URLRequest(url: .mock), for: .shared)
+                _ = try await zipAdaptor.adapt(.mock, for: .shared)
             } catch {
                 XCTAssertTrue(error is CancellationError)
             }

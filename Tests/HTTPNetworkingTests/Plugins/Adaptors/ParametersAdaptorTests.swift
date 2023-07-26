@@ -10,7 +10,7 @@ class ParametersAdaptorTests: XCTestCase {
         
         let adaptor = ParametersAdaptor(items: items)
         
-        let cleanUrlRequest = URLRequest(url: .mock)
+        let cleanUrlRequest = URLRequest.mock
         let adaptedCleanUrlRequest = try await adaptor.adapt(cleanUrlRequest, for: .shared)
         XCTAssertEqual(
             adaptedCleanUrlRequest.url,
