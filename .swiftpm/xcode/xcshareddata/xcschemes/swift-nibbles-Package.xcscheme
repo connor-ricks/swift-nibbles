@@ -127,8 +127,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:Tests/Nibbles-Package.xctestplan"
-            default = "YES">
+            reference = "container:Tests/swift-nibbles-Package.xctestplan">
          </TestPlanReference>
       </TestPlans>
       <Testables>
