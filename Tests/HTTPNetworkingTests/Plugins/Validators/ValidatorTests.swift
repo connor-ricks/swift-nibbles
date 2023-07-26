@@ -12,7 +12,7 @@ class ValidatorTests: XCTestCase {
             return .success
         }
     
-        _ = await validator.validate(HTTPURLResponse(), for: request.request, with: Data())
+        _ = try await validator.validate(HTTPURLResponse(), for: request.request, with: Data())
         await fulfillment(of: [expectation])
     }
     
