@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "0B61CAD2-B2A9-4C4B-B7EC-E369C6B4866B",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ExtensionsTests",
+        "name" : "ExtensionsTests"
+      }
+    }
+  ],
+  "version" : 1
+}

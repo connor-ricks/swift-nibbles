@@ -56,16 +56,16 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "IdentifiedTests",
-        "name" : "IdentifiedTests"
+        "identifier" : "HTTPNetworkingTests",
+        "name" : "HTTPNetworkingTests"
       }
     },
     {
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "HTTPNetworkingTests",
-        "name" : "HTTPNetworkingTests"
+        "identifier" : "IdentifiedTests",
+        "name" : "IdentifiedTests"
       }
     }
   ],

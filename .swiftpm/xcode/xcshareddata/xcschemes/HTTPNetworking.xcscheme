@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Identified"
-               BuildableName = "Identified"
-               BlueprintName = "Identified"
+               BlueprintIdentifier = "HTTPNetworking"
+               BuildableName = "HTTPNetworking"
+               BlueprintName = "HTTPNetworking"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,7 +29,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:Tests/IdentifiedTests/Identified.xctestplan"
+            reference = "container:Tests/HTTPNetworkingTests/HTTPNetworking.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
@@ -54,9 +54,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Identified"
-            BuildableName = "Identified"
-            BlueprintName = "Identified"
+            BlueprintIdentifier = "HTTPNetworking"
+            BuildableName = "HTTPNetworking"
+            BlueprintName = "HTTPNetworking"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>
