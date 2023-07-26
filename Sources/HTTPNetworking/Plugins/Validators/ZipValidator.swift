@@ -5,7 +5,8 @@ public struct ZipValidator: HTTPResponseValidator {
     
     // MARK: Properties
     
-    let validators: [any HTTPResponseValidator]
+    /// An array of validators that make up this validator.
+    public let validators: [any HTTPResponseValidator]
     
     // MARK: Initializers
     

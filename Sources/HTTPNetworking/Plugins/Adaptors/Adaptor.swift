@@ -7,7 +7,7 @@ public struct Adaptor: HTTPRequestAdaptor {
     
     // MARK: Properties
     
-    let handler: AdaptationHandler
+    private let handler: AdaptationHandler
     
     // MARK: Initializers
     

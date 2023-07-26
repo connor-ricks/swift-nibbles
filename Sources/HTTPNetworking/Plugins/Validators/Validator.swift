@@ -7,7 +7,7 @@ public struct Validator: HTTPResponseValidator {
     
     // MARK: Properties
     
-    let handler: ValidationHandler
+    private let handler: ValidationHandler
     
     // MARK: Initializers
     
