@@ -25,9 +25,11 @@ public struct ZipValidator: HTTPResponseValidator {
     
     // MARK: ResponseValidator
     
-    public func validate(_ response: HTTPURLResponse, for request: URLRequest, with data: Data) async -> ValidationResult {
+    public func validate(_ response: HTTPURLResponse, for request: URLRequest, with data: Data) async throws -> ValidationResult {
         for validator in validators {
-            if case .failure(let error) = await validator.validate(response, for: request, with: data) {
+            try Task.checkCancellation()
+            
+            if case .failure(let error) = try await validator.validate(response, for: request, with: data) {
                 return .failure(error)
             }
         }
