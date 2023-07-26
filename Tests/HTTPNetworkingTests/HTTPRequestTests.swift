@@ -929,6 +929,82 @@ class HTTPRequestTests: XCTestCase {
         ])
     }
     
+    func test_client_withDelayedRetry_doesRetryRequest() async throws {
+        let url = createMockUrl()
+        let expectedError = URLError(.cannotConnectToHost)
+        let requestFiredExpectation = expectation(description: "Expected request to be fired twice.")
+        requestFiredExpectation.expectedFulfillmentCount = 2
+        requestFiredExpectation.assertForOverFulfill = true
+        let retryExpectation = expectation(description: "Expected retry to be called.")
+        var shouldRequestFail = true
+        
+        
+        let client = HTTPClient(
+            dispatcher: .mock(responses: [
+                url: .init(result: {
+                    if shouldRequestFail {
+                        return .failure(expectedError)
+                    } else {
+                        return .success((self.data, self.createResponse(for: url, with: 200)))
+                    }
+                }, onRecieveRequest: { request in
+                    requestFiredExpectation.fulfill()
+                })
+            ]),
+            retriers: [
+                Retrier { request, session, error in
+                    XCTAssertEqual((error as? URLError)?.code, expectedError.code)
+                    retryExpectation.fulfill()
+                    shouldRequestFail = false
+                    return .retryAfterDelay(.nanoseconds(100))
+                }
+            ]
+        )
+        
+        _ = try await client
+            .request(for: .get, to: url, expecting: [String].self)
+            .run()
+        
+        await fulfillment(of: [retryExpectation, requestFiredExpectation])
+    }
+    
+    func test_request_withDelayedRetry_doesRetryRequest() async throws {
+        let url = createMockUrl()
+        let expectedError = URLError(.cannotConnectToHost)
+        let requestFiredExpectation = expectation(description: "Expected request to be fired twice.")
+        requestFiredExpectation.expectedFulfillmentCount = 2
+        requestFiredExpectation.assertForOverFulfill = true
+        let retryExpectation = expectation(description: "Expected retry to be called.")
+        var shouldRequestFail = true
+        
+        
+        let client = HTTPClient(
+            dispatcher: .mock(responses: [
+                url: .init(result: {
+                    if shouldRequestFail {
+                        return .failure(expectedError)
+                    } else {
+                        return .success((self.data, self.createResponse(for: url, with: 200)))
+                    }
+                }, onRecieveRequest: { request in
+                    requestFiredExpectation.fulfill()
+                })
+            ])
+        )
+        
+        _ = try await client
+            .request(for: .get, to: url, expecting: [String].self)
+            .retry { request, session, error in
+                XCTAssertEqual((error as? URLError)?.code, expectedError.code)
+                retryExpectation.fulfill()
+                shouldRequestFail = false
+                return .retryAfterDelay(.nanoseconds(100))
+            }
+            .run()
+        
+        await fulfillment(of: [retryExpectation, requestFiredExpectation])
+    }
+    
     // MARK: Task Cancellation Tests
     
     func test_request_whenCancelledBeforeAdaptorsFinish_doesNotProceed() async throws {
