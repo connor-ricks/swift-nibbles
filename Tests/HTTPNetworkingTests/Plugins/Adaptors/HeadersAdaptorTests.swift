@@ -14,7 +14,7 @@ class HeadersAdaptorTests: XCTestCase {
         ], strategy: .useOlderValue)
         
         let adaptor = ZipAdaptor([headerAdaptorOne, headerAdaptorTwo])
-        let request = try await adaptor.adapt(URLRequest(url: URL(string: "https://api.com")!), for: .shared)
+        let request = try await adaptor.adapt(URLRequest(url: .mock), for: .shared)
         
         XCTAssertEqual(request.allHTTPHeaderFields, [
             "HEADER-ONE": "VALUE-ONE-OLD",
@@ -35,7 +35,7 @@ class HeadersAdaptorTests: XCTestCase {
         ], strategy: .useNewerValue)
         
         let adaptor = ZipAdaptor([headerAdaptorOne, headerAdaptorTwo])
-        let request = try await adaptor.adapt(URLRequest(url: URL(string: "https://api.com")!), for: .shared)
+        let request = try await adaptor.adapt(URLRequest(url: .mock), for: .shared)
         
         XCTAssertEqual(request.allHTTPHeaderFields, [
             "HEADER-ONE": "VALUE-ONE-OLD",
@@ -56,7 +56,7 @@ class HeadersAdaptorTests: XCTestCase {
         ], strategy: .useBothValues)
         
         let adaptor = ZipAdaptor([headerAdaptorOne, headerAdaptorTwo])
-        let request = try await adaptor.adapt(URLRequest(url: URL(string: "https://api.com")!), for: .shared)
+        let request = try await adaptor.adapt(URLRequest(url: .mock), for: .shared)
         
         XCTAssertEqual(request.allHTTPHeaderFields, [
             "HEADER-ONE": "VALUE-ONE-OLD",
@@ -81,7 +81,7 @@ class HeadersAdaptorTests: XCTestCase {
         }))
         
         let adaptor = ZipAdaptor([headerAdaptorOne, headerAdaptorTwo])
-        let request = try await adaptor.adapt(URLRequest(url: URL(string: "https://api.com")!), for: .shared)
+        let request = try await adaptor.adapt(URLRequest(url: .mock), for: .shared)
         
         XCTAssertEqual(request.allHTTPHeaderFields, [
             "HEADER-ONE": "VALUE-ONE-OLD",
@@ -93,9 +93,8 @@ class HeadersAdaptorTests: XCTestCase {
     }
     
     func test_request_adaptorConvenience_isAddedToRequestAdaptors() async throws {
-        let url = URL(string: "https://api.com")!
         let client = HTTPClient()
-        let request = client.request(for: .get, to: url, expecting: String.self)
+        let request = client.request(for: .get, to: .mock, expecting: String.self)
         
         let headers: [String: String] = [
             "HEADER-ONE": "VALUE-ONE",

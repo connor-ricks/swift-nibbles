@@ -894,7 +894,7 @@ class HTTPRequestTests: XCTestCase {
     // MARK: Helpers
     
     func createMockUrl() -> URL {
-        URL(string: "https://api.com/\(UUID().uuidString)")!
+        .mock.appending(component: UUID().uuidString)
     }
     
     func createResponse(for url: URL, with code: Int, headerFields: [String : String] = [:]) -> HTTPURLResponse {

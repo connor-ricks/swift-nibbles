@@ -44,9 +44,8 @@ class ZipValidatorTests: XCTestCase {
         ])
         
         task = Task {
-            let url = URL(string: "https://api.com")!
             do {
-                _ = try await zipValidator.validate(HTTPURLResponse(), for: URLRequest(url: url), with: Data())
+                _ = try await zipValidator.validate(HTTPURLResponse(), for: URLRequest(url: .mock), with: Data())
             } catch {
                 XCTAssertTrue(error is CancellationError)
             }

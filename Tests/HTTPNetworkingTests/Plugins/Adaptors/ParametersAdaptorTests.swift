@@ -3,37 +3,44 @@ import XCTest
 
 class ParametersAdaptorTests: XCTestCase {
     func test_parametersAdaptor_withPrameters_addsParametersToRequest() async throws {
-        let adaptor = ParametersAdaptor(items: [
+        let items: [URLQueryItem] = [
             .init(name: "one-name", value: "one-value"),
             .init(name: "two-name", value: "two-value"),
-        ])
+        ]
         
-        let cleanUrlRequest = URLRequest(url: URL(string: "https://api.com")!)
+        let adaptor = ParametersAdaptor(items: items)
+        
+        let cleanUrlRequest = URLRequest(url: .mock)
         let adaptedCleanUrlRequest = try await adaptor.adapt(cleanUrlRequest, for: .shared)
         XCTAssertEqual(
             adaptedCleanUrlRequest.url,
-            URL(string: "https://api.com?one-name=one-value&two-name=two-value")!
+            .mock.appending(queryItems: items)
         )
         
-        let dirtyUrlRequest = URLRequest(url: URL(string: "https://api.com?")!)
+        let dirtyUrlRequest = URLRequest(url: .mock.appending(queryItems: []))
         let adaptedDirtyUrlRequest = try await adaptor.adapt(dirtyUrlRequest, for: .shared)
         XCTAssertEqual(
             adaptedDirtyUrlRequest.url,
-            URL(string: "https://api.com?one-name=one-value&two-name=two-value")!
+            .mock.appending(queryItems: items)
         )
         
-        let existingParametersUrlRequest = URLRequest(url: URL(string: "https://api.com?two-name=original-two-value&other-name=other-value")!)
+        let existingParametersUrlRequest = URLRequest(url: .mock.appending(queryItems: [
+            .init(name: "two-name", value: "original-two-value"),
+            .init(name: "other-name", value: "other-value"),
+        ]))
         let adaptedExistingParametersUrlRequest = try await adaptor.adapt(existingParametersUrlRequest, for: .shared)
         XCTAssertEqual(
             adaptedExistingParametersUrlRequest.url,
-            URL(string: "https://api.com?two-name=original-two-value&other-name=other-value&one-name=one-value&two-name=two-value")!
+            .mock.appending(queryItems: [
+                .init(name: "two-name", value: "original-two-value"),
+                .init(name: "other-name", value: "other-value"),
+            ] + items)
         )
     }
     
     func test_request_adaptorConvenience_isAddedToRequestAdaptors() async throws {
-        let url = URL(string: "https://api.com")!
         let client = HTTPClient()
-        let request = client.request(for: .get, to: url, expecting: String.self)
+        let request = client.request(for: .get, to: .mock, expecting: String.self)
         
         let items: [URLQueryItem] = [
             .init(name: "one-name", value: "one-value"),

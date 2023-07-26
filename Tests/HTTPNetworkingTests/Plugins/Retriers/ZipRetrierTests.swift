@@ -44,9 +44,8 @@ class ZipRetrierTests: XCTestCase {
         ])
         
         task = Task {
-            let url = URL(string: "https://api.com")!
             do {
-                _ = try await zipRetrier.retry(URLRequest(url: url), for: .shared, dueTo: URLError(.cannotParseResponse))
+                _ = try await zipRetrier.retry(URLRequest(url: .mock), for: .shared, dueTo: URLError(.cannotParseResponse))
             } catch {
                 XCTAssertTrue(error is CancellationError)
             }
