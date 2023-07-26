@@ -21,4 +21,37 @@ class ZipAdaptorTests: XCTestCase {
         let variadicZip = ZipAdaptor(one, two, three)
         XCTAssertEqual(variadicZip.adaptors as? [TestAdaptor], expectedAdaptor)
     }
+    
+    func test_zipAdaptor_whenCancelled_stopsIteratingThroughAdaptors() async {
+        var task: Task<Void, Error>?
+        let adaptorOneExpectation = expectation(description: "Expected adaptor one to be executed.")
+        let adaptorTwoExpectation = expectation(description: "Expected adaptor two to be executed.")
+        
+        let zipAdaptor = ZipAdaptor([
+            Adaptor { request, _ in
+                adaptorOneExpectation.fulfill()
+                return request
+            },
+            Adaptor { request, _ in
+                adaptorTwoExpectation.fulfill()
+                task?.cancel()
+                return request
+            },
+            Adaptor { request, _ in
+                XCTFail("Expected task to be cancelled and third adaptor to be skipped.")
+                return request
+            }
+        ])
+        
+        task = Task {
+            let url = URL(string: "https://api.com")!
+            do {
+                _ = try await zipAdaptor.adapt(URLRequest(url: url), for: .shared)
+            } catch {
+                XCTAssertTrue(error is CancellationError)
+            }
+        }
+        
+        await fulfillment(of: [adaptorOneExpectation, adaptorTwoExpectation])
+    }
 }

@@ -18,7 +18,7 @@ class RetrierTests: XCTestCase {
         await fulfillment(of: [expectation])
     }
     
-    func test_request_retryConvenience_isAddedToRequestRetriers() async {
+    func test_request_retryConvenience_isAddedToRequestRetriers() async throws {
         struct MockError: Error {}
         
         let url = URL(string: "https://api.com")!
@@ -30,7 +30,7 @@ class RetrierTests: XCTestCase {
             return .concede
         }
         
-        _ = await request.retriers.first?.retry(
+        _ = try await request.retriers.first?.retry(
             request.request,
             for: client.dispatcher.session,
             dueTo: MockError()
