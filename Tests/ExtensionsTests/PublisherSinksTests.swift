@@ -234,7 +234,7 @@ class PublisherSinksTests: XCTestCase {
         let emptyBagExpectation = createEmptyBagExpectation(from: bag)
 
         /// Perform test
-        var publisher: PassthroughSubject<String, MockError>? = .init()
+        let publisher: PassthroughSubject<String, MockError>? = .init()
         publisher?.sink(receiveValue: { value in
             XCTFail("Publisher should not have published a value.")
         }, receiveError: { error in
