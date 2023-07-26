@@ -5,7 +5,8 @@ public struct ZipAdaptor: HTTPRequestAdaptor {
     
     // MARK: Properties
     
-    let adaptors: [any HTTPRequestAdaptor]
+    /// An array of adaptors that make up this adaptor.
+    public let adaptors: [any HTTPRequestAdaptor]
     
     // MARK: Initializers
     

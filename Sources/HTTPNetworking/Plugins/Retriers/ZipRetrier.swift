@@ -5,7 +5,8 @@ public struct ZipRetrier: HTTPRequestRetrier {
     
     // MARK: Properties
     
-    let retriers: [any HTTPRequestRetrier]
+    /// An array of retriers that make up this retrier.
+    public let retriers: [any HTTPRequestRetrier]
     
     // MARK: Initializers
         

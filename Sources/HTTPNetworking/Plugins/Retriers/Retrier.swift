@@ -7,7 +7,7 @@ public struct Retrier: HTTPRequestRetrier {
     
     // MARK: Properties
     
-    let handler: RetryHandler
+    private let handler: RetryHandler
     
     // MARK: Initializers
     

@@ -23,15 +23,18 @@ public struct HeadersAdaptor: HTTPRequestAdaptor {
     
     // MARK: Properties
     
-    let headers: [String: String]
-    let strategy: CollisionStrategy
+    /// The HTTP headers to be appended to an incoming request.
+    public let headers: [String: String]
+    
+    /// The strategy to use when the adaptor encounters a field collision.
+    public let strategy: CollisionStrategy
 
     // MARK: Initializers
     
     /// Creates a ``HeadersAdaptor`` from the provided HTTP headers.
     /// 
     /// - Parameters:
-    ///   - headers: The HTTP headers to append to incoming requests.
+    ///   - headers: The HTTP headers to be appended to an incoming request.
     ///   - strategy: The strategy to use when the adaptor encounters a field collision.
     public init(headers: [String: String], strategy: CollisionStrategy) {
         self.headers = headers
