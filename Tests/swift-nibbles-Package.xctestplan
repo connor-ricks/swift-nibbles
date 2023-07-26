@@ -33,7 +33,9 @@
         }
       ]
     },
-    "testExecutionOrdering" : "random"
+    "defaultTestExecutionTimeAllowance" : 60,
+    "testExecutionOrdering" : "random",
+    "testTimeoutsEnabled" : true
   },
   "testTargets" : [
     {
