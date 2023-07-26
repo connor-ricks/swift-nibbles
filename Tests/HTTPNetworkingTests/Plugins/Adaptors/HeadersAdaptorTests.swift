@@ -14,7 +14,7 @@ class HeadersAdaptorTests: XCTestCase {
         ], strategy: .useOlderValue)
         
         let adaptor = ZipAdaptor([headerAdaptorOne, headerAdaptorTwo])
-        let request = try await adaptor.adapt(URLRequest(url: .mock), for: .shared)
+        let request = try await adaptor.adapt(.mock, for: .shared)
         
         XCTAssertEqual(request.allHTTPHeaderFields, [
             "HEADER-ONE": "VALUE-ONE-OLD",
@@ -35,7 +35,7 @@ class HeadersAdaptorTests: XCTestCase {
         ], strategy: .useNewerValue)
         
         let adaptor = ZipAdaptor([headerAdaptorOne, headerAdaptorTwo])
-        let request = try await adaptor.adapt(URLRequest(url: .mock), for: .shared)
+        let request = try await adaptor.adapt(.mock, for: .shared)
         
         XCTAssertEqual(request.allHTTPHeaderFields, [
             "HEADER-ONE": "VALUE-ONE-OLD",
@@ -56,7 +56,7 @@ class HeadersAdaptorTests: XCTestCase {
         ], strategy: .useBothValues)
         
         let adaptor = ZipAdaptor([headerAdaptorOne, headerAdaptorTwo])
-        let request = try await adaptor.adapt(URLRequest(url: .mock), for: .shared)
+        let request = try await adaptor.adapt(.mock, for: .shared)
         
         XCTAssertEqual(request.allHTTPHeaderFields, [
             "HEADER-ONE": "VALUE-ONE-OLD",
@@ -81,7 +81,7 @@ class HeadersAdaptorTests: XCTestCase {
         }))
         
         let adaptor = ZipAdaptor([headerAdaptorOne, headerAdaptorTwo])
-        let request = try await adaptor.adapt(URLRequest(url: .mock), for: .shared)
+        let request = try await adaptor.adapt(.mock, for: .shared)
         
         XCTAssertEqual(request.allHTTPHeaderFields, [
             "HEADER-ONE": "VALUE-ONE-OLD",
