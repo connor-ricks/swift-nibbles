@@ -996,7 +996,7 @@ class HTTPRequestTests: XCTestCase {
         let client = HTTPClient(
             dispatcher: .mock(responses: [
                 url: .init(
-                    result: .success((data, createResponse(for: url, with: 200)))
+                    result: .failure(URLError(.cannotParseResponse))
                 )
             ]),
             retriers: [
