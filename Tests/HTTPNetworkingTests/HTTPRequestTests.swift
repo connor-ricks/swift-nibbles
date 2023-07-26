@@ -13,7 +13,7 @@ class HTTPRequestTests: XCTestCase {
     
     let strings = ["Hello", "World", "!"]
     var data: Data { try! JSONEncoder().encode(strings) }
-
+    
     // MARK: Successful Request Tests
     
     func test_request_whereRequestIsSuccessful_returnsExpectedResponse() async throws {
@@ -215,7 +215,7 @@ class HTTPRequestTests: XCTestCase {
                 adaptorOneExpectation.fulfill()
                 return request
             })
-                .adapt(with: Adaptor { request, session in
+            .adapt(with: Adaptor { request, session in
                 adaptorTwoExpectation.fulfill()
                 return request
             })
@@ -262,8 +262,8 @@ class HTTPRequestTests: XCTestCase {
                 return request
             })
             .adapt(with: Adaptor { request, session in
-               adaptorFourExpectation.fulfill()
-               return request
+                adaptorFourExpectation.fulfill()
+                return request
             })
             .run()
         
@@ -667,7 +667,7 @@ class HTTPRequestTests: XCTestCase {
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
             .run()
-    
+        
         await fulfillment(of: [retryExpectation])
     }
     
@@ -706,7 +706,7 @@ class HTTPRequestTests: XCTestCase {
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
             .run()
-    
+        
         await fulfillment(of: [retrierOneExpectation, retrierTwoExpectation])
     }
     
@@ -801,7 +801,7 @@ class HTTPRequestTests: XCTestCase {
                 return .concede
             })
             .run()
-    
+        
         await fulfillment(of: [retryExpectation])
     }
     
@@ -838,7 +838,7 @@ class HTTPRequestTests: XCTestCase {
                 return .retry
             })
             .run()
-    
+        
         await fulfillment(of: [retrierOneExpectation, retrierTwoExpectation])
     }
     
@@ -882,7 +882,7 @@ class HTTPRequestTests: XCTestCase {
         } catch {
             XCTAssertEqual((error as? URLError)?.code, expectedError.code)
         }
-    
+        
         await fulfillment(of: [
             retrierOneExpectation,
             retrierTwoExpectation,

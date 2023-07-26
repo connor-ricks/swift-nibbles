@@ -28,6 +28,8 @@ public struct ZipAdaptor: HTTPRequestAdaptor {
     public func adapt(_ request: URLRequest, for session: URLSession) async throws -> URLRequest {
         var request = request
         for adaptor in adaptors {
+            try Task.checkCancellation()
+            
             request = try await adaptor.adapt(request, for: session)
         }
         

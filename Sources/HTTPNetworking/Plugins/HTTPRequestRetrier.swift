@@ -7,7 +7,7 @@ import Foundation
 /// By conforming to ``HTTPRequestRetrier`` you can implement both simple and complex logic for retrying an ``HTTPRequest`` when
 /// it fails. Common uses cases include retrying a given amount of times due to a specific error such as poor network connectivity.
 public protocol HTTPRequestRetrier {
-    func retry(_ request: URLRequest, for session: URLSession, dueTo error: Error) async -> RetryStrategy
+    func retry(_ request: URLRequest, for session: URLSession, dueTo error: Error) async throws -> RetryStrategy
 }
 
 // MARK: - RetryStrategy
