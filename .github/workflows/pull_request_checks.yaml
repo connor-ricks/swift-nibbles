@@ -16,7 +16,7 @@ jobs:
       - name: 🧰 Select Xcode Version
         run: sudo xcode-select -s "/Applications/Xcode_14.3.1.app/Contents/Developer"
       - name: 🧪 Run tests
-        run: xcodebuild test -scheme "Nibbles-Package" -testPlan "Nibbles-Package" -destination "OS=16.4,name=iPhone 14 Pro"
+        run: xcodebuild test -scheme "swift-nibbles-Package" -testPlan "swift-nibbles-Package" -destination "OS=16.4,name=iPhone 14 Pro"
       - name: 📊 Upload Coverage
         uses: codecov/codecov-action@v3
         with:

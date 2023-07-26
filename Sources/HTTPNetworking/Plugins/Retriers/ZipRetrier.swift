@@ -25,12 +25,15 @@ public struct ZipRetrier: HTTPRequestRetrier {
     
     // MARK: ResponseValidator
     
-    public func retry(_ request: URLRequest, for session: URLSession, dueTo error: Error) async -> RetryStrategy {
+    public func retry(_ request: URLRequest, for session: URLSession, dueTo error: Error) async throws -> RetryStrategy {
         for retrier in retriers {
-            let strategy = await retrier.retry(request, for: session, dueTo: error)
-            if case .concede = strategy {
+            try Task.checkCancellation()
+            
+            let strategy = try await retrier.retry(request, for: session, dueTo: error)
+            switch strategy {
+            case .concede:
                 continue
-            } else {
+            case .retry, .retryAfterDelay:
                 return strategy
             }
         }

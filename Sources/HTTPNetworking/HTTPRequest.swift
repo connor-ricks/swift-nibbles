@@ -80,10 +80,13 @@ public class HTTPRequest<T: Decodable> {
             // Convert data to the expected type
             return try decoder.decode(T.self, from: data)
         } catch {
-            let strategy = await ZipRetrier(retriers).retry(request, for: dispatcher.session, dueTo: error)
+            let strategy = try await ZipRetrier(retriers).retry(request, for: dispatcher.session, dueTo: error)
             switch strategy {
             case .concede:
                 throw error
+            case .retryAfterDelay(let delay):
+                try await Task.sleep(for: delay)
+                fallthrough
             case .retry:
                 return try await run()
             }

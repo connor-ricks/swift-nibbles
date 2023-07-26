@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "F058B37F-5474-46C0-A432-D042453493AB",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "CacheTests",
+        "name" : "CacheTests"
+      }
+    }
+  ],
+  "version" : 1
+}

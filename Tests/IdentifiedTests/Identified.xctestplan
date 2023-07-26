@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "5A0D202E-E065-4B14-9C85-0E07B52D6F42",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "IdentifiedTests",
+        "name" : "IdentifiedTests"
+      }
+    }
+  ],
+  "version" : 1
+}

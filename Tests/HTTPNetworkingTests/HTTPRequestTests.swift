@@ -13,7 +13,7 @@ class HTTPRequestTests: XCTestCase {
     
     let strings = ["Hello", "World", "!"]
     var data: Data { try! JSONEncoder().encode(strings) }
-
+    
     // MARK: Successful Request Tests
     
     func test_request_whereRequestIsSuccessful_returnsExpectedResponse() async throws {
@@ -215,7 +215,7 @@ class HTTPRequestTests: XCTestCase {
                 adaptorOneExpectation.fulfill()
                 return request
             })
-                .adapt(with: Adaptor { request, session in
+            .adapt(with: Adaptor { request, session in
                 adaptorTwoExpectation.fulfill()
                 return request
             })
@@ -262,8 +262,8 @@ class HTTPRequestTests: XCTestCase {
                 return request
             })
             .adapt(with: Adaptor { request, session in
-               adaptorFourExpectation.fulfill()
-               return request
+                adaptorFourExpectation.fulfill()
+                return request
             })
             .run()
         
@@ -667,7 +667,7 @@ class HTTPRequestTests: XCTestCase {
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
             .run()
-    
+        
         await fulfillment(of: [retryExpectation])
     }
     
@@ -706,7 +706,7 @@ class HTTPRequestTests: XCTestCase {
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
             .run()
-    
+        
         await fulfillment(of: [retrierOneExpectation, retrierTwoExpectation])
     }
     
@@ -801,7 +801,7 @@ class HTTPRequestTests: XCTestCase {
                 return .concede
             })
             .run()
-    
+        
         await fulfillment(of: [retryExpectation])
     }
     
@@ -838,7 +838,7 @@ class HTTPRequestTests: XCTestCase {
                 return .retry
             })
             .run()
-    
+        
         await fulfillment(of: [retrierOneExpectation, retrierTwoExpectation])
     }
     
@@ -882,7 +882,7 @@ class HTTPRequestTests: XCTestCase {
         } catch {
             XCTAssertEqual((error as? URLError)?.code, expectedError.code)
         }
-    
+        
         await fulfillment(of: [
             retrierOneExpectation,
             retrierTwoExpectation,
@@ -891,10 +891,144 @@ class HTTPRequestTests: XCTestCase {
         ])
     }
     
+    // MARK: Task Cancellation Tests
+    
+    func test_request_whenCancelledBeforeAdaptorsFinish_doesNotProceed() async throws {
+        let url = createMockUrl()
+        let expectation = expectation(description: "Expected task cancellation error.")
+        var task: Task<Void, Error>?
+        
+        let client = HTTPClient(
+            dispatcher: .mock(responses: [
+                url: .init(
+                    result: .success((data, createResponse(for: url, with: 200))),
+                    onRecieveRequest: { _ in
+                        XCTFail("Request should not have been sent after task cancellation.")
+                    }
+                ),
+            ]),
+            adaptors: [
+                Adaptor { request, _ in
+                    task?.cancel()
+                    return request
+                },
+                Adaptor { request, _ in
+                    XCTFail("Second adaptor should not have been called after task cancellation.")
+                    return request
+                },
+            ],
+            retriers: [
+                Retrier { _, _, _ in
+                    XCTFail("Retrier should not have been called after task cancellation.")
+                    return .concede
+                }
+            ],
+            validators: [
+                Validator { _, _, _ in
+                    XCTFail("Validator should not have been called after task cancellation.")
+                    return .success
+                }
+            ]
+        )
+        
+        task = Task {
+            do {
+                _ = try await client
+                    .request(for: .get, to: url, expecting: [String].self)
+                    .run()
+            } catch {
+                XCTAssertTrue(error is CancellationError)
+                expectation.fulfill()
+            }
+        }
+        
+        await fulfillment(of: [expectation])
+    }
+    
+    func test_request_whenCancelledBeforeValidatorsFinish_doesNotProceed() async throws {
+        let url = createMockUrl()
+        let expectation = expectation(description: "Expected task cancellation error.")
+        var task: Task<Void, Error>?
+        
+        let client = HTTPClient(
+            dispatcher: .mock(responses: [
+                url: .init(
+                    result: .success((data, createResponse(for: url, with: 200)))
+                )
+            ]),
+            retriers: [
+                Retrier { _, _, _ in
+                    XCTFail("Retrier should not have been called after task cancellation.")
+                    return .concede
+                }
+            ],
+            validators: [
+                Validator { _, _, _ in
+                    task?.cancel()
+                    return .success
+                },
+                Validator { _, _, _ in
+                    XCTFail("Second validator should not have been called after task cancellation.")
+                    return .success
+                }
+            ]
+        )
+        
+        task = Task {
+            do {
+                _ = try await client
+                    .request(for: .get, to: url, expecting: [String].self)
+                    .run()
+            } catch {
+                XCTAssertTrue(error is CancellationError)
+                expectation.fulfill()
+            }
+        }
+        
+        await fulfillment(of: [expectation])
+    }
+    
+    func test_request_whenCancelledBeforeRetriersFinish_doesNotProceed() async throws {
+        let url = createMockUrl()
+        let expectation = expectation(description: "Expected task cancellation error.")
+        var task: Task<Void, Error>?
+        
+        let client = HTTPClient(
+            dispatcher: .mock(responses: [
+                url: .init(
+                    result: .failure(URLError(.cannotParseResponse))
+                )
+            ]),
+            retriers: [
+                Retrier { _, _, _ in
+                    task?.cancel()
+                    return .concede
+                },
+                Retrier { _, _, _ in
+                    XCTFail("Second retrier should not have been called after task cancellation.")
+                    return .concede
+                },
+            ]
+        )
+        
+        task = Task {
+            do {
+                _ = try await client
+                    .request(for: .get, to: url, expecting: [String].self)
+                    .run()
+            } catch {
+                XCTAssertTrue(error is CancellationError)
+                expectation.fulfill()
+            }
+        }
+        
+        await fulfillment(of: [expectation])
+    }
+    
     // MARK: Helpers
     
     func createMockUrl() -> URL {
-        URL(string: "https://api.com/\(UUID().uuidString)")!
+        .mock.appending(component: UUID().uuidString)
     }
     
     func createResponse(for url: URL, with code: Int, headerFields: [String : String] = [:]) -> HTTPURLResponse {
