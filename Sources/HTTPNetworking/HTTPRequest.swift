@@ -84,6 +84,9 @@ public class HTTPRequest<T: Decodable> {
             switch strategy {
             case .concede:
                 throw error
+            case .retryAfterDelay(let delay):
+                try await Task.sleep(for: delay)
+                fallthrough
             case .retry:
                 return try await run()
             }

@@ -33,7 +33,7 @@ public struct ZipRetrier: HTTPRequestRetrier {
             switch strategy {
             case .concede:
                 continue
-            case .retry:
+            case .retry, .retryAfterDelay:
                 return strategy
             }
         }
