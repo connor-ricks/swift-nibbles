@@ -19,4 +19,6 @@ public enum RetryStrategy {
     case concede
     /// Indicates that a failing request should be reattempted.
     case retry
+    /// Indicates that a failing request should be reattempted after provided delay.
+    case retryAfterDelay(Duration)
 }
