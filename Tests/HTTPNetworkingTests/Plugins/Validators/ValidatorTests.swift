@@ -28,7 +28,7 @@ class ValidatorTests: XCTestCase {
             return .success
         }
         
-        _ = await request.validators.first?.validate(HTTPURLResponse(), for: request.request, with: Data())
+        _ = try await request.validators.first?.validate(HTTPURLResponse(), for: request.request, with: Data())
         
         await fulfillment(of: [expectation])
     }
