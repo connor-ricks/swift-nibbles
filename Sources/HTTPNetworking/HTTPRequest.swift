@@ -19,7 +19,7 @@ import Foundation
 /// You can retry the ``HTTPRequest`` if it fails by calling ``retry(_:)`` or ``retry(with:)``.
 /// By providing a ``RetryHandler`` or ``HTTPRequestRetrier``, you can determine if a request should be retried if it fails.
 /// Typical use cases include retrying requests a given number of times in the event of poor network connectivity.
-public class HTTPRequest<T: Decodable> {
+public class HTTPRequest<Value: Decodable> {
     
     // MARK: Properties
     
@@ -61,10 +61,14 @@ public class HTTPRequest<T: Decodable> {
     
     // MARK: Execution
     
-    /// Triggers the request to actually be sent.
-    public func run() async throws -> T {
+    /// Dispatches the request, returning the request's expected `Value`.
+    public func run() async throws -> Value {
+        try await execute(previousAttempts: 0)
+    }
+    
+    /// Executes the request to the dispatcher.
+    private func execute(previousAttempts: Int) async throws -> Value {
         var request = self.request
-        
         do {
             
             try Task.checkCancellation()
@@ -87,9 +91,16 @@ public class HTTPRequest<T: Decodable> {
             try Task.checkCancellation()
             
             // Convert data to the expected type
-            return try decoder.decode(T.self, from: data)
+            return try decoder.decode(Value.self, from: data)
         } catch {
-            let strategy = try await ZipRetrier(retriers).retry(request, for: dispatcher.session, dueTo: error)
+            let previousAttempts = previousAttempts + 1
+            let strategy = try await ZipRetrier(retriers).retry(
+                request,
+                for: dispatcher.session,
+                dueTo: error,
+                previousAttempts: previousAttempts
+            )
+            
             switch strategy {
             case .concede:
                 throw error
@@ -97,7 +108,7 @@ public class HTTPRequest<T: Decodable> {
                 try await Task.sleep(for: delay)
                 fallthrough
             case .retry:
-                return try await run()
+                return try await execute(previousAttempts: previousAttempts)
             }
         }
     }

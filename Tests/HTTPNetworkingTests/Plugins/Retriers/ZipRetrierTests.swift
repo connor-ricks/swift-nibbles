@@ -5,14 +5,14 @@ class ZipRetrierTests: XCTestCase {
     func test_zipRetrier_withRetriers_containsRetriersInOrder() {
         struct TestRetrier: HTTPRequestRetrier, Equatable {
             let id: Int
-            func retry(_ request: URLRequest, for session: URLSession, dueTo error: Error) async -> HTTPNetworking.RetryStrategy {
+            func retry(_ request: URLRequest, for session: URLSession, dueTo error: Error, previousAttempts: Int) async -> HTTPNetworking.RetryStrategy {
                 .concede
             }
         }
         
         let one = TestRetrier(id: 1)
-        let two = TestRetrier(id: 1)
-        let three = TestRetrier(id: 1)
+        let two = TestRetrier(id: 2)
+        let three = TestRetrier(id: 3)
         let expectedRetriers = [one, two, three]
         
         let zipRetrier = ZipRetrier(expectedRetriers)
@@ -28,16 +28,16 @@ class ZipRetrierTests: XCTestCase {
         let retrierTwoExpectation = expectation(description: "Expected retrier two to be executed.")
         
         let zipRetrier = ZipRetrier([
-            Retrier { _, _, _ in
+            Retrier { _, _, _, _ in
                 retrierOneExpectation.fulfill()
                 return .concede
             },
-            Retrier { _, _, _ in
+            Retrier { _, _, _, _ in
                 retrierTwoExpectation.fulfill()
                 task?.cancel()
                 return .concede
             },
-            Retrier { _, _, _ in
+            Retrier { _, _, _, _ in
                 XCTFail("Expected task to be cancelled and third retrier to be skipped.")
                 return .concede
             }
@@ -45,7 +45,12 @@ class ZipRetrierTests: XCTestCase {
         
         task = Task {
             do {
-                _ = try await zipRetrier.retry(.mock, for: .shared, dueTo: URLError(.cannotParseResponse))
+                _ = try await zipRetrier.retry(
+                    .mock,
+                    for: .shared,
+                    dueTo: URLError(.cannotParseResponse),
+                    previousAttempts: 0
+                )
             } catch {
                 XCTAssertTrue(error is CancellationError)
             }

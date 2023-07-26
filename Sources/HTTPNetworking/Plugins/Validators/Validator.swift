@@ -1,6 +1,6 @@
 import Foundation
 
-public typealias ValidationHandler = (HTTPURLResponse, URLRequest, Data) async -> ValidationResult
+public typealias ValidationHandler = (HTTPURLResponse, URLRequest, Data) async throws -> ValidationResult
 
 /// An ``HTTPResponseValidator`` that can be used to validate a response from an ``HTTPRequest``.
 public struct Validator: HTTPResponseValidator {
@@ -20,8 +20,8 @@ public struct Validator: HTTPResponseValidator {
     
     // MARK: HTTPResponseValidator
     
-    public func validate(_ response: HTTPURLResponse, for request: URLRequest, with data: Data) async -> ValidationResult {
-        await handler(response, request, data)
+    public func validate(_ response: HTTPURLResponse, for request: URLRequest, with data: Data) async throws -> ValidationResult {
+        try await handler(response, request, data)
     }
 }
 
