@@ -66,16 +66,25 @@ public class HTTPRequest<T: Decodable> {
         var request = self.request
         
         do {
+            
+            try Task.checkCancellation()
+            
             // Create the adapted request.
             request = try await ZipAdaptor(adaptors).adapt(request, for: dispatcher.session)
             
+            try Task.checkCancellation()
+            
             // Dispatch the request and wait for a response.
             let (data, response) = try await dispatcher.data(for: request)
+            
+            try Task.checkCancellation()
             
             // Validate the response.
             try await ZipValidator(validators)
                 .validate(response, for: request, with: data)
                 .get()
+            
+            try Task.checkCancellation()
             
             // Convert data to the expected type
             return try decoder.decode(T.self, from: data)
