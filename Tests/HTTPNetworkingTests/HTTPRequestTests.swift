@@ -917,16 +917,16 @@ class HTTPRequestTests: XCTestCase {
                     return request
                 },
             ],
-            retriers: [
-                Retrier { _, _, _ in
-                    XCTFail("Retrier should not have been called after task cancellation.")
-                    return .concede
-                }
-            ],
             validators: [
                 Validator { _, _, _ in
                     XCTFail("Validator should not have been called after task cancellation.")
                     return .success
+                }
+            ],
+            retriers: [
+                Retrier { _, _, _ in
+                    XCTFail("Retrier should not have been called after task cancellation.")
+                    return .concede
                 }
             ]
         )
@@ -956,12 +956,6 @@ class HTTPRequestTests: XCTestCase {
                     result: .success((data, createResponse(for: url, with: 200)))
                 )
             ]),
-            retriers: [
-                Retrier { _, _, _ in
-                    XCTFail("Retrier should not have been called after task cancellation.")
-                    return .concede
-                }
-            ],
             validators: [
                 Validator { _, _, _ in
                     task?.cancel()
@@ -970,6 +964,12 @@ class HTTPRequestTests: XCTestCase {
                 Validator { _, _, _ in
                     XCTFail("Second validator should not have been called after task cancellation.")
                     return .success
+                }
+            ],
+            retriers: [
+                Retrier { _, _, _ in
+                    XCTFail("Retrier should not have been called after task cancellation.")
+                    return .concede
                 }
             ]
         )

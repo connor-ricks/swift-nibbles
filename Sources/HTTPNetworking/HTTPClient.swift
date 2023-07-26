@@ -71,11 +71,11 @@ public struct HTTPClient {
     /// A collection of adaptors that adapt each request.
     public let adaptors: [any HTTPRequestAdaptor]
     
-    /// A collection of retriers that handle retrying failed requests.
-    public let retriers: [any HTTPRequestRetrier]
-    
     /// A collection of validators that validate each response.
     public let validators: [any HTTPResponseValidator]
+    
+    /// A collection of retriers that handle retrying failed requests.
+    public let retriers: [any HTTPRequestRetrier]
     
     // MARK: Initializers
     
@@ -86,15 +86,15 @@ public struct HTTPClient {
     ///   - decoder: The decoder that each request should use to decode response bodies.
     ///   - dispatcher: The dispatcher that will actually send out each request.
     ///   - adaptors: A collection of adaptors that adapt each request.
-    ///   - retriers: A collection of retriers that handle retrying failed requests.
     ///   - validators: A collection of validators that validate each response.
+    ///   - retriers: A collection of retriers that handle retrying failed requests.
     public init(
         encoder: JSONEncoder = JSONEncoder(),
         decoder: JSONDecoder = JSONDecoder(),
         dispatcher: HTTPDispatcher = .live(),
         adaptors: [any HTTPRequestAdaptor] = [],
-        retriers: [any HTTPRequestRetrier] = [],
-        validators: [any HTTPResponseValidator] = []
+        validators: [any HTTPResponseValidator] = [],
+        retriers: [any HTTPRequestRetrier] = []
     ) {
         self.encoder = encoder
         self.decoder = decoder
