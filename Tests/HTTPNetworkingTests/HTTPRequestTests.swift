@@ -1104,7 +1104,7 @@ class HTTPRequestTests: XCTestCase {
         let retrierThreeExpectation = expectation(description: "Expected retrier three to retry.")
         let retrierFourExpectation = expectation(description: "Expected retrier four to retry.")
         
-        let block: (Int, Int, XCTestExpectation) -> RetryStrategy = { previousAttempts, expectedPreviousAttempts, expectation in
+        let block: (Int, Int, XCTestExpectation) -> RetryDecision = { previousAttempts, expectedPreviousAttempts, expectation in
             if previousAttempts == expectedPreviousAttempts {
                 expectation.fulfill()
                 return .retry

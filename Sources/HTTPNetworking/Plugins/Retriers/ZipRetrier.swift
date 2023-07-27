@@ -34,7 +34,7 @@ public struct ZipRetrier: HTTPRequestRetrier {
         with response: HTTPURLResponse?,
         dueTo error: Error,
         previousAttempts: Int
-    ) async throws -> RetryStrategy {
+    ) async throws -> RetryDecision {
         for retrier in retriers {
             try Task.checkCancellation()
             

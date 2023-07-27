@@ -8,7 +8,7 @@ public typealias RetryHandler = (
     _ response: HTTPURLResponse?,
     _ error: Error,
     _ previousAttempts: Int
-) async throws -> RetryStrategy
+) async throws -> RetryDecision
 
 // MARK: - Retrier
 
@@ -37,7 +37,7 @@ public struct Retrier: HTTPRequestRetrier {
         with response: HTTPURLResponse?,
         dueTo error: Error,
         previousAttempts: Int
-    ) async throws -> RetryStrategy {
+    ) async throws -> RetryDecision {
         try await handler(request, session, response, error, previousAttempts)
     }
 }
