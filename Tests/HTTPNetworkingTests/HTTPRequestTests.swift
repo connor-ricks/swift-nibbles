@@ -685,7 +685,7 @@ class HTTPRequestTests: XCTestCase {
                 })
             ]),
             retriers: [
-                Retrier { _, _, error, _ in
+                Retrier { _, _, _, error, _ in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retryExpectation.fulfill()
                     shouldRequestFail = false
@@ -715,7 +715,7 @@ class HTTPRequestTests: XCTestCase {
                 }),
             ]),
             retriers: [
-                Retrier { _, _, error, _ in
+                Retrier { _, _, _, error, _ in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retryExpectation.fulfill()
                     return .concede
@@ -757,13 +757,13 @@ class HTTPRequestTests: XCTestCase {
                 })
             ]),
             retriers: [
-                Retrier { _, _, error, _ in
+                Retrier { _, _, _, error, _ in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retryExpectation.fulfill()
                     shouldRequestFail = false
                     return .retry
                 },
-                Retrier { _, _, error, _ in
+                Retrier { _, _, _, error, _ in
                     XCTFail("Second retrier should not have been called.")
                     return .concede
                 }
@@ -800,12 +800,12 @@ class HTTPRequestTests: XCTestCase {
                 })
             ]),
             retriers: [
-                Retrier { _, _, error, _ in
+                Retrier { _, _, _, error, _ in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retrierOneExpectation.fulfill()
                     return .concede
                 },
-                Retrier { _, _, error, _ in
+                Retrier { _, _, _, error, _ in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retrierTwoExpectation.fulfill()
                     shouldRequestFail = false
@@ -847,7 +847,7 @@ class HTTPRequestTests: XCTestCase {
         
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
-            .retry(with: Retrier { _, _, error, _ in
+            .retry(with: Retrier { _, _, _, error, _ in
                 XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                 retryExpectation.fulfill()
                 shouldRequestFail = false
@@ -876,7 +876,7 @@ class HTTPRequestTests: XCTestCase {
         do {
             _ = try await client
                 .request(for: .get, to: url, expecting: [String].self)
-                .retry(with: Retrier { _, _, error, _ in
+                .retry(with: Retrier { _, _, _, error, _ in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retryExpectation.fulfill()
                     return .concede
@@ -915,13 +915,13 @@ class HTTPRequestTests: XCTestCase {
         
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
-            .retry(with: Retrier { _, _, error, _ in
+            .retry(with: Retrier { _, _, _, error, _ in
                 XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                 retryExpectation.fulfill()
                 shouldRequestFail = false
                 return .retry
             })
-            .retry(with: Retrier { _, _, error, _ in
+            .retry(with: Retrier { _, _, _, error, _ in
                 XCTFail("Second retrier should not have been called.")
                 return .concede
             })
@@ -956,12 +956,12 @@ class HTTPRequestTests: XCTestCase {
         
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
-            .retry(with: Retrier { _, _, error, _ in
+            .retry(with: Retrier { _, _, _, error, _ in
                 XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                 retrierOneExpectation.fulfill()
                 return .concede
             })
-            .retry(with: Retrier { _, _, error, _ in
+            .retry(with: Retrier { _, _, _, error, _ in
                 XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                 retrierTwoExpectation.fulfill()
                 shouldRequestFail = false
@@ -985,11 +985,11 @@ class HTTPRequestTests: XCTestCase {
                 url: .failure(expectedError)
             ]),
             retriers: [
-                Retrier { _, _, error, _ in
+                Retrier { _, _, _, error, _ in
                     retrierOneExpectation.fulfill()
                     return .concede
                 },
-                Retrier { _, _, error, _ in
+                Retrier { _, _, _, error, _ in
                     retrierTwoExpectation.fulfill()
                     return .concede
                 }
@@ -999,11 +999,11 @@ class HTTPRequestTests: XCTestCase {
         do {
             _ = try await client
                 .request(for: .get, to: url, expecting: [String].self)
-                .retry(with: Retrier { _, _, error, _ in
+                .retry(with: Retrier { _, _, _, error, _ in
                     retrierThreeExpectation.fulfill()
                     return .concede
                 })
-                .retry(with: Retrier { _, _, error, _ in
+                .retry(with: Retrier { _, _, _, error, _ in
                     retrierFourExpectation.fulfill()
                     return .concede
                 })
@@ -1044,7 +1044,7 @@ class HTTPRequestTests: XCTestCase {
                 })
             ]),
             retriers: [
-                Retrier { _, _, error, _ in
+                Retrier { _, _, _, error, _ in
                     XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                     retryExpectation.fulfill()
                     shouldRequestFail = false
@@ -1086,7 +1086,7 @@ class HTTPRequestTests: XCTestCase {
         
         _ = try await client
             .request(for: .get, to: url, expecting: [String].self)
-            .retry { _, _, error, _ in
+            .retry { _, _, _, error, _ in
                 XCTAssertEqual((error as? URLError)?.code, expectedError.code)
                 retryExpectation.fulfill()
                 shouldRequestFail = false
@@ -1119,17 +1119,17 @@ class HTTPRequestTests: XCTestCase {
             ]),
             retriers: [
                 Retrier {
-                    block($3, 1, retrierOneExpectation)
+                    block($4, 1, retrierOneExpectation)
                 },
-                Retrier { block($3, 2, retrierTwoExpectation) },
+                Retrier { block($4, 2, retrierTwoExpectation) },
             ]
         )
         
         do {
             _ = try await client
                 .request(for: .get, to: url, expecting: [String].self)
-                .retry { block($3, 3, retrierThreeExpectation) }
-                .retry { block($3, 4, retrierFourExpectation) }
+                .retry { block($4, 3, retrierThreeExpectation) }
+                .retry { block($4, 4, retrierFourExpectation) }
                 .run()
             XCTFail("Expected request to fail.")
         } catch {
@@ -1148,7 +1148,7 @@ class HTTPRequestTests: XCTestCase {
                 url: .success(data: data, response: createResponse(for: url, with: 200))
             ]),
             retriers: [
-                Retrier { _, _, _, _ in
+                Retrier { _, _, _, _, _ in
                     throw expectedError
                 }
             ]
@@ -1176,7 +1176,7 @@ class HTTPRequestTests: XCTestCase {
         do {
             _ = try await client
                 .request(for: .get, to: url, expecting: [String].self)
-                .retry { _, _, _, _ in
+                .retry { _, _, _, _, _ in
                     throw expectedError
                 }
                 .run()
@@ -1218,7 +1218,7 @@ class HTTPRequestTests: XCTestCase {
                 }
             ],
             retriers: [
-                Retrier { _, _, _, _ in
+                Retrier { _, _, _, _, _ in
                     XCTFail("Retrier should not have been called after task cancellation.")
                     return .concede
                 }
@@ -1261,7 +1261,7 @@ class HTTPRequestTests: XCTestCase {
                 }
             ],
             retriers: [
-                Retrier { _, _, _, _ in
+                Retrier { _, _, _, _, _ in
                     XCTFail("Retrier should not have been called after task cancellation.")
                     return .concede
                 }
@@ -1294,11 +1294,11 @@ class HTTPRequestTests: XCTestCase {
                 )
             ]),
             retriers: [
-                Retrier { _, _, _, _ in
+                Retrier { _, _, _, _, _ in
                     task?.cancel()
                     return .concede
                 },
-                Retrier { _, _, _, _ in
+                Retrier { _, _, _, _, _ in
                     XCTFail("Second retrier should not have been called after task cancellation.")
                     return .concede
                 },

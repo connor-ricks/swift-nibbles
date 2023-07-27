@@ -2,7 +2,7 @@ import Foundation
 
 /// `HTTPClient` creates and manages requests over the network.
 ///
-/// The client also provides common functionality for all  ``HTTPRequest`` objects, including encoding and decoding strategies,
+/// The client provides common functionality for all  ``HTTPRequest`` objects, including encoding and decoding strategies,
 /// request adaptation, response validation and retry stratagies.
 ///
 /// Generally an ``HTTPClient`` is used to manage the interaction with a single API service. Most APIs
@@ -12,19 +12,36 @@ import Foundation
 /// If your API requires a custom encoder or decoder, you can provide your own custom ones to the client. These encoder and decoders
 /// will then be used for all requests made using the client.
 ///
+/// ## Adaptors
+///
 /// If your API requires some sort of repetitive task applied to each request, rather than manipulating it at each call, you can make use of an
 /// ``HTTPRequestAdaptor``. The adaptors that you provide to the client will all be run on a request before it is sent to your API.
 /// This provides you with an opportunity to insert various headers or perform asyncrounous tasks before sending the outbound request.
+///
+/// > Important: All adaptors will always run for every request.
+///
+/// ## Validators
 ///
 /// Different APIs require different forms of validation that help you determine if a request was successful or not.
 /// The default ``HTTPClient`` makes no assumptions about the format and/or success of an API's response. Instead, you can make use of an
 /// ``HTTPResponseValidator``. The validators that you provide the client will all be run on the response received by your API.
 /// This provides you with an opportunity to determine wether or not the response was a success and failure, and consolidate potentially repeated logic in one place.
 ///
+/// > Important: Validators will be run one by one on a request's response. If any validators determines that the response is invalid,
+/// the request will fail and throw the error returned by that validator. No other subsequent validators will be run for that run of a request.
+///
+/// ## Retriers
+///
 /// Sometimes you may want to implement logic for handling retries of failed requests. An ``HTTPClient`` can make use of an
 /// ``HTTPRequestRetriers``. The retriers that you provide the client will be run when a request fails.
 /// This provides you with an opportunity to observe the error and determine wether or not the request should be sent again. You can implement complex retry
 /// logic across your entire client without having to repeat yourself.
+///
+/// > Important: Retriers will be run one by one in the event of a failed request. If any retrier concedes that the request should not be retried,
+/// the request will ask the next retrier if the request should be retried. If any retrier determines that a request should be retired, the request will
+/// immedietly be retired, without asking any subsequent retriers.
+///
+/// ## Request Manipulation
 ///
 /// In addition to providing adaptors, validators and retriers to your entire client, you can provide additional configuration to each
 /// request using a chaining style syntax. This allows you to add additional configuration to endpoints that you may want to provide further
@@ -44,17 +61,7 @@ import Foundation
 /// let response = try await request.run()
 /// ```
 ///
-/// > Note: All adaptors, validators and retriers at the client level will be run first, after which the
-/// request configurations at the request level will be run.
-///
-/// > Important: All adaptors will always run for every request.
-///
-/// > Important: Validators will be run one by one on a request's response. If any validators determines that the response is invalid,
-/// the request will fail and throw the error returned by that validator. No other subsequent validators will be run for that run of a request.
-///
-/// > Important: Retriers will be run one by one in the event of a failred request. If any retrier concedes that the request should not be retried,
-/// the request will ask the next retrier if the request should be retried. If any retrier determines that a request should be retired, the request will
-/// immedietly be retired, without asking any subsequent retriers.
+/// > Note: For all adaptors, validators and retriers, the client level plugins will run before the request level plugins
 public struct HTTPClient {
     
     // MARK: Properties
