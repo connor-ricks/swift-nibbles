@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - ZipValidator
+
 /// An ``HTTPResponseValidator`` that combines multiple validators into one, executing each validation in sequence.
 public struct ZipValidator: HTTPResponseValidator {
     
@@ -36,5 +38,15 @@ public struct ZipValidator: HTTPResponseValidator {
         }
         
         return .success
+    }
+}
+
+// MARK: - HTTPRequest + ZipValidator
+
+extension HTTPRequest {
+    /// Applies a ``ZipValidator`` that bundles up all the provided validators.
+    @discardableResult
+    public func validate(zipping validators: [any HTTPResponseValidator]) -> Self {
+        validate(with: ZipValidator(validators))
     }
 }

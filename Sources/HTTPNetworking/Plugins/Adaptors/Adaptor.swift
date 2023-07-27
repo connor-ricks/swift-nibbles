@@ -1,9 +1,13 @@
 import Foundation
 
+// MARK: - AdaptationHandler
+
 public typealias AdaptationHandler = (
     _ request: URLRequest,
     _ session: URLSession
 ) async throws -> URLRequest
+
+// MARK: - Adaptor
 
 /// An ``HTTPRequestAdaptor`` that can be used to manipulate a `URLRequest` before it is sent out over the network.
 public struct Adaptor: HTTPRequestAdaptor {

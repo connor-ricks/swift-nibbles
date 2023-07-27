@@ -63,6 +63,33 @@ class ZipRetrierTests: XCTestCase {
             }
         }
         
-        await fulfillment(of: [retrierOneExpectation, retrierTwoExpectation])
+        await fulfillment(of: [retrierOneExpectation, retrierTwoExpectation], enforceOrder: true)
+    }
+    
+    func test_zipRetrier_retrierConvenience_isAddedToRequestRetriers() async throws {
+        let client = HTTPClient()
+        let request = client.request(for: .get, to: .mock, expecting: String.self)
+        let expectationOne = expectation(description: "Expected retrier one to be called.")
+        let expectationTwo = expectation(description: "Expected retrier two to be called.")
+        request.retry(zipping: [
+            Retrier { _, _, _, _, _ in
+                expectationOne.fulfill()
+                return .concede
+            },
+            Retrier { _, _, _, _, _ in
+                expectationTwo.fulfill()
+                return .concede
+            },
+        ])
+        
+        _ = try await request.retriers.first?.retry(
+            request.request,
+            for: .shared,
+            with: nil,
+            dueTo: URLError(.cannotParseResponse),
+            previousAttempts: 0
+        )
+        
+        await fulfillment(of: [expectationOne, expectationTwo], enforceOrder: true)
     }
 }

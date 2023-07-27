@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - HeadersAdaptor
+
 /// An ``HTTPRequestAdaptor`` that can be used to append HTTP headers to a request before it is sent out over the network.
 public struct HeadersAdaptor: HTTPRequestAdaptor {
 
