@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - RetryHandler
+
 public typealias RetryHandler = (
     _ request: URLRequest,
     _ session: URLSession,
@@ -7,6 +9,8 @@ public typealias RetryHandler = (
     _ error: Error,
     _ previousAttempts: Int
 ) async throws -> RetryStrategy
+
+// MARK: - Retrier
 
 /// An ``HTTPRequestRetrier`` that can be used to retry an ``HTTPRequest`` upon failure.
 public struct Retrier: HTTPRequestRetrier {

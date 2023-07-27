@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - ZipAdaptor
+
 /// An ``HTTPRequestAdaptor`` that combines multiple adaptors into one, executing each adaptation in sequence.
 public struct ZipAdaptor: HTTPRequestAdaptor {
     
@@ -35,5 +37,15 @@ public struct ZipAdaptor: HTTPRequestAdaptor {
         }
         
         return request
+    }
+}
+
+// MARK: - HTTPRequest + ZipAdaptor
+
+extension HTTPRequest {
+    /// Applies a ``ZipAdaptor`` that bundles up all the provided adaptors.
+    @discardableResult
+    public func adapt(zipping adaptors: [any HTTPRequestAdaptor]) -> Self {
+        adapt(with: ZipAdaptor(adaptors))
     }
 }

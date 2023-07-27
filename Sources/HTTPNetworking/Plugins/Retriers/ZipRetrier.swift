@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - ZipRetrier
+
 /// An ``HTTPRequestRetrier`` that combines multiple retriers into one, executing each retrier in sequence.
 public struct ZipRetrier: HTTPRequestRetrier {
     
@@ -53,5 +55,15 @@ public struct ZipRetrier: HTTPRequestRetrier {
         }
         
         return .concede
+    }
+}
+
+// MARK: - HTTPRequest + ZipRetrier
+
+extension HTTPRequest {
+    /// Applies a ``ZipRetrier`` that bundles up all the provided retriers.
+    @discardableResult
+    public func retry(zipping retriers: [any HTTPRequestRetrier]) -> Self {
+        retry(with: ZipRetrier(retriers))
     }
 }
