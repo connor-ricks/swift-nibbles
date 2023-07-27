@@ -13,14 +13,14 @@ public protocol HTTPRequestRetrier {
         with response: HTTPURLResponse?,
         dueTo error: Error,
         previousAttempts: Int
-    ) async throws -> RetryStrategy
+    ) async throws -> RetryDecision
 }
 
-// MARK: - RetryStrategy
+// MARK: - RetryDecision
 
 /// A strategy that indicates to an ``HTTPRequest`` what approach should be taken when
 /// attempting to retry upon failure.
-public enum RetryStrategy {
+public enum RetryDecision {
     /// Indicates that a failing request should not be retried.
     case concede
     /// Indicates that a failing request should be reattempted.

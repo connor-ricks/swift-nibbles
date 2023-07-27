@@ -11,7 +11,7 @@ class ZipRetrierTests: XCTestCase {
                 with response: HTTPURLResponse?,
                 dueTo error: Error,
                 previousAttempts: Int
-            ) async -> HTTPNetworking.RetryStrategy {
+            ) async -> HTTPNetworking.RetryDecision {
                 .concede
             }
         }
