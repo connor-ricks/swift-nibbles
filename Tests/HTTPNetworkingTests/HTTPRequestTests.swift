@@ -624,7 +624,7 @@ class HTTPRequestTests: XCTestCase {
             ]),
             validators: [
                 Validator { _, _, _ in
-                    throw expectedError
+                    .failure(expectedError)
                 }
             ]
         )
@@ -652,7 +652,7 @@ class HTTPRequestTests: XCTestCase {
             _ = try await client
                 .request(for: .get, to: url, expecting: [String].self)
                 .validate { _, _, _ in
-                    throw expectedError
+                    .failure(expectedError)
                 }
                 .run()
         } catch {
