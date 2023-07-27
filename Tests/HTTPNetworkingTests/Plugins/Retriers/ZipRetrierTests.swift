@@ -5,7 +5,13 @@ class ZipRetrierTests: XCTestCase {
     func test_zipRetrier_withRetriers_containsRetriersInOrder() {
         struct TestRetrier: HTTPRequestRetrier, Equatable {
             let id: Int
-            func retry(_ request: URLRequest, for session: URLSession, dueTo error: Error, previousAttempts: Int) async -> HTTPNetworking.RetryStrategy {
+            func retry(
+                _ request: URLRequest,
+                for session: URLSession,
+                with response: HTTPURLResponse?,
+                dueTo error: Error,
+                previousAttempts: Int
+            ) async -> HTTPNetworking.RetryStrategy {
                 .concede
             }
         }
@@ -28,16 +34,16 @@ class ZipRetrierTests: XCTestCase {
         let retrierTwoExpectation = expectation(description: "Expected retrier two to be executed.")
         
         let zipRetrier = ZipRetrier([
-            Retrier { _, _, _, _ in
+            Retrier { _, _, _, _, _ in
                 retrierOneExpectation.fulfill()
                 return .concede
             },
-            Retrier { _, _, _, _ in
+            Retrier { _, _, _, _, _ in
                 retrierTwoExpectation.fulfill()
                 task?.cancel()
                 return .concede
             },
-            Retrier { _, _, _, _ in
+            Retrier { _, _, _, _, _ in
                 XCTFail("Expected task to be cancelled and third retrier to be skipped.")
                 return .concede
             }
@@ -48,6 +54,7 @@ class ZipRetrierTests: XCTestCase {
                 _ = try await zipRetrier.retry(
                     .mock,
                     for: .shared,
+                    with: nil,
                     dueTo: URLError(.cannotParseResponse),
                     previousAttempts: 0
                 )

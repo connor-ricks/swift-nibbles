@@ -29,6 +29,7 @@ public struct ZipRetrier: HTTPRequestRetrier {
     public func retry(
         _ request: URLRequest,
         for session: URLSession,
+        with response: HTTPURLResponse?,
         dueTo error: Error,
         previousAttempts: Int
     ) async throws -> RetryStrategy {
@@ -38,6 +39,7 @@ public struct ZipRetrier: HTTPRequestRetrier {
             let strategy = try await retrier.retry(
                 request,
                 for: session,
+                with: response,
                 dueTo: error,
                 previousAttempts: previousAttempts
             )

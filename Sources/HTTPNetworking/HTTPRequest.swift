@@ -8,16 +8,19 @@ import Foundation
 ///
 /// To send an ``HTTPRequest`` call ``run()``. This will perform the network request ant return the expected response type.
 ///
-/// You can adapt the `URLRequest`, before it gets sent out, by calling ``adapt(_:)`` or ``adapt(with:)``.
-/// By providing an ``AdaptationHandler`` or ``HTTPRequestAdaptor``, you can perform various asyncronous logic before a request gets sent
+/// Each ``HTTPRequest`` is setup with concurrency in mind. In-flight requests are periodically checked for `Task` cancellation and will approprietly stop
+/// when their parent task is cancelled.
+///
+/// > Tip: You can adapt the `URLRequest`, before it gets sent out, by calling methods like ``adapt(_:)`` or ``adapt(with:)``.
+/// By providing an ``AdaptationHandler`` or any ``HTTPRequestAdaptor``, you can perform various asyncronous logic before a request gets sent
 /// Typical use cases include things like adding headers to requests, or managing the lifecycle of a client's authorization status.
 ///
-/// You can validate the `HTTPURLResponse`, before it gets deocded, by calling ``validate(_:)`` or ``validate(with:)``.
-/// By providing a ``ValidationHandler`` or ``HTTPResponseValidator``, you can perform various validations before a response is decoded.
+/// > Tip: You can validate the `HTTPURLResponse`, before it gets deocded, by calling  methods like ``validate(_:)`` or ``validate(with:)``.
+/// By providing a ``ValidationHandler`` or any ``HTTPResponseValidator``, you can perform various validations before a response is decoded.
 /// Typical use cases include things like validating the status code or headers of a request.
 ///
-/// You can retry the ``HTTPRequest`` if it fails by calling ``retry(_:)`` or ``retry(with:)``.
-/// By providing a ``RetryHandler`` or ``HTTPRequestRetrier``, you can determine if a request should be retried if it fails.
+/// > Tip: You can retry the ``HTTPRequest`` if it fails by calling retry methods like ``retry(_:)`` or ``retry(with:)``.
+/// By providing a ``RetryHandler`` or any ``HTTPRequestRetrier``, you can determine if a request should be retried if it fails.
 /// Typical use cases include retrying requests a given number of times in the event of poor network connectivity.
 public class HTTPRequest<Value: Decodable> {
     
@@ -69,6 +72,8 @@ public class HTTPRequest<Value: Decodable> {
     /// Executes the request to the dispatcher.
     private func execute(previousAttempts: Int) async throws -> Value {
         var request = self.request
+        var response: HTTPURLResponse?
+        
         do {
             
             try Task.checkCancellation()
@@ -79,24 +84,26 @@ public class HTTPRequest<Value: Decodable> {
             try Task.checkCancellation()
             
             // Dispatch the request and wait for a response.
-            let (data, response) = try await dispatcher.data(for: request)
+            let reply = try await dispatcher.data(for: request)
+            response = reply.response
             
             try Task.checkCancellation()
             
             // Validate the response.
             try await ZipValidator(validators)
-                .validate(response, for: request, with: data)
+                .validate(reply.response, for: request, with: reply.data)
                 .get()
             
             try Task.checkCancellation()
             
             // Convert data to the expected type
-            return try decoder.decode(Value.self, from: data)
+            return try decoder.decode(Value.self, from: reply.data)
         } catch {
             let previousAttempts = previousAttempts + 1
             let strategy = try await ZipRetrier(retriers).retry(
                 request,
                 for: dispatcher.session,
+                with: response,
                 dueTo: error,
                 previousAttempts: previousAttempts
             )

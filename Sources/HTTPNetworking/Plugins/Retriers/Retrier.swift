@@ -1,6 +1,12 @@
 import Foundation
 
-public typealias RetryHandler = (URLRequest, URLSession, Error, Int) async throws -> RetryStrategy
+public typealias RetryHandler = (
+    _ request: URLRequest,
+    _ session: URLSession,
+    _ response: HTTPURLResponse?,
+    _ error: Error,
+    _ previousAttempts: Int
+) async throws -> RetryStrategy
 
 /// An ``HTTPRequestRetrier`` that can be used to retry an ``HTTPRequest`` upon failure.
 public struct Retrier: HTTPRequestRetrier {
@@ -24,10 +30,11 @@ public struct Retrier: HTTPRequestRetrier {
     public func retry(
         _ request: URLRequest,
         for session: URLSession,
+        with response: HTTPURLResponse?,
         dueTo error: Error,
         previousAttempts: Int
     ) async throws -> RetryStrategy {
-        try await handler(request, session, error, previousAttempts)
+        try await handler(request, session, response, error, previousAttempts)
     }
 }
 

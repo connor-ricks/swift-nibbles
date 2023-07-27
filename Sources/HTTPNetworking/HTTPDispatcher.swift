@@ -18,7 +18,7 @@ public struct HTTPDispatcher {
     }
     
     /// Fetches data using the provided request.
-    func data(for request: URLRequest) async throws -> (Data, HTTPURLResponse) {
+    func data(for request: URLRequest) async throws -> (data: Data, response: HTTPURLResponse) {
         let (data, response) = try await session.data(for: request)
         guard let response = response as? HTTPURLResponse else {
             throw URLError(.cannotParseResponse)
@@ -46,7 +46,7 @@ extension HTTPDispatcher {
     /// A mock implementation of an ``HTTPDispatcher`` that will return the provided
     /// response to the corresponding request.
     ///
-    /// - Parameter responses: A dictionary of responses keyed by the requests for which they should respond to.
+    /// - Parameter responses: A dictionary of responses keyed by the urls for which they should respond to.
     /// - Returns: An ``HTTPDispatcher``
     public static func mock(
         responses: [URL: MockResponse]

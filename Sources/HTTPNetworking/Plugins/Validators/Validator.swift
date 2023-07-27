@@ -1,6 +1,10 @@
 import Foundation
 
-public typealias ValidationHandler = (HTTPURLResponse, URLRequest, Data) async throws -> ValidationResult
+public typealias ValidationHandler = (
+    _ response: HTTPURLResponse,
+    _ request: URLRequest,
+    _ data: Data
+) async throws -> ValidationResult
 
 /// An ``HTTPResponseValidator`` that can be used to validate a response from an ``HTTPRequest``.
 public struct Validator: HTTPResponseValidator {
