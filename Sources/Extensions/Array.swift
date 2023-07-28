@@ -4,8 +4,7 @@ extension Array {
     /// Splits the array into chunks of the specified size.
     public func chunked(into size: Int) -> [[Element]] {
         guard size > 0 else {
-            assertionFailure("Size must not be zero.")
-            return []
+            preconditionFailure("Size must be greater than zero.")
         }
         
         return stride(from: 0, to: count, by: size).map {

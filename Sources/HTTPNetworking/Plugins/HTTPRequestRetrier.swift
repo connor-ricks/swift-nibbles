@@ -20,7 +20,7 @@ public protocol HTTPRequestRetrier {
 
 /// A strategy that indicates to an ``HTTPRequest`` what approach should be taken when
 /// attempting to retry upon failure.
-public enum RetryDecision {
+public enum RetryDecision: Equatable {
     /// Indicates that a failing request should not be retried.
     case concede
     /// Indicates that a failing request should be reattempted.
