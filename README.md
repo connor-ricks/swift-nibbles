@@ -50,6 +50,10 @@ more scalable and testable way.
 
 A protocol for marking objects as identified and allowing interaction with their identifiers in a type-safe way.
 
+## Contributing
+
+[Learn more](https://github.com/connor-ricks/swift-nibbles/blob/main/CONTRIBUTING.md)
+
 ## License
 
 [MIT License](https://github.com/connor-ricks/swift-nibbles/blob/main/LICENSE)
