@@ -100,40 +100,40 @@ To have emojis automatically inserted into your commits when you type a keyword,
 ./Utilities/setup.sh
 ```
 
-This will setup a git hook that will parse keywords into emojis when you make a commit.
+This will setup a git hook that will parse keywords between `:` into emojis when you make a commit.
 
 For example, comitting 
 
 ```
-:initial: Created a new nibble!
+:initial: :feature: Created a new nibble!
 ```
 
 Will result in the git hook converting the commit message to
 
 ```
-🎉 Created a new nibble!
+🎉 ✨ Created a new nibble!
 ```
 
 Below is a list of supported keywords, along with their associated usages and emojis
 
 | Emoji | Keyword           | Usage                                          |
 |-------|-------------------|------------------------------------------------|
-| 🐛    | :bug:             | Indicates a bug fix.                           |
-| 🧹    | :cleanup:         | Indicates a small cleanup of code.             |
-| 📦    | :dependency:      | Indicates the addition of a dependency.        |
-| 📚    | :docs:            | Indicates documentation updates.               |
-| ✨    | :feauture:        | Indicates a new feature.                       |
-| 🛠    | :fixup:           | Indicates a quick tweak of code.               |
-| 🎉    | :initial:         | Indicates an initial commit of a project.      |
-| 🏎    | :performance:     | Indicates improvements to performance.         |
-| ♻️    | :refactor:        | Indicates code refactoring.                    |
-| 🗑️    | :removal:         | Indicates the removal of code.                 |
-| 🔒    | :security:        | Indicates a security fix.                      |
-| 🎨    | :styling:         | Indicates changes to code styling.             |
-| 🔖    | :tag:             | Indicates a tag for a version.                 |
-| 🧪    | :tests:           | Indicates test related work.                   |
-| 🧰    | :tooling:         | Indicates changes to tooling (Such as Actions) |
-| 🚧    | :wip:             | Indicates work that is in-progress.            |
+| 🐛    | bug               | Indicates a bug fix.                           |
+| 🧹    | cleanup           | Indicates a small cleanup of code.             |
+| 📦    | dependency        | Indicates the addition of a dependency.        |
+| 📚    | docs              | Indicates documentation updates.               |
+| ✨    | feauture          | Indicates a new feature.                       |
+| 🛠    | fixup             | Indicates a quick tweak of code.               |
+| 🎉    | initial           | Indicates an initial commit of a project.      |
+| 🏎    | performance       | Indicates improvements to performance.         |
+| ♻️    | refactor          | Indicates code refactoring.                    |
+| 🗑️    | removal           | Indicates the removal of code.                 |
+| 🔒    | security          | Indicates a security fix.                      |
+| 🎨    | styling           | Indicates changes to code styling.             |
+| 🔖    | tag               | Indicates a tag for a version.                 |
+| 🧪    | tests             | Indicates test related work.                   |
+| 🧰    | tooling           | Indicates changes to tooling (Such as Actions) |
+| 🚧    | wip               | Indicates work that is in-progress.            |
 
 
 ## Attribution
