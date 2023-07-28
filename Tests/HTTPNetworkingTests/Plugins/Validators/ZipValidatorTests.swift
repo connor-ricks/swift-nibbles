@@ -51,6 +51,27 @@ class ZipValidatorTests: XCTestCase {
             }
         }
         
-        await fulfillment(of: [validatorOneExpectation, validatorTwoExpectation])
+        await fulfillment(of: [validatorOneExpectation, validatorTwoExpectation], enforceOrder: true)
+    }
+    
+    func test_zipValidator_validatorConvenience_isAddedToRequestValidators() async throws {
+        let client = HTTPClient()
+        let request = client.request(for: .get, to: .mock, expecting: String.self)
+        let expectationOne = expectation(description: "Expected validator one to be called.")
+        let expectationTwo = expectation(description: "Expected validator two to be called.")
+        request.validate(zipping: [
+            Validator { _, _, _ in
+                expectationOne.fulfill()
+                return .success
+            },
+            Validator { _, _, _ in
+                expectationTwo.fulfill()
+                return .success
+            },
+        ])
+        
+        _ = try await request.validators.first?.validate(HTTPURLResponse(), for: request.request, with: Data())
+        
+        await fulfillment(of: [expectationOne, expectationTwo], enforceOrder: true)
     }
 }

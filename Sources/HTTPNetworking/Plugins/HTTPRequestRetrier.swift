@@ -7,14 +7,20 @@ import Foundation
 /// By conforming to ``HTTPRequestRetrier`` you can implement both simple and complex logic for retrying an ``HTTPRequest`` when
 /// it fails. Common uses cases include retrying a given amount of times due to a specific error such as poor network connectivity.
 public protocol HTTPRequestRetrier {
-    func retry(_ request: URLRequest, for session: URLSession, dueTo error: Error) async throws -> RetryStrategy
+    func retry(
+        _ request: URLRequest,
+        for session: URLSession,
+        with response: HTTPURLResponse?,
+        dueTo error: Error,
+        previousAttempts: Int
+    ) async throws -> RetryDecision
 }
 
-// MARK: - RetryStrategy
+// MARK: - RetryDecision
 
 /// A strategy that indicates to an ``HTTPRequest`` what approach should be taken when
 /// attempting to retry upon failure.
-public enum RetryStrategy {
+public enum RetryDecision: Equatable {
     /// Indicates that a failing request should not be retried.
     case concede
     /// Indicates that a failing request should be reattempted.

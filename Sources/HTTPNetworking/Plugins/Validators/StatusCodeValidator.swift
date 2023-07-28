@@ -15,7 +15,8 @@ public struct StatusCodeValidator<S: Sequence>: HTTPResponseValidator where S.It
     
     // MARK: Properties
     
-    let acceptableStatusCodes: S
+    /// The sequence of acceptable status codes for this validator.
+    public let acceptableStatusCodes: S
     
     // MARK: Initializers
     

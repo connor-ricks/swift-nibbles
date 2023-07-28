@@ -1,11 +1,14 @@
 import Foundation
 
+// MARK: - ZipValidator
+
 /// An ``HTTPResponseValidator`` that combines multiple validators into one, executing each validation in sequence.
 public struct ZipValidator: HTTPResponseValidator {
     
     // MARK: Properties
     
-    let validators: [any HTTPResponseValidator]
+    /// An array of validators that make up this validator.
+    public let validators: [any HTTPResponseValidator]
     
     // MARK: Initializers
     
@@ -25,15 +28,26 @@ public struct ZipValidator: HTTPResponseValidator {
     
     // MARK: ResponseValidator
     
-    public func validate(_ response: HTTPURLResponse, for request: URLRequest, with data: Data) async throws -> ValidationResult {
+    public func validate(_ response: HTTPURLResponse, for request: URLRequest, with data: Data) async -> ValidationResult {
         for validator in validators {
-            try Task.checkCancellation()
+            do { try Task.checkCancellation() }
+            catch { return .failure(error) }
             
-            if case .failure(let error) = try await validator.validate(response, for: request, with: data) {
+            if case .failure(let error) = await validator.validate(response, for: request, with: data) {
                 return .failure(error)
             }
         }
         
         return .success
+    }
+}
+
+// MARK: - HTTPRequest + ZipValidator
+
+extension HTTPRequest {
+    /// Applies a ``ZipValidator`` that bundles up all the provided validators.
+    @discardableResult
+    public func validate(zipping validators: [any HTTPResponseValidator]) -> Self {
+        validate(with: ZipValidator(validators))
     }
 }

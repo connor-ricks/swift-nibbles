@@ -1,11 +1,14 @@
 import Foundation
 
+// MARK: - ZipRetrier
+
 /// An ``HTTPRequestRetrier`` that combines multiple retriers into one, executing each retrier in sequence.
 public struct ZipRetrier: HTTPRequestRetrier {
     
     // MARK: Properties
     
-    let retriers: [any HTTPRequestRetrier]
+    /// An array of retriers that make up this retrier.
+    public let retriers: [any HTTPRequestRetrier]
     
     // MARK: Initializers
         
@@ -25,11 +28,24 @@ public struct ZipRetrier: HTTPRequestRetrier {
     
     // MARK: ResponseValidator
     
-    public func retry(_ request: URLRequest, for session: URLSession, dueTo error: Error) async throws -> RetryStrategy {
+    public func retry(
+        _ request: URLRequest,
+        for session: URLSession,
+        with response: HTTPURLResponse?,
+        dueTo error: Error,
+        previousAttempts: Int
+    ) async throws -> RetryDecision {
         for retrier in retriers {
             try Task.checkCancellation()
             
-            let strategy = try await retrier.retry(request, for: session, dueTo: error)
+            let strategy = try await retrier.retry(
+                request,
+                for: session,
+                with: response,
+                dueTo: error,
+                previousAttempts: previousAttempts
+            )
+            
             switch strategy {
             case .concede:
                 continue
@@ -39,5 +55,15 @@ public struct ZipRetrier: HTTPRequestRetrier {
         }
         
         return .concede
+    }
+}
+
+// MARK: - HTTPRequest + ZipRetrier
+
+extension HTTPRequest {
+    /// Applies a ``ZipRetrier`` that bundles up all the provided retriers.
+    @discardableResult
+    public func retry(zipping retriers: [any HTTPRequestRetrier]) -> Self {
+        retry(with: ZipRetrier(retriers))
     }
 }

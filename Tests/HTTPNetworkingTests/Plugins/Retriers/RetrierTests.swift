@@ -8,12 +8,18 @@ class RetrierTests: XCTestCase {
         let request = client.request(for: .get, to: .mock, expecting: String.self)
         let expectation = expectation(description: "Expected handler to be called.")
    
-        let retrier = Retrier { _, _, _ in
+        let retrier = Retrier { _, _, _, _, _ in
             expectation.fulfill()
             return .concede
         }
     
-        _ = await retrier.retry(request.request, for: .shared, dueTo: URLError(.cannotParseResponse))
+        _ = try await retrier.retry(
+            request.request,
+            for: .shared,
+            with: nil,
+            dueTo: URLError(.cannotParseResponse),
+            previousAttempts: 0
+        )
         await fulfillment(of: [expectation])
     }
     
@@ -23,7 +29,7 @@ class RetrierTests: XCTestCase {
         let client = HTTPClient()
         let request = client.request(for: .get, to: .mock, expecting: String.self)
         let expectation = expectation(description: "Expected retrier to be called.")
-        request.retry { _, _, _ in
+        request.retry { _, _, _, _, _ in
             expectation.fulfill()
             return .concede
         }
@@ -31,7 +37,9 @@ class RetrierTests: XCTestCase {
         _ = try await request.retriers.first?.retry(
             request.request,
             for: client.dispatcher.session,
-            dueTo: MockError()
+            with: nil,
+            dueTo: MockError(),
+            previousAttempts: 0
         )
         
         await fulfillment(of: [expectation])
