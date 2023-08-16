@@ -15,6 +15,7 @@ let package = Package(
         .library(name: "Extensions", targets: ["Extensions"]),
         .library(name: "HTTPNetworking", targets: ["HTTPNetworking"]),
         .library(name: "Identified", targets: ["Identified"]),
+        .plugin(name: "Create TCA Feature", targets: ["Create TCA Feature"])
     ],
     targets: [
         .target(name: "Cache"),
@@ -28,5 +29,18 @@ let package = Package(
         
         .target(name: "Identified"),
         .testTarget(name: "IdentifiedTests", dependencies: ["Identified"]),
+        
+        .plugin(
+            name: "Create TCA Feature",
+            capability: .command(
+                intent: .custom(
+                    verb: "create-tca-feature",
+                    description: "Generates the source files for a new TCA feauture."
+                ),
+                permissions: [
+                    .writeToPackageDirectory(reason: "Generates source code."),
+                ]
+            )
+        )
     ]
 )
