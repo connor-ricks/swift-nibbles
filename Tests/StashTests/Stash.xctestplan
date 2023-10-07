@@ -16,8 +16,8 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "CacheTests",
-        "name" : "CacheTests"
+        "identifier" : "StashTests",
+        "name" : "StashTests"
       }
     }
   ],
