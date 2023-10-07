@@ -33,6 +33,14 @@ You can then fetch attempt to retrieve from the cache at a later time using the 
 ### ⛓️ Extensions
 A collection of useful extensions that I freqeuntly implement across multiple projects.
 
+### ⚡️ Fuse
+A collection of useful Combine nibbles.
+
+- A variety of helpful sinks that allow for easier less verbose interactions with Combine publishers.
+- A variety of helpful sinks that automatically cleanup after themselves by using a `DisposableBag`.
+- `BuffableAsyncPublisher` and `BuffableAsyncThrowingPublisher` which both expose a `values(bufferingStrategy:)` on `Publisher`
+    - This is a more configurable and powerful version of `values` in Combine that allows converting Combine to an async/await syntax.
+
 ### 🕸️ HTTPNetworking
 A client that creates and manages requests over the network.
 
