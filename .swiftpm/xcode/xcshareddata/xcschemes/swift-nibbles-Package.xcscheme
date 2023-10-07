@@ -118,6 +118,20 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Fuse"
+               BuildableName = "Fuse"
+               BlueprintName = "Fuse"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -179,6 +193,16 @@
                BlueprintIdentifier = "BuffableAsyncPublishersTests"
                BuildableName = "BuffableAsyncPublishersTests"
                BlueprintName = "BuffableAsyncPublishersTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "FuseTests"
+               BuildableName = "FuseTests"
+               BlueprintName = "FuseTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>

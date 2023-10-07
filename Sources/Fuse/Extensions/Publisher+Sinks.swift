@@ -23,41 +23,6 @@
 import Foundation
 import Combine
 
-// MARK: - DisposableBag
-
-/// A thread safe bag of `AnyCancellables`
-public class DisposableBag {
-    
-    // MARK: Properties
-    
-    private let lock = NSLock()
-    private var cancellables = Set<AnyCancellable>()
-    
-    public var count: Int {
-        return cancellables.count
-    }
-
-    // MARK: Methods
-    
-    public func store(_ anyCancellable: AnyCancellable) {
-        lock.lock()
-        cancellables.insert(anyCancellable)
-        lock.unlock()
-    }
-
-    public func dispose(_ anyCancellable: AnyCancellable) {
-        lock.lock()
-        cancellables.remove(anyCancellable)
-        lock.unlock()
-    }
-    
-    public func empty() {
-        lock.lock()
-        cancellables.removeAll()
-        lock.unlock()
-    }
-}
-
 // MARK: - Standard Sinks
 
 extension Publisher {

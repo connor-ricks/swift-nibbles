@@ -11,22 +11,22 @@ let package = Package(
         .watchOS(.v9),
     ],
     products: [
-        .library(name: "BuffableAsyncPublishers", targets: ["BuffableAsyncPublishers"]),
         .library(name: "Cache", targets: ["Cache"]),
         .library(name: "Extensions", targets: ["Extensions"]),
+        .library(name: "Fuse", targets: ["Fuse"]),
         .library(name: "HTTPNetworking", targets: ["HTTPNetworking"]),
         .library(name: "Identified", targets: ["Identified"]),
         .plugin(name: "Create TCA Feature", targets: ["Create TCA Feature"])
     ],
     targets: [
-        .target(name: "BuffableAsyncPublishers"),
-        .testTarget(name: "BuffableAsyncPublishersTests", dependencies: ["BuffableAsyncPublishers"]),
-            
         .target(name: "Cache"),
         .testTarget(name: "CacheTests", dependencies: ["Cache"]),
         
         .target(name: "Extensions"),
         .testTarget(name: "ExtensionsTests", dependencies: ["Extensions"]),
+        
+        .target(name: "Fuse"),
+        .testTarget(name: "FuseTests", dependencies: ["Fuse"]),
         
         .target(name: "HTTPNetworking"),
         .testTarget(name: "HTTPNetworkingTests", dependencies: ["HTTPNetworking"]),

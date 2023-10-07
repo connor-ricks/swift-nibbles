@@ -16,8 +16,8 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "BuffableAsyncPublishersTests",
-        "name" : "BuffableAsyncPublishersTests"
+        "identifier" : "FuseTests",
+        "name" : "FuseTests"
       }
     }
   ],
