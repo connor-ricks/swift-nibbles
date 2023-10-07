@@ -127,7 +127,8 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:Tests/swift-nibbles-Package.xctestplan">
+            reference = "container:Tests/swift-nibbles-Package.xctestplan"
+            default = "YES">
          </TestPlanReference>
       </TestPlans>
       <Testables>
@@ -168,6 +169,16 @@
                BlueprintIdentifier = "IdentifiedTests"
                BuildableName = "IdentifiedTests"
                BlueprintName = "IdentifiedTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BuffableAsyncPublishersTests"
+               BuildableName = "BuffableAsyncPublishersTests"
+               BlueprintName = "BuffableAsyncPublishersTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>

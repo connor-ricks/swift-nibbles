@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "F09C5E9C-9A9F-4DED-A076-9B79A92DFBE0",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "BuffableAsyncPublishersTests",
+        "name" : "BuffableAsyncPublishersTests"
+      }
+    }
+  ],
+  "version" : 1
+}

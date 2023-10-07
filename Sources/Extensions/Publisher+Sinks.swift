@@ -68,6 +68,7 @@ extension Publisher {
     ///   - receiveError: The closure to execute on completion due to an error.
     ///   - receiveCompletion: The closure to execute on normal completion.
     /// - Returns: A cancellable instance, which you use when you end assignment of the received value. Deallocation of the result will tear down the subscription stream.
+    @_disfavoredOverload
     public func sink(
         receiveValue: @escaping (Output) -> Void,
         receiveError: @escaping (Failure) -> Void,
@@ -117,6 +118,7 @@ extension Publisher {
     ///   - receiveCompletion: The closure to execute on normal completion.
     ///   - bag: The `DisposableBag` that should store this subscriber.
     /// - Returns: A cancellable instance, which you use when you end assignment of the received value. Deallocation of the result will tear down the subscription stream.
+    @_disfavoredOverload
     @discardableResult
     public func sink(
         receiveValue: @escaping (Output) -> Void,
@@ -196,7 +198,7 @@ private extension Subscribers.Sink {
                 switch completion {
                 case .failure(let error):
                     receiveError(error)
-                case.finished:
+                case .finished:
                     receiveCompletion?()
                 }
             },
