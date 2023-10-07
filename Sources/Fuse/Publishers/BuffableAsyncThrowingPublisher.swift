@@ -105,7 +105,7 @@ extension Publisher {
     /// 
     /// This property provides an ``BuffableAsyncThrowingPublisher``, which allows you to use the Swift `async`-`await` syntax to receive the publisher's elements. Because ``BuffableAsyncThrowingPublisher`` conforms to <doc://com.apple.documentation/documentation/Swift/AsyncSequence>, you iterate over its elements with a `for`-`await`-`in` loop, rather than attaching a subscriber.
     @_disfavoredOverload
-    func values(bufferingPolicy: AsyncThrowingStream<Output, Error>.Continuation.BufferingPolicy) -> BuffableAsyncThrowingPublisher<Self> {
+    public func values(bufferingPolicy: AsyncThrowingStream<Output, Error>.Continuation.BufferingPolicy) -> BuffableAsyncThrowingPublisher<Self> {
         BuffableAsyncThrowingPublisher(self, bufferingPolicy: bufferingPolicy)
     }
 }

@@ -101,7 +101,7 @@ extension Publisher where Failure == Never {
     /// - Parameter bufferingPolicy: By providing a buffering policy, you can customize the behavior when sequence publishes values faster than they can be handled.
     ///
     /// This property provides an ``BuffableAsyncPublisher``, which allows you to use the Swift `async`-`await` syntax to receive the publisher's elements. Because ``BuffableAsyncPublisher`` conforms to <doc://com.apple.documentation/documentation/Swift/AsyncSequence>, you iterate over its elements with a `for`-`await`-`in` loop, rather than attaching a subscriber.
-    func values(bufferingPolicy: AsyncStream<Output>.Continuation.BufferingPolicy) -> BuffableAsyncPublisher<Self> {
+    public func values(bufferingPolicy: AsyncStream<Output>.Continuation.BufferingPolicy) -> BuffableAsyncPublisher<Self> {
         BuffableAsyncPublisher(self, bufferingPolicy: bufferingPolicy)
     }
 }
