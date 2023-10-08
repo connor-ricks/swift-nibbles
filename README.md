@@ -19,16 +19,16 @@ Nibbles are all broken down into their own targets, so you can choose which nibb
 ```swift
 .product(name: "HTTPNetworking", package: "swift-nibbles")
 // or
-.product(name: "Cache", package: "swift-nibbles")
+.product(name: "Stash", package: "swift-nibbles")
 ```
 
 ## Nibbles
 
-### 🗄️ Cache
+### 🗄️ Stash
 A simple cache that can be used to store objects.
 
-Use a cache to store objects of a given type in memory using an associated key.
-You can then fetch attempt to retrieve from the cache at a later time using the key.
+Use a `Stash` to store objects of a given type in memory using an associated key.
+You can then fetch attempt to retrieve from the `Stash` at a later time using the key.
 
 ### ⛓️ Extensions
 A collection of useful extensions that I freqeuntly implement across multiple projects.

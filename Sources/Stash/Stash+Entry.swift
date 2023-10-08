@@ -22,14 +22,14 @@
 
 import Foundation
 
-extension Cache {
-    /// A wrapper around the `Value` saved to the cache. This is what gets saved to the `NSCache`.
+extension Stash {
+    /// A wrapper around the `Value` saved to the stash. This is what gets saved to the `NSCache`.
     final class Entry {
-        /// The key that is used to lookup the value in the cache.
+        /// The key that is used to lookup the value in the stash.
         let key: Key
-        /// The value that is being cached.
+        /// The value that is being stashdd.
         let value: Value
-        /// The expiration date for the entry within the cache.
+        /// The expiration date for the entry within the stash.
         let lifetime: Date
 
         init(key: Key, value: Value, lifetime: Date) {
@@ -42,4 +42,4 @@ extension Cache {
 
 // MARK: Entry + Codable
 
-extension Cache.Entry: Codable where Key: Codable, Value: Codable {}
+extension Stash.Entry: Codable where Key: Codable, Value: Codable {}

@@ -9,43 +9,11 @@
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : {
-      "targets" : [
-        {
-          "containerPath" : "container:",
-          "identifier" : "Cache",
-          "name" : "Cache"
-        },
-        {
-          "containerPath" : "container:",
-          "identifier" : "Extensions",
-          "name" : "Extensions"
-        },
-        {
-          "containerPath" : "container:",
-          "identifier" : "HTTPNetworking",
-          "name" : "HTTPNetworking"
-        },
-        {
-          "containerPath" : "container:",
-          "identifier" : "Identified",
-          "name" : "Identified"
-        }
-      ]
-    },
     "defaultTestExecutionTimeAllowance" : 60,
     "testExecutionOrdering" : "random",
     "testTimeoutsEnabled" : true
   },
   "testTargets" : [
-    {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "CacheTests",
-        "name" : "CacheTests"
-      }
-    },
     {
       "parallelizable" : true,
       "target" : {
@@ -68,6 +36,14 @@
         "containerPath" : "container:",
         "identifier" : "IdentifiedTests",
         "name" : "IdentifiedTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "StashTests",
+        "name" : "StashTests"
       }
     }
   ],
