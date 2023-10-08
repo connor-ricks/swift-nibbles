@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Cache"
-               BuildableName = "Cache"
-               BlueprintName = "Cache"
+               BlueprintIdentifier = "Stash"
+               BuildableName = "Stash"
+               BlueprintName = "Stash"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,7 +29,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:Tests/CacheTests/Cache.xctestplan"
+            reference = "container:Tests/StashTests/Stash.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
@@ -54,9 +54,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Cache"
-            BuildableName = "Cache"
-            BlueprintName = "Cache"
+            BlueprintIdentifier = "Stash"
+            BuildableName = "Stash"
+            BlueprintName = "Stash"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

@@ -22,8 +22,8 @@
 
 import Foundation
 
-extension Cache {
-    /// A wrapper around the `Cache's` `Key` type that makes it compatible with `NSCache`
+extension Stash {
+    /// A wrapper around the `Stash's` `Key` type that makes it compatible with `NSCache`
     class WrappedKey: NSObject {
         
         // MARK: Properties

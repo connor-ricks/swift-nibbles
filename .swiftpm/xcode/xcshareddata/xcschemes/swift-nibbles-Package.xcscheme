@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Cache"
-               BuildableName = "Cache"
-               BlueprintName = "Cache"
+               BlueprintIdentifier = "Stash"
+               BuildableName = "Stash"
+               BlueprintName = "Stash"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -70,9 +70,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CacheTests"
-               BuildableName = "CacheTests"
-               BlueprintName = "CacheTests"
+               BlueprintIdentifier = "StashTests"
+               BuildableName = "StashTests"
+               BlueprintName = "StashTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -150,9 +150,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CacheTests"
-               BuildableName = "CacheTests"
-               BlueprintName = "CacheTests"
+               BlueprintIdentifier = "StashTests"
+               BuildableName = "StashTests"
+               BlueprintName = "StashTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
@@ -228,9 +228,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Cache"
-            BuildableName = "Cache"
-            BlueprintName = "Cache"
+            BlueprintIdentifier = "Stash"
+            BuildableName = "Stash"
+            BlueprintName = "Stash"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>
