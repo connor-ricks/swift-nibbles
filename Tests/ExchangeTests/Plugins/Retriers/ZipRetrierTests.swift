@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import HTTPNetworking
+@testable import Exchange
 import XCTest
 
 class ZipRetrierTests: XCTestCase {
@@ -33,7 +33,7 @@ class ZipRetrierTests: XCTestCase {
                 with response: HTTPURLResponse?,
                 dueTo error: Error,
                 previousAttempts: Int
-            ) async -> HTTPNetworking.RetryDecision {
+            ) async -> Exchange.RetryDecision {
                 .concede
             }
         }

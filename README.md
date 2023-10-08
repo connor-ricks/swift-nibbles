@@ -17,7 +17,7 @@ To add `swift-nibbles` to your project, first add it as a dependency.
 Nibbles are all broken down into their own targets, so you can choose which nibbles are relevant to your project.
 
 ```swift
-.product(name: "HTTPNetworking", package: "swift-nibbles")
+.product(name: "Exchange", package: "swift-nibbles")
 // or
 .product(name: "Stash", package: "swift-nibbles")
 ```

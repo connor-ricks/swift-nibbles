@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import HTTPNetworking
+@testable import Exchange
 import XCTest
 
 class ValidatorTests: XCTestCase {
