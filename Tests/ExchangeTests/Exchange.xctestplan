@@ -16,8 +16,8 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "HTTPNetworkingTests",
-        "name" : "HTTPNetworkingTests"
+        "identifier" : "ExchangeTests",
+        "name" : "ExchangeTests"
       }
     }
   ],
