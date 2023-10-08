@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Cache"
-               BuildableName = "Cache"
-               BlueprintName = "Cache"
+               BlueprintIdentifier = "Extensions"
+               BuildableName = "Extensions"
+               BlueprintName = "Extensions"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,9 +28,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Extensions"
-               BuildableName = "Extensions"
-               BlueprintName = "Extensions"
+               BlueprintIdentifier = "Fuse"
+               BuildableName = "Fuse"
+               BlueprintName = "Fuse"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -65,62 +65,6 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CacheTests"
-               BuildableName = "CacheTests"
-               BlueprintName = "CacheTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ExtensionsTests"
-               BuildableName = "ExtensionsTests"
-               BlueprintName = "ExtensionsTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "HTTPNetworkingTests"
-               BuildableName = "HTTPNetworkingTests"
-               BlueprintName = "HTTPNetworkingTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "IdentifiedTests"
-               BuildableName = "IdentifiedTests"
-               BlueprintName = "IdentifiedTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
@@ -145,48 +89,6 @@
             default = "YES">
          </TestPlanReference>
       </TestPlans>
-      <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CacheTests"
-               BuildableName = "CacheTests"
-               BlueprintName = "CacheTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ExtensionsTests"
-               BuildableName = "ExtensionsTests"
-               BlueprintName = "ExtensionsTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "HTTPNetworkingTests"
-               BuildableName = "HTTPNetworkingTests"
-               BlueprintName = "HTTPNetworkingTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "IdentifiedTests"
-               BuildableName = "IdentifiedTests"
-               BlueprintName = "IdentifiedTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </TestableReference>
-      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -208,9 +110,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "Cache"
-            BuildableName = "Cache"
-            BlueprintName = "Cache"
+            BlueprintIdentifier = "Stash"
+            BuildableName = "Stash"
+            BlueprintName = "Stash"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

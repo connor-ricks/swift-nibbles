@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import Extensions
+@testable import Fuse
 import XCTest
 import Combine
 
@@ -38,7 +38,7 @@ class PublisherSinksTests: XCTestCase {
 
     var cancellable: AnyCancellable?
 
-    // MARK: Publisher Tests
+    // MARK: Sink Tests
 
     func test_synchronousSink_doesComplete_whenValuesFinishedPublishing() {
         /// Setup expectations
@@ -133,7 +133,7 @@ class PublisherSinksTests: XCTestCase {
     func test_disposableSynchronousBagSink_doesCleanup_whenValuesFinishedPublishing() {
         /// Prepare test
         let bag = DisposableBag()
-        XCTAssertEqual(bag.count, 0)
+        XCTAssertEqual(bag.cancellables.count, 0)
 
         /// Setup expectations
         let valueExpectation = createReceiveValueExpectation(count: 3)
@@ -157,7 +157,7 @@ class PublisherSinksTests: XCTestCase {
     func test_disposableAsynchronousBagSink_doesCleanup_whenValuesFinishedPublishing() {
         /// Prepare test
         let bag = DisposableBag()
-        XCTAssertEqual(bag.count, 0)
+        XCTAssertEqual(bag.cancellables.count, 0)
 
         /// Setup expectations
         let valueExpectation = createReceiveValueExpectation(count: 1)
@@ -187,7 +187,7 @@ class PublisherSinksTests: XCTestCase {
     func test_disposableBagSink_doesCleanup_whenCancellableIsCancelled() {
         /// Prepare test
         let bag = DisposableBag()
-        XCTAssertEqual(bag.count, 0)
+        XCTAssertEqual(bag.cancellables.count, 0)
 
         /// Setup expectations
         let valueExpectation = createReceiveValueExpectation(count: 1)
@@ -217,7 +217,7 @@ class PublisherSinksTests: XCTestCase {
     func test_disposableBagSink_doesCleanup_whenErrorIsPublished() {
         /// Prepare test
         let bag = DisposableBag()
-        XCTAssertEqual(bag.count, 0)
+        XCTAssertEqual(bag.cancellables.count, 0)
 
         /// Setup expectations
         let valueExpectation = createReceiveValueExpectation(count: 1)
@@ -249,7 +249,7 @@ class PublisherSinksTests: XCTestCase {
     func test_disposableBag_whenEmptied_doesCancelAllPublishers() {
         /// Prepare test
         let bag = DisposableBag()
-        XCTAssertEqual(bag.count, 0)
+        XCTAssertEqual(bag.cancellables.count, 0)
 
         /// Setup expectations
         let completionExpectation = expectation(description: "Expected publisher to complete.")
@@ -266,7 +266,7 @@ class PublisherSinksTests: XCTestCase {
         }, bag: bag)
         
         bag.empty()
-        XCTAssertEqual(bag.count, 0)
+        XCTAssertEqual(bag.cancellables.count, 0)
 
         wait(for: [
             completionExpectation,
@@ -281,7 +281,7 @@ private extension PublisherSinksTests {
     func createEmptyBagExpectation(from bag: DisposableBag) -> XCTestExpectation {
         return expectation(for: NSPredicate { any, _ in
             guard let bag = any as? DisposableBag else { return false}
-            return bag.count == 0
+            return bag.cancellables.count == 0
         }, evaluatedWith: bag, handler: .none)
     }
 

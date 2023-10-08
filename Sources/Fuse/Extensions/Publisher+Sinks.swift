@@ -23,41 +23,6 @@
 import Foundation
 import Combine
 
-// MARK: - DisposableBag
-
-/// A thread safe bag of `AnyCancellables`
-public class DisposableBag {
-    
-    // MARK: Properties
-    
-    private let lock = NSLock()
-    private var cancellables = Set<AnyCancellable>()
-    
-    public var count: Int {
-        return cancellables.count
-    }
-
-    // MARK: Methods
-    
-    public func store(_ anyCancellable: AnyCancellable) {
-        lock.lock()
-        cancellables.insert(anyCancellable)
-        lock.unlock()
-    }
-
-    public func dispose(_ anyCancellable: AnyCancellable) {
-        lock.lock()
-        cancellables.remove(anyCancellable)
-        lock.unlock()
-    }
-    
-    public func empty() {
-        lock.lock()
-        cancellables.removeAll()
-        lock.unlock()
-    }
-}
-
 // MARK: - Standard Sinks
 
 extension Publisher {
@@ -68,6 +33,7 @@ extension Publisher {
     ///   - receiveError: The closure to execute on completion due to an error.
     ///   - receiveCompletion: The closure to execute on normal completion.
     /// - Returns: A cancellable instance, which you use when you end assignment of the received value. Deallocation of the result will tear down the subscription stream.
+    @_disfavoredOverload
     public func sink(
         receiveValue: @escaping (Output) -> Void,
         receiveError: @escaping (Failure) -> Void,
@@ -117,6 +83,7 @@ extension Publisher {
     ///   - receiveCompletion: The closure to execute on normal completion.
     ///   - bag: The `DisposableBag` that should store this subscriber.
     /// - Returns: A cancellable instance, which you use when you end assignment of the received value. Deallocation of the result will tear down the subscription stream.
+    @_disfavoredOverload
     @discardableResult
     public func sink(
         receiveValue: @escaping (Output) -> Void,
@@ -196,7 +163,7 @@ private extension Subscribers.Sink {
                 switch completion {
                 case .failure(let error):
                     receiveError(error)
-                case.finished:
+                case .finished:
                     receiveCompletion?()
                 }
             },

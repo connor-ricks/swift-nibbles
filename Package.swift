@@ -11,24 +11,28 @@ let package = Package(
         .watchOS(.v9),
     ],
     products: [
-        .library(name: "Stash", targets: ["Stash"]),
         .library(name: "Extensions", targets: ["Extensions"]),
+        .library(name: "Fuse", targets: ["Fuse"]),
         .library(name: "HTTPNetworking", targets: ["HTTPNetworking"]),
         .library(name: "Identified", targets: ["Identified"]),
+        .library(name: "Stash", targets: ["Stash"]),
         .plugin(name: "Create TCA Feature", targets: ["Create TCA Feature"])
     ],
     targets: [
-        .target(name: "Stash"),
-        .testTarget(name: "StashTests", dependencies: ["Stash"]),
-        
         .target(name: "Extensions"),
         .testTarget(name: "ExtensionsTests", dependencies: ["Extensions"]),
+        
+        .target(name: "Fuse"),
+        .testTarget(name: "FuseTests", dependencies: ["Fuse"]),
         
         .target(name: "HTTPNetworking"),
         .testTarget(name: "HTTPNetworkingTests", dependencies: ["HTTPNetworking"]),
         
         .target(name: "Identified"),
         .testTarget(name: "IdentifiedTests", dependencies: ["Identified"]),
+        
+        .target(name: "Stash"),
+        .testTarget(name: "StashTests", dependencies: ["Stash"]),
         
         .plugin(
             name: "Create TCA Feature",
