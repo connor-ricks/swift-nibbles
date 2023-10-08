@@ -26,6 +26,14 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
+        "identifier" : "FuseTests",
+        "name" : "FuseTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
         "identifier" : "HTTPNetworkingTests",
         "name" : "HTTPNetworkingTests"
       }
