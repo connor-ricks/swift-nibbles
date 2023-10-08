@@ -17,7 +17,7 @@ To add `swift-nibbles` to your project, first add it as a dependency.
 Nibbles are all broken down into their own targets, so you can choose which nibbles are relevant to your project.
 
 ```swift
-.product(name: "HTTPNetworking", package: "swift-nibbles")
+.product(name: "Exchange", package: "swift-nibbles")
 // or
 .product(name: "Stash", package: "swift-nibbles")
 ```
@@ -41,8 +41,8 @@ A collection of useful Combine nibbles.
 - `BuffableAsyncPublisher` and `BuffableAsyncThrowingPublisher` which both expose a `values(bufferingStrategy:)` on `Publisher`
     - This is a more configurable and powerful version of `values` in Combine that allows converting Combine to an async/await syntax.
 
-### 🕸️ HTTPNetworking
-A client that creates and manages requests over the network.
+### 🛜 Exchange
+An HTTP client that creates and manages requests over the network.
 
 The client provides support for sharing common functionality across all requests, but each request can also layer on additional functionality if needed.
 

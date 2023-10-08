@@ -34,14 +34,6 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "HTTPNetworkingTests",
-        "name" : "HTTPNetworkingTests"
-      }
-    },
-    {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:",
         "identifier" : "IdentifiedTests",
         "name" : "IdentifiedTests"
       }
@@ -52,6 +44,14 @@
         "containerPath" : "container:",
         "identifier" : "StashTests",
         "name" : "StashTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ExchangeTests",
+        "name" : "ExchangeTests"
       }
     }
   ],

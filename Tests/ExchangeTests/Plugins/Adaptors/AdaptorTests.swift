@@ -20,34 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-@testable import HTTPNetworking
+@testable import Exchange
 import XCTest
 
-class ValidatorTests: XCTestCase {
-    func test_validator_withProvidedHandler_callsHandlerOnValidation() async throws {
+class AdaptorTests: XCTestCase {
+    func test_adaptor_withProvidedHandler_callsHandlerOnAdaptation() async throws {
         let client = HTTPClient()
         let request = client.request(for: .get, to: .mock, expecting: String.self)
         let expectation = expectation(description: "Expected handler to be called.")
    
-        let validator = Validator { _, _, _ in
+        let adaptor = Adaptor { request, _ in
             expectation.fulfill()
-            return .success
+            return request
         }
     
-        _ = try await validator.validate(HTTPURLResponse(), for: request.request, with: Data())
+        _ = try await adaptor.adapt(request.request, for: .shared)
         await fulfillment(of: [expectation])
     }
     
-    func test_request_validatorConvenience_isAddedToRequestValidators() async throws {
+    func test_request_adaptorConvenience_isAddedToRequestAdaptors() async throws {
         let client = HTTPClient()
         let request = client.request(for: .get, to: .mock, expecting: String.self)
         let expectation = expectation(description: "Expected adaptor to be called.")
-        request.validate { _, _, _ in
+        request.adapt { request, _ in
             expectation.fulfill()
-            return .success
+            return request
         }
         
-        _ = try await request.validators.first?.validate(HTTPURLResponse(), for: request.request, with: Data())
+        _ = try await request.adaptors.first?.adapt(request.request, for: client.dispatcher.session)
         
         await fulfillment(of: [expectation])
     }

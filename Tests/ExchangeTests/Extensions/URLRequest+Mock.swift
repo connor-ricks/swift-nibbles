@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 import Foundation
-import HTTPNetworking
+import Exchange
 
 extension URLRequest {
     static let mock = URLRequest(url: .mock)
