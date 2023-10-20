@@ -42,6 +42,9 @@ A collection of useful Combine nibbles.
     - This is a more configurable and powerful version of `values` in Combine that allows converting Combine to an async/await syntax.
 
 ### 🛜 Exchange
+
+#### HTTPClient
+
 An HTTP client that creates and manages requests over the network.
 
 The client provides support for sharing common functionality across all requests, but each request can also layer on additional functionality if needed.
@@ -55,6 +58,12 @@ Using the concept of plugins, you can customize your client's functionalities to
 Generally an ``HTTPClient`` is used to manage the interaction with a single API service. Most APIs
 have their own nuance and complexities, and encapsulating all of that in one place can help structure your code in a
 more scalable and testable way.
+
+#### Socket
+
+A websocket created from a URL that can listen to messages send through the connection using `AsyncStream`.
+
+Sending messages and cancelling the connection is as easy as calling a few methods.
 
 ### 🏷️ Identified
 

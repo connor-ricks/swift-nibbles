@@ -53,7 +53,11 @@ public struct HTTPMethod: RawRepresentable, Equatable, Hashable {
     /// The `PATCH` method is used to apply partial modifications to a resource.
     public static let patch = HTTPMethod(rawValue: "PATCH")
     
+    // MARK: Properties
+    
     public let rawValue: String
+    
+    // MARK: Initializers
     
     public init(rawValue: String) {
         self.rawValue = rawValue.uppercased()

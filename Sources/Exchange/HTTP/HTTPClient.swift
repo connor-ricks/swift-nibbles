@@ -120,7 +120,7 @@ public struct HTTPClient {
     public init(
         encoder: JSONEncoder = JSONEncoder(),
         decoder: JSONDecoder = JSONDecoder(),
-        dispatcher: HTTPDispatcher = .live(),
+        dispatcher: HTTPDispatcher = .init(session: .shared),
         adaptors: [any HTTPRequestAdaptor] = [],
         validators: [any HTTPResponseValidator] = [],
         retriers: [any HTTPRequestRetrier] = []

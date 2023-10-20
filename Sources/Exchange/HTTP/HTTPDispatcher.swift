@@ -35,7 +35,7 @@ public struct HTTPDispatcher {
     // MARK: Initializers
     
     /// Creates a dispatcher with the provided session.
-    init(session: URLSession) {
+    public init(session: URLSession) {
         self.session = session
     }
     
@@ -47,18 +47,6 @@ public struct HTTPDispatcher {
         }
         
         return (data, response)
-    }
-}
-
-// MARK: - HTTPDispatcher + Live
-
-extension HTTPDispatcher {
-    /// A live implementation of an ``HTTPDispatcher`` that will utilize the provided session to perform requests.
-    ///
-    /// - Parameter session: The session that powers the dispatcher.
-    /// - Returns: An ``HTTPDispatcher``
-    public static func live(session: URLSession = .shared) -> HTTPDispatcher {
-        HTTPDispatcher(session: session)
     }
 }
 
