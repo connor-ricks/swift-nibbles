@@ -66,7 +66,6 @@ public struct ZipAdaptor: HTTPRequestAdaptor {
 
 extension HTTPRequest {
     /// Applies a ``ZipAdaptor`` that bundles up all the provided adaptors.
-    @discardableResult
     public func adapt(zipping adaptors: [any HTTPRequestAdaptor]) -> Self {
         adapt(with: ZipAdaptor(adaptors))
     }

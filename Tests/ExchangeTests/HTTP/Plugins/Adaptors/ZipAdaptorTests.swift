@@ -68,6 +68,7 @@ class ZipAdaptorTests: XCTestCase {
         task = Task {
             do {
                 _ = try await zipAdaptor.adapt(.mock, for: .shared)
+                XCTFail("Expected error to be thrown")
             } catch {
                 XCTAssertTrue(error is CancellationError)
             }
@@ -78,19 +79,19 @@ class ZipAdaptorTests: XCTestCase {
     
     func test_zipAdaptor_adaptorConvenience_isAddedToRequestAdaptors() async throws {
         let client = HTTPClient()
-        let request = client.request(for: .get, to: .mock, expecting: String.self)
         let expectationOne = expectation(description: "Expected adaptor one to be called.")
         let expectationTwo = expectation(description: "Expected adaptor two to be called.")
-        request.adapt(zipping: [
-            Adaptor { request, _ in
-                expectationOne.fulfill()
-                return request
-            },
-            Adaptor { request, _ in
-                expectationTwo.fulfill()
-                return request
-            },
-        ])
+        let request = client.request(for: .get, to: .mock, expecting: String.self)
+            .adapt(zipping: [
+                Adaptor { request, _ in
+                    expectationOne.fulfill()
+                    return request
+                },
+                Adaptor { request, _ in
+                    expectationTwo.fulfill()
+                    return request
+                },
+            ])
         
         _ = try await request.adaptors.first?.adapt(request.request, for: client.dispatcher.session)
         

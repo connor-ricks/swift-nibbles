@@ -62,13 +62,14 @@ class ParametersAdaptorTests: XCTestCase {
     
     func test_request_adaptorConvenience_isAddedToRequestAdaptors() async throws {
         let client = HTTPClient()
-        let request = client.request(for: .get, to: .mock, expecting: String.self)
         
         let items: [URLQueryItem] = [
             .init(name: "one-name", value: "one-value"),
             .init(name: "two-name", value: "two-value"),
         ]
-        request.adapt(queryItems: items)
+        
+        let request = client.request(for: .get, to: .mock, expecting: String.self)
+            .adapt(queryItems: items)
         
         guard let adaptor = request.adaptors.first as? ParametersAdaptor else {
             XCTFail("Expected request to container PrametersAdaptor.")

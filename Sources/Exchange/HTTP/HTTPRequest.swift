@@ -44,7 +44,7 @@ import Foundation
 /// > Tip: You can retry the ``HTTPRequest`` if it fails by calling retry methods like ``retry(_:)`` or ``retry(with:)``.
 /// By providing a ``RetryHandler`` or any ``HTTPRequestRetrier``, you can determine if a request should be retried if it fails.
 /// Typical use cases include retrying requests a given number of times in the event of poor network connectivity.
-public class HTTPRequest<Value: Decodable> {
+public struct HTTPRequest<Value: Decodable> {
     
     // MARK: Properties
     
@@ -145,27 +145,27 @@ public class HTTPRequest<Value: Decodable> {
     // MARK: Adapt
     
     /// Applies the provided adaptor to the request.
-    @discardableResult
     public func adapt<A>(with adaptor: A) -> Self where A: HTTPRequestAdaptor {
-        adaptors.append(adaptor)
-        return self
+        var request = self
+        request.adaptors.append(adaptor)
+        return request
     }
     
     // MARK: Retry
     
     /// Applies the provided retrier to the request's retry strategy.
-    @discardableResult
     public func retry<R>(with retrier: R) -> Self where R: HTTPRequestRetrier {
-        retriers.append(retrier)
-        return self
+        var request = self
+        request.retriers.append(retrier)
+        return request
     }
     
     // MARK: Validate
     
     /// Applies the provided validator to the request's response validation.
-    @discardableResult
     public func validate<V>(with validator: V) -> Self where V: HTTPResponseValidator {
-        validators.append(validator)
-        return self
+        var request = self
+        request.validators.append(validator)
+        return request
     }
 }

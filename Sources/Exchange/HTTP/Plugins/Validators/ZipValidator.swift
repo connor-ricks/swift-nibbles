@@ -68,7 +68,6 @@ public struct ZipValidator: HTTPResponseValidator {
 
 extension HTTPRequest {
     /// Applies a ``ZipValidator`` that bundles up all the provided validators.
-    @discardableResult
     public func validate(zipping validators: [any HTTPResponseValidator]) -> Self {
         validate(with: ZipValidator(validators))
     }

@@ -58,7 +58,6 @@ public struct Adaptor: HTTPRequestAdaptor {
 
 extension HTTPRequest {
     /// Applies an ``Adaptor`` that handles request adaptation using the provided ``AdaptationHandler``.
-    @discardableResult
     public func adapt(_ handler: @escaping AdaptationHandler) -> Self {
         adapt(with: Adaptor(handler))
     }

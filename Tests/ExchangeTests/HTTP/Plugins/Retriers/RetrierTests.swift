@@ -49,12 +49,12 @@ class RetrierTests: XCTestCase {
         struct MockError: Error {}
         
         let client = HTTPClient()
-        let request = client.request(for: .get, to: .mock, expecting: String.self)
         let expectation = expectation(description: "Expected retrier to be called.")
-        request.retry { _, _, _, _, _ in
-            expectation.fulfill()
-            return .concede
-        }
+        let request = client.request(for: .get, to: .mock, expecting: String.self)
+            .retry { _, _, _, _, _ in
+                expectation.fulfill()
+                return .concede
+            }
         
         _ = try await request.retriers.first?.retry(
             request.request,

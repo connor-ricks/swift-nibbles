@@ -60,7 +60,6 @@ public struct ParametersAdaptor: HTTPRequestAdaptor {
 
 extension HTTPRequest {
     /// Applies a ``ParametersAdaptor`` that appends the provided query parameters to the request.
-    @discardableResult
     public func adapt(queryItems: [URLQueryItem]) -> Self {
         adapt(with: ParametersAdaptor(items: queryItems))
     }

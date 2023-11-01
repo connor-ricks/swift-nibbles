@@ -84,7 +84,6 @@ public struct ZipRetrier: HTTPRequestRetrier {
 
 extension HTTPRequest {
     /// Applies a ``ZipRetrier`` that bundles up all the provided retriers.
-    @discardableResult
     public func retry(zipping retriers: [any HTTPRequestRetrier]) -> Self {
         retry(with: ZipRetrier(retriers))
     }

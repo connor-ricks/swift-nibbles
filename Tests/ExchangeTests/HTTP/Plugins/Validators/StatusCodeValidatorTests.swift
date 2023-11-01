@@ -83,7 +83,7 @@ class StatusCodeValidatorTests: XCTestCase {
     func test_request_singleStatusCodeValidationConvenience_isAddedToRequestValidators() async {
         let client = HTTPClient()
         let request = client.request(for: .get, to: .mock, expecting: String.self)
-        request.validate(statusCode: 200)
+            .validate(statusCode: 200)
         guard let validator = request.validators.first as? StatusCodeValidator<ClosedRange<Int>> else {
             XCTFail("Expected a ClosedRange<Int> StatusCodeValidator")
             return
@@ -95,7 +95,7 @@ class StatusCodeValidatorTests: XCTestCase {
     func test_request_sequenceStatusCodeValidationConvenience_isAddedToRequestValidators() async {
         let client = HTTPClient()
         let request = client.request(for: .get, to: .mock, expecting: String.self)
-        request.validate(statusCode: 200...299)
+            .validate(statusCode: 200...299)
         guard let validator = request.validators.first as? StatusCodeValidator<ClosedRange<Int>> else {
             XCTFail("Expected a ClosedRange<Int> StatusCodeValidator")
             return

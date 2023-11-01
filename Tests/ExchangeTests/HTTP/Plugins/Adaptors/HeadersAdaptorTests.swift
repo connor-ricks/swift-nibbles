@@ -116,14 +116,13 @@ class HeadersAdaptorTests: XCTestCase {
     
     func test_request_adaptorConvenience_isAddedToRequestAdaptors() async throws {
         let client = HTTPClient()
-        let request = client.request(for: .get, to: .mock, expecting: String.self)
-        
         let headers: [String: String] = [
             "HEADER-ONE": "VALUE-ONE",
             "HEADER-TWO": "VALUE-TWO",
         ]
         
-        request.adapt(headers: headers)
+        let request = client.request(for: .get, to: .mock, expecting: String.self)
+            .adapt(headers: headers)
         
         guard let adaptor = request.adaptors.first as? HeadersAdaptor else {
             XCTFail("Expected request to container HeadersAdaptor.")
