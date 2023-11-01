@@ -68,7 +68,6 @@ public struct Retrier: HTTPRequestRetrier {
 
 extension HTTPRequest {
     /// Applies a ``Retrier`` that handles retry logic using the provided ``RetryHandler``.
-    @discardableResult
     public func retry(_ handler: @escaping RetryHandler) -> Self {
         retry(with: Retrier(handler))
     }

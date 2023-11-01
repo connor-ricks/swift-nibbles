@@ -55,7 +55,6 @@ public struct Validator: HTTPResponseValidator {
 
 extension HTTPRequest {
     /// Applies a ``Validator`` that validates the request's response using the provided ``ValidationHandler``.
-    @discardableResult
     public func validate(_ handler: @escaping ValidationHandler) -> Self {
         validate(with: Validator(handler))
     }

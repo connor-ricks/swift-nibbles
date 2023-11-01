@@ -1252,6 +1252,7 @@ class HTTPRequestTests: XCTestCase {
                 _ = try await client
                     .request(for: .get, to: url, expecting: [String].self)
                     .run()
+                XCTFail("Expected error to be thrown")
             } catch {
                 XCTAssertTrue(error is CancellationError)
                 expectation.fulfill()
@@ -1295,6 +1296,7 @@ class HTTPRequestTests: XCTestCase {
                 _ = try await client
                     .request(for: .get, to: url, expecting: [String].self)
                     .run()
+                XCTFail("Expected error to be thrown")
             } catch {
                 XCTAssertTrue(error is CancellationError)
                 expectation.fulfill()
@@ -1332,6 +1334,7 @@ class HTTPRequestTests: XCTestCase {
                 _ = try await client
                     .request(for: .get, to: url, expecting: [String].self)
                     .run()
+                XCTFail("Expected error to be thrown")
             } catch {
                 XCTAssertTrue(error is CancellationError)
                 expectation.fulfill()

@@ -40,9 +40,9 @@ class AdaptorTests: XCTestCase {
     
     func test_request_adaptorConvenience_isAddedToRequestAdaptors() async throws {
         let client = HTTPClient()
-        let request = client.request(for: .get, to: .mock, expecting: String.self)
         let expectation = expectation(description: "Expected adaptor to be called.")
-        request.adapt { request, _ in
+        let request = client.request(for: .get, to: .mock, expecting: String.self)
+            .adapt { request, _ in
             expectation.fulfill()
             return request
         }

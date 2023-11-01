@@ -66,11 +66,13 @@ class ZipValidatorTests: XCTestCase {
         ])
         
         task = Task {
-            do {
-                _ = try await zipValidator.validate(HTTPURLResponse(), for: .mock, with: Data())
-            } catch {
-                XCTAssertTrue(error is CancellationError)
+            let result = await zipValidator.validate(HTTPURLResponse(), for: .mock, with: Data())
+            guard case .failure(let error) = result else {
+                XCTFail("Expected task to be cancelled due to task cancellation.")
+                return
             }
+            
+            XCTAssertTrue(error is CancellationError)
         }
         
         await fulfillment(of: [validatorOneExpectation, validatorTwoExpectation], enforceOrder: true)
@@ -78,19 +80,19 @@ class ZipValidatorTests: XCTestCase {
     
     func test_zipValidator_validatorConvenience_isAddedToRequestValidators() async throws {
         let client = HTTPClient()
-        let request = client.request(for: .get, to: .mock, expecting: String.self)
         let expectationOne = expectation(description: "Expected validator one to be called.")
         let expectationTwo = expectation(description: "Expected validator two to be called.")
-        request.validate(zipping: [
-            Validator { _, _, _ in
-                expectationOne.fulfill()
-                return .success
-            },
-            Validator { _, _, _ in
-                expectationTwo.fulfill()
-                return .success
-            },
-        ])
+        let request = client.request(for: .get, to: .mock, expecting: String.self)
+            .validate(zipping: [
+                Validator { _, _, _ in
+                    expectationOne.fulfill()
+                    return .success
+                },
+                Validator { _, _, _ in
+                    expectationTwo.fulfill()
+                    return .success
+                },
+            ])
         
         _ = try await request.validators.first?.validate(HTTPURLResponse(), for: request.request, with: Data())
         

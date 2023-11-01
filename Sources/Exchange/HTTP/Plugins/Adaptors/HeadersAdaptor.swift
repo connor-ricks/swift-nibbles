@@ -94,7 +94,6 @@ public struct HeadersAdaptor: HTTPRequestAdaptor {
 
 extension HTTPRequest {
     /// Applies a ``HeadersAdaptor`` that appends the provided headers to the request.
-    @discardableResult
     public func adapt(headers: [String: String], strategy: HeadersAdaptor.CollisionStrategy = .useNewerValue) -> Self {
         adapt(with: HeadersAdaptor(headers: headers, strategy:  strategy))
     }

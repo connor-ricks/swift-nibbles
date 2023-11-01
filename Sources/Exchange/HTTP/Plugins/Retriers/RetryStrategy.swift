@@ -388,7 +388,6 @@ open class RetryStrategy: HTTPRequestRetrier {
 
 extension HTTPRequest {
     /// Applies a ``RetryStrategy`` with the provided configuration.
-    @discardableResult
     public func retryStrategy(
         attempts: Int = RetryStrategy.Constants.defaultAttempts,
         methods: Set<HTTPMethod> = RetryStrategy.Constants.defaultMethods,

@@ -89,22 +89,22 @@ public struct HTTPClient {
     // MARK: Properties
     
     /// The encoder that each request uses to encode request bodies.
-    public let encoder: JSONEncoder
+    public var encoder: JSONEncoder
     
     /// The decoder that each request uses to decode response bodies.
-    public let decoder: JSONDecoder
+    public var decoder: JSONDecoder
     
     /// The dispatcher that sends out each request.
-    public let dispatcher: HTTPDispatcher
+    public var dispatcher: HTTPDispatcher
     
     /// A collection of adaptors that adapt each request.
-    public let adaptors: [any HTTPRequestAdaptor]
+    public var adaptors: [any HTTPRequestAdaptor]
     
     /// A collection of validators that validate each response.
-    public let validators: [any HTTPResponseValidator]
+    public var validators: [any HTTPResponseValidator]
     
     /// A collection of retriers that handle retrying failed requests.
-    public let retriers: [any HTTPRequestRetrier]
+    public var retriers: [any HTTPRequestRetrier]
     
     // MARK: Initializers
     
@@ -133,7 +133,7 @@ public struct HTTPClient {
         self.validators = validators
     }
     
-    // MARK: Public
+    // MARK: Request
 
     /// Creates a request with a body.
     ///

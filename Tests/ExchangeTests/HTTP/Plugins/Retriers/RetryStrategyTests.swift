@@ -281,14 +281,14 @@ class RetryStrategyTests: XCTestCase {
     func test_retryStrategy_retrierConvenience_isAddedToRequestRetriers() async throws {
         let client = HTTPClient(dispatcher: .mock(responses: [.mock: .failure(URLError(.badURL))]))
         let request = client.request(for: .get, to: .mock, expecting: String.self)
-        request.retryStrategy(
-            attempts: 999,
-            methods: [.get],
-            urlErrorCodes: [.badURL],
-            statusCodes: [401],
-            exponentialBackoffBase: 1,
-            jitterStrategy: .full
-        )
+            .retryStrategy(
+                attempts: 999,
+                methods: [.get],
+                urlErrorCodes: [.badURL],
+                statusCodes: [401],
+                exponentialBackoffBase: 1,
+                jitterStrategy: .full
+            )
         
         guard let retrier = request.retriers.first as? RetryStrategy else {
             XCTFail("Expected first retrier to be a RetryStrategy.")

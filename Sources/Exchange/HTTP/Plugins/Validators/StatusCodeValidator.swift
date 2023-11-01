@@ -71,13 +71,11 @@ public struct StatusCodeValidator<S: Sequence>: HTTPResponseValidator where S.It
 
 extension HTTPRequest {
     /// Applies a ``StatusCodeValidator`` that validates the request's response has a status code within the provided sequence.
-    @discardableResult
     public func validate<S: Sequence>(statusCode acceptableStatusCodes: S) -> Self where S.Iterator.Element == Int {
         validate(with: StatusCodeValidator(statusCode: acceptableStatusCodes))
     }
     
     /// Applies a ``StatusCodeValidator`` that validates the request's response has a status code matching the status code.
-    @discardableResult
     public func validate(statusCode: Int) -> Self {
         validate(with: StatusCodeValidator(statusCode: statusCode))
     }
