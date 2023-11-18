@@ -32,6 +32,10 @@ public class DisposableBag {
     private let lock = NSLock()
     private(set) var cancellables = Set<AnyCancellable>()
 
+    // MARK: Initializers
+    
+    public init() {}
+    
     // MARK: Methods
     
     public func store(_ anyCancellable: AnyCancellable) {
