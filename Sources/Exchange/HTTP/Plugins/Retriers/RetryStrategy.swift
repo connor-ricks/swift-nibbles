@@ -235,23 +235,23 @@ open class RetryStrategy: HTTPRequestRetrier {
             
             // The URL Loading System encountered an error that it can’t interpret.
             // [Disabled] - Unlikely to change during a retry.
-            .unknown,
+            //.unknown,
             
             // A properly formed URL couldn’t be handled by the framework.
             // [Disabled] - Unlikely to change during a retry.
-            .unsupportedURL,
+            //.unsupportedURL,
             
             // Authentication is required to access a resource.
             // [Disabled] - Unlikely to change during a retry.
-            .userAuthenticationRequired,
+            //.userAuthenticationRequired,
             
             // An asynchronous request for authentication has been canceled by the user.
             // [Disabled] - Unlikely to change during a retry.
-            .userCancelledAuthentication,
+            //.userCancelledAuthentication,
             
             // A server reported that a URL has a non-zero content length, but terminated the network connection gracefully without sending any data.
             // [Disabled] - Unlikely to change during a retry.
-            .zeroByteResource,
+            //.zeroByteResource,
         ]
     }
     
