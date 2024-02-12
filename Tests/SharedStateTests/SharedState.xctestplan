@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "3AD1685E-93AE-4C99-B1DD-6BFF0C4A1EC1",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SharedStateTests",
+        "name" : "SharedStateTests"
+      }
+    }
+  ],
+  "version" : 1
+}

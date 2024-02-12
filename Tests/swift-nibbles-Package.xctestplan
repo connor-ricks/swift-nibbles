@@ -53,6 +53,14 @@
         "identifier" : "ExchangeTests",
         "name" : "ExchangeTests"
       }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SharedStateTests",
+        "name" : "SharedStateTests"
+      }
     }
   ],
   "version" : 1
