@@ -15,8 +15,12 @@ let package = Package(
         .library(name: "Extensions", targets: ["Extensions"]),
         .library(name: "Fuse", targets: ["Fuse"]),
         .library(name: "Identified", targets: ["Identified"]),
+        .library(name: "SharedState", targets: ["SharedState"]),
         .library(name: "Stash", targets: ["Stash"]),
         .plugin(name: "Create TCA Feature", targets: ["Create TCA Feature"])
+    ],
+    dependencies: [
+        .package(url: "https://github.com/pointfreeco/swift-concurrency-extras", from: "1.1.0"),
     ],
     targets: [
         .target(name: "Exchange"),
@@ -30,6 +34,9 @@ let package = Package(
         
         .target(name: "Identified"),
         .testTarget(name: "IdentifiedTests", dependencies: ["Identified"]),
+        
+        .target(name: "SharedState", dependencies: ["Fuse", .product(name: "ConcurrencyExtras", package: "swift-concurrency-extras"),]),
+        .testTarget(name: "SharedStateTests", dependencies: ["SharedState"]),
         
         .target(name: "Stash"),
         .testTarget(name: "StashTests", dependencies: ["Stash"]),
