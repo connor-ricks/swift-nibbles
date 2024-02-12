@@ -30,6 +30,11 @@ A simple cache that can be used to store objects.
 Use a `Stash` to store objects of a given type in memory using an associated key.
 You can then fetch attempt to retrieve from the `Stash` at a later time using the key.
 
+### 📬 SharedState
+A simple container that encapsulates an object allowing others to subscribe to and monitor changes to the state.
+
+Frequently use in PointFree's TCA architecture to subscribe long-running effects to shared state changes.
+
 ### ⛓️ Extensions
 A collection of useful extensions that I freqeuntly implement across multiple projects.
 

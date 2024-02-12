@@ -29,11 +29,9 @@ import Fuse
 public typealias SharedStateUpdateBlock<T> = (_ old: T, _ new: T) async -> Void
 
 
-/// A box that encapsulates an object allowing others to subscribe to and monitor changes to the state.
-///
-/// Useful when you have multiple services or features that wish to subscribe to changes.
-///
-/// Frequently use in PointFree's TCA architecture to subsribe long-running effects to shared state changes.
+/// A simple container that encapsulates an object allowing others to subscribe to and monitor changes to the state.
+/// 
+/// Frequently use in PointFree's TCA architecture to subscribe long-running effects to shared state changes.
 ///
 /// ```
 /// let settings = SharedState(Settings(theme: .dark), onChange: { old, new in
