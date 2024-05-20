@@ -1,5 +1,5 @@
 # 🍫 swift-nibbles
-![Build](https://img.shields.io/github/actions/workflow/status/connor-ricks/swift-nibbles/pull_request_checks.yaml?logo=GitHub)
+![Build](https://img.shields.io/github/actions/workflow/status/connor-ricks/swift-nibbles/checks.yaml?logo=GitHub)
 ![Codecov](https://img.shields.io/codecov/c/github/connor-ricks/swift-nibbles?logo=Codecov&label=codecov)
 ![License](https://img.shields.io/github/license/connor-ricks/swift-nibbles?color=blue)
 
