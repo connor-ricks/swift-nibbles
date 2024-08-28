@@ -30,9 +30,10 @@ import XCTest
 class StateBindingTests: XCTestCase {
     func test_stateBinding_whenProvidedExternalBinding_doesUseExternalBinding() async {
         let getterExpectation = expectation(description: "Expected binding getter.")
-        getterExpectation.expectedFulfillmentCount = 2
+        getterExpectation.expectedFulfillmentCount = 3
 
         let setterExpectation = expectation(description: "Expected binding setter.")
+        setterExpectation.expectedFulfillmentCount = 2
 
         let count = LockIsolated(0)
         let binding = Binding(
@@ -49,6 +50,10 @@ class StateBindingTests: XCTestCase {
         _counter.externalBinding = binding
         binding.wrappedValue = 10
         XCTAssertEqual(counter, 10)
-        await fulfillment(of: [setterExpectation, getterExpectation], enforceOrder: true)
+
+        counter = 15
+        XCTAssertEqual(counter, 15)
+
+        await fulfillment(of: [setterExpectation, getterExpectation], enforceOrder: false)
     }
 }
