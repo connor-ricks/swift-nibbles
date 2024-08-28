@@ -17,6 +17,7 @@ let package = Package(
         .library(name: "Identified", targets: ["Identified"]),
         .library(name: "SharedState", targets: ["SharedState"]),
         .library(name: "Stash", targets: ["Stash"]),
+        .library(name: "StateBinding", targets: ["StateBinding"]),
         .plugin(name: "Create TCA Feature", targets: ["Create TCA Feature"])
     ],
     dependencies: [
@@ -40,7 +41,10 @@ let package = Package(
         
         .target(name: "Stash"),
         .testTarget(name: "StashTests", dependencies: ["Stash"]),
-        
+
+        .target(name: "StateBinding"),
+        .testTarget(name: "StateBindingTests", dependencies: ["StateBinding", .product(name: "ConcurrencyExtras", package: "swift-concurrency-extras")]),
+
         .plugin(
             name: "Create TCA Feature",
             capability: .command(
