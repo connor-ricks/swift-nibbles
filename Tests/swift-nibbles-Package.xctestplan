@@ -18,6 +18,14 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
+        "identifier" : "ExchangeTests",
+        "name" : "ExchangeTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
         "identifier" : "ExtensionsTests",
         "name" : "ExtensionsTests"
       }
@@ -42,24 +50,23 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
+        "identifier" : "SharedStateTests",
+        "name" : "SharedStateTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
         "identifier" : "StashTests",
         "name" : "StashTests"
       }
     },
     {
-      "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "ExchangeTests",
-        "name" : "ExchangeTests"
-      }
-    },
-    {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "SharedStateTests",
-        "name" : "SharedStateTests"
+        "identifier" : "StateBindingTests",
+        "name" : "StateBindingTests"
       }
     }
   ],

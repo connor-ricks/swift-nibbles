@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "F058B37F-5474-46C0-A432-D042453493AB",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "StateBindingTests",
+        "name" : "StateBindingTests"
+      }
+    }
+  ],
+  "version" : 1
+}
