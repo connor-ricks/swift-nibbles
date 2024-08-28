@@ -24,32 +24,9 @@ Nibbles are all broken down into their own targets, so you can choose which nibb
 
 ## Nibbles
 
-### 🗄️ Stash
-A simple cache that can be used to store objects.
-
-Use a `Stash` to store objects of a given type in memory using an associated key.
-You can then fetch attempt to retrieve from the `Stash` at a later time using the key.
-
-### 📬 SharedState
-A simple container that encapsulates an object allowing others to subscribe to and monitor changes to the state.
-
-Frequently use in PointFree's TCA architecture to subscribe long-running effects to shared state changes.
-
-### ⛓️ Extensions
-A collection of useful extensions that I freqeuntly implement across multiple projects.
-
-### ⚡️ Fuse
-A collection of useful Combine nibbles.
-
-- A variety of helpful sinks that allow for easier less verbose interactions with Combine publishers.
-- A variety of helpful sinks that automatically cleanup after themselves by using a `DisposableBag`.
-- `BuffableAsyncPublisher` and `BuffableAsyncThrowingPublisher` which both expose a `values(bufferingStrategy:)` on `Publisher`
-    - This is a more configurable and powerful version of `values` in Combine that allows converting Combine to an async/await syntax.
-
 ### 🛜 Exchange
 
 #### HTTPClient
-
 An HTTP client that creates and manages requests over the network.
 
 The client provides support for sharing common functionality across all requests, but each request can also layer on additional functionality if needed.
@@ -65,14 +42,37 @@ have their own nuance and complexities, and encapsulating all of that in one pla
 more scalable and testable way.
 
 #### Socket
-
 A websocket created from a URL that can listen to messages send through the connection using `AsyncStream`.
 
 Sending messages and cancelling the connection is as easy as calling a few methods.
 
-### 🏷️ Identified
+### ⛓️ Extensions
+A collection of useful extensions that I freqeuntly implement across multiple projects.
 
+### ⚡️ Fuse
+A collection of useful Combine nibbles.
+
+- A variety of helpful sinks that allow for easier less verbose interactions with Combine publishers.
+- A variety of helpful sinks that automatically cleanup after themselves by using a `DisposableBag`.
+- `BuffableAsyncPublisher` and `BuffableAsyncThrowingPublisher` which both expose a `values(bufferingStrategy:)` on `Publisher`
+    - This is a more configurable and powerful version of `values` in Combine that allows converting Combine to an async/await syntax.
+
+### 🏷️ Identified
 A protocol for marking objects as identified and allowing interaction with their identifiers in a type-safe way.
+
+### 📬 SharedState
+A simple container that encapsulates an object allowing others to subscribe to and monitor changes to the state.
+
+Frequently use in PointFree's TCA architecture to subscribe long-running effects to shared state changes.
+
+### 🗄️ Stash
+A simple cache that can be used to store objects.
+
+Use a `Stash` to store objects of a given type in memory using an associated key.
+You can then fetch attempt to retrieve from the `Stash` at a later time using the key.
+
+### 🔗 StateBinding
+A simple property wrapper that allows your views to optionally take a binding and default to internal state. Useful when creating reusable components.
 
 ## Contributing
 
