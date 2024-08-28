@@ -90,6 +90,20 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "StateBinding"
+               BuildableName = "StateBinding"
+               BlueprintName = "StateBinding"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -121,6 +135,16 @@
                BlueprintIdentifier = "SharedStateTests"
                BuildableName = "SharedStateTests"
                BlueprintName = "SharedStateTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "StateBindingTests"
+               BuildableName = "StateBindingTests"
+               BlueprintName = "StateBindingTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>

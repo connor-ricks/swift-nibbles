@@ -25,7 +25,7 @@ jobs:
       - name: 🧪 Run tests
         run: xcodebuild test -scheme "swift-nibbles-Package" -testPlan "swift-nibbles-Package" -destination "OS=17.0,name=iPhone 15 Pro"
       - name: 📊 Upload Coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           swift: true
